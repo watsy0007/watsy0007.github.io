@@ -97,6 +97,143 @@
 		<div class="markdown-body home-categories">
 		
 			<div class="article">
+                <a class="clearlink" href="15286454861033.html">
+                
+                  <h1>elixir phoenix 部署与热升级</h1>
+                  <div class="a-content">
+                      
+                      <div class="a-content-text">
+                        
+                        	<p>主要使用edeliver + distillery</p>
+
+<p>distillery负责打包<br/>
+edeliver负责部署与热升级</p>
+
+<h2 id="toc_0">服务器配置</h2>
+
+<p>预设部署环境为ubuntu</p>
+
+<pre><code class="language-shell">wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb
+sudo dpkg -i erlang-solutions_1.0_all.deb &amp;&amp; \
+    sudo apt-get update &amp;&amp; \
+    sudo apt-get install esl-erlang elixir -y &amp;&amp; \
+    sudo upgrade -y
+    
+mix local.hex
+</code></pre>
+
+<p>ssh config中添加</p>
+
+<pre><code>Host phoenix.demo 
+    HostName phoenix.demo
+    User tony
+    IdentityFile ~/.ssh/id_rsa.pub
+</code></pre>
+
+<p>添加服务器配置到服务器</p>
+
+<pre><code class="language-shell">scp ~/phoenix.demo/config/prod.secret.exs phoenix.demo:/home/tony/app_config/prod.secret.exs
+</code></pre>
+
+<h2 id="toc_1">项目配置</h2>
+
+<p>项目根目录mix.exs中 deps方法中添加</p>
+
+<pre><code class="language-elixir">    {:edeliver, &quot;~&gt; 1.4.3&quot;},
+    {:distillery, &quot;~&gt; 1.4&quot;}
+</code></pre>
+
+<p>执行</p>
+
+<pre><code class="language-shell">mix deps.get
+</code></pre>
+
+<h3 id="toc_2">Edeliver &amp; Distillery 配置</h3>
+
+<pre><code class="language-shell">cd ~/phoenix.demo
+mix release.init
+</code></pre>
+
+<p><code>.edeliver/config</code>中添加</p>
+
+<pre><code>APP=&quot;myproject&quot;
+
+BUILD_HOST=&quot;phoenix.demo&quot;
+BUILD_USER=&quot;tony&quot;
+BUILD_AT=&quot;/home/tony/app_build&quot;
+
+PRODUCTION_HOSTS=&quot;phoenix.demo&quot; 
+PRODUCTION_USER=&quot;tony&quot; 
+DELIVER_TO=&quot;/home/tony/app_release&quot; 
+
+pre_erlang_get_and_update_deps() {
+  local _prod_secret_path=&quot;/home/tony/app_config/prod.secret.exs&quot;
+  if [ &quot;$TARGET_MIX_ENV&quot; = &quot;prod&quot; ]; then
+    __sync_remote &quot;
+      ln -sfn &#39;$_prod_secret_path&#39; &#39;$BUILD_AT/config/prod.secret.exs&#39;
+    &quot;
+  fi
+}
+</code></pre>
+
+<pre><code class="language-git">git add .
+git commit -m &#39;demo&#39;
+git push
+</code></pre>
+
+<h2 id="toc_3">部署</h2>
+
+<pre><code class="language-shell">mix edeliver build release # 构建
+mix edeliver deploy release to production # 部署到正式环境
+mix edeliver start production # 启动升级环境
+</code></pre>
+
+<h2 id="toc_4">热升级</h2>
+
+<p>任意修改代码后升级mix.exs中的版本号</p>
+
+<pre><code>- version: &quot;0.0.1&quot;,
++ version: &quot;0.0.2&quot;,
+</code></pre>
+
+<p>git</p>
+
+<pre><code>git add . &amp;&amp; git commit -m &quot;upgrade&quot; &amp;&amp; git push
+</code></pre>
+
+<p>执行</p>
+
+<pre><code>mix edeliver upgrade production
+</code></pre>
+
+<h2 id="toc_5">参考</h2>
+
+<ol>
+<li><a href="https://www.digitalocean.com/community/tutorials/how-to-automate-elixir-phoenix-deployment-with-distillery-and-edeliver-on-ubuntu-16-04#step-2-%E2%80%94-installing-elixir-and-phoenix-on-the-production-server">how to automate elixir phoenix deployment with distillery and edeliver on ubuntu 16.04</a></li>
+</ol>
+
+                        
+                      </div>
+                  </div>
+                </a>
+                <div class="read-more clearfix">
+                  <div class="more-left left">
+                  
+                    <span class="date">2018/6/10</span>
+                    
+          				   
+                  </div>
+                  <div class="more-right right">
+                  <span class="comments">
+                      
+
+                       
+                  </span>
+                  </div>
+                </div>
+              </div><!-- article -->
+        
+			<div class="article">
                 <a class="clearlink" href="15285278634325.html">
                 
                   <h1>使用MWeb写博客</h1>
@@ -161,9 +298,9 @@
 
 
 
-
-
-
+<a target="_blank" class="twitter" target="_blank" href="https://twitter.com/penguin9527" title="Twitter">Twitter</a>
+<a target="_blank" class="github" target="_blank" href="https://github.com/watsy0007" title="GitHub">GitHub</a>
+<a target="_blank" class="email" href="mailto:watsy0007@gmail.com" title="Email">Email</a>
   <a target="_blank" class="rss" href="atom.xml" title="RSS">RSS</a>
                 
               	 </div>
@@ -192,6 +329,12 @@
                 <div class="side-content">
                 <ul class="posts-list">
 	      
+		      
+			      <li class="post">
+			        <a href="15286454861033.html">elixir phoenix 部署与热升级</a>
+			      </li>
+		     
+		  
 		      
 			      <li class="post">
 			        <a href="15285278634325.html">使用MWeb写博客</a>
