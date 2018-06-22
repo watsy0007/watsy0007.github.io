@@ -97,14 +97,34 @@
 		<div class="markdown-body home-categories">
 		
 			<div class="article">
-                <a class="clearlink" href="15290527274745.html">
+                <a class="clearlink" href="15296457833065.html">
                 
-                  <h1>hello</h1>
+                  <h1>调试三方websocket服务被墙解决方案</h1>
                   <div class="a-content">
                       
                       <div class="a-content-text">
                         
-                        	<p>\[  x = \Theta(\sum\limit_k) \]</p>
+                        	<p>最近需要调试一些websocket服务, 因为对方服务器在墙外, 开始时候尝试在服务器上写代码, 不过总是没有本地方便, 还是考虑代理转发的方案.</p>
+
+<pre><code class="language-shell">ssh -L 8443:host:443 user@proxy-server
+</code></pre>
+
+<p>本地<code>telnet 0.0.0.0 8443</code> 成功连上.</p>
+
+<p>尝试websocket连接一直失败. 返回.</p>
+
+<pre><code class="language-elixir">{:error, %WebSockex.RequestError{code: 403, message: &quot;Forbidden&quot;}}
+</code></pre>
+
+<p>403第一反应是http权限相关, 也就是说服务器响应了, 但是某些理由block了.</p>
+
+<p>网上找资料提示可能是csrf相关, 本地host强制指向, 解决.</p>
+
+<p>参考</p>
+
+<ol>
+<li><a href="https://stackoverflow.com/questions/29677418/websockets-over-https-403-forbidden">websockets over https 403 forbidden</a></li>
+</ol>
 
                         
                       </div>
@@ -113,7 +133,7 @@
                 <div class="read-more clearfix">
                   <div class="more-left left">
                   
-                    <span class="date">2018/6/15</span>
+                    <span class="date">2018/6/22</span>
                     
           				   
                   </div>
@@ -362,7 +382,7 @@ mix edeliver start production # 启动升级环境
 	      
 		      
 			      <li class="post">
-			        <a href="15290527274745.html">hello</a>
+			        <a href="15296457833065.html">调试三方websocket服务被墙解决方案</a>
 			      </li>
 		     
 		  

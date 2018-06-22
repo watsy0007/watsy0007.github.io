@@ -4,7 +4,7 @@
   <title><![CDATA[watsy0007]]></title>
   <link href="http://blog.watsy0007.com/atom.xml" rel="self"/>
   <link href="http://blog.watsy0007.com/"/>
-  <updated>2018-06-22T14:44:09+08:00</updated>
+  <updated>2018-06-22T14:44:15+08:00</updated>
   <id>http://blog.watsy0007.com/</id>
   <author>
     <name><![CDATA[]]></name>
@@ -13,12 +13,32 @@
   <generator uri="http://www.mweb.im/">MWeb</generator>
   
   <entry>
-    <title type="html"><![CDATA[hello]]></title>
-    <link href="http://blog.watsy0007.com/15290527274745.html"/>
-    <updated>2018-06-15T16:52:07+08:00</updated>
-    <id>http://blog.watsy0007.com/15290527274745.html</id>
+    <title type="html"><![CDATA[调试三方websocket服务被墙解决方案]]></title>
+    <link href="http://blog.watsy0007.com/15296457833065.html"/>
+    <updated>2018-06-22T13:36:23+08:00</updated>
+    <id>http://blog.watsy0007.com/15296457833065.html</id>
     <content type="html"><![CDATA[
-<p>\[  x = \Theta(\sum\limit_k) \]</p>
+<p>最近需要调试一些websocket服务, 因为对方服务器在墙外, 开始时候尝试在服务器上写代码, 不过总是没有本地方便, 还是考虑代理转发的方案.</p>
+
+<pre><code class="language-shell">ssh -L 8443:host:443 user@proxy-server
+</code></pre>
+
+<p>本地<code>telnet 0.0.0.0 8443</code> 成功连上.</p>
+
+<p>尝试websocket连接一直失败. 返回.</p>
+
+<pre><code class="language-elixir">{:error, %WebSockex.RequestError{code: 403, message: &quot;Forbidden&quot;}}
+</code></pre>
+
+<p>403第一反应是http权限相关, 也就是说服务器响应了, 但是某些理由block了.</p>
+
+<p>网上找资料提示可能是csrf相关, 本地host强制指向, 解决.</p>
+
+<p>参考</p>
+
+<ol>
+<li><a href="https://stackoverflow.com/questions/29677418/websockets-over-https-403-forbidden">websockets over https 403 forbidden</a></li>
+</ol>
 
 ]]></content>
   </entry>

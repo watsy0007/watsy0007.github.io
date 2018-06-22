@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
     
-  elixir phoenix 部署与热升级 - watsy0007
+  调试三方websocket服务被墙解决方案 - watsy0007
   
   </title>
   
@@ -97,10 +97,10 @@
       <div class="markdown-body article-wrap">
        <div class="article">
           
-          <h1>elixir phoenix 部署与热升级</h1>
+          <h1>调试三方websocket服务被墙解决方案</h1>
      
         <div class="read-more clearfix">
-          <span class="date">2018/6/10</span>
+          <span class="date">2018/6/22</span>
 
           
            
@@ -115,112 +115,26 @@
       </div><!-- article -->
 
       <div class="article-content">
-      <p>主要使用edeliver + distillery</p>
+      <p>最近需要调试一些websocket服务, 因为对方服务器在墙外, 开始时候尝试在服务器上写代码, 不过总是没有本地方便, 还是考虑代理转发的方案.</p>
 
-<p>distillery负责打包<br/>
-edeliver负责部署与热升级</p>
-
-<h2 id="toc_0">服务器配置</h2>
-
-<p>预设部署环境为ubuntu</p>
-
-<pre><code class="language-shell">wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb
-sudo dpkg -i erlang-solutions_1.0_all.deb &amp;&amp; \
-    sudo apt-get update &amp;&amp; \
-    sudo apt-get install esl-erlang elixir -y &amp;&amp; \
-    sudo upgrade -y
-    
-mix local.hex
+<pre><code class="language-shell">ssh -L 8443:host:443 user@proxy-server
 </code></pre>
 
-<p>ssh config中添加</p>
+<p>本地<code>telnet 0.0.0.0 8443</code> 成功连上.</p>
 
-<pre><code>Host phoenix.demo 
-    HostName phoenix.demo
-    User tony
-    IdentityFile ~/.ssh/id_rsa.pub
+<p>尝试websocket连接一直失败. 返回.</p>
+
+<pre><code class="language-elixir">{:error, %WebSockex.RequestError{code: 403, message: &quot;Forbidden&quot;}}
 </code></pre>
 
-<p>添加服务器配置到服务器</p>
+<p>403第一反应是http权限相关, 也就是说服务器响应了, 但是某些理由block了.</p>
 
-<pre><code class="language-shell">scp ~/phoenix.demo/config/prod.secret.exs phoenix.demo:/home/tony/app_config/prod.secret.exs
-</code></pre>
+<p>网上找资料提示可能是csrf相关, 本地host强制指向, 解决.</p>
 
-<h2 id="toc_1">项目配置</h2>
-
-<p>项目根目录mix.exs中 deps方法中添加</p>
-
-<pre><code class="language-elixir">    {:edeliver, &quot;~&gt; 1.4.3&quot;},
-    {:distillery, &quot;~&gt; 1.4&quot;}
-</code></pre>
-
-<p>执行</p>
-
-<pre><code class="language-shell">mix deps.get
-</code></pre>
-
-<h3 id="toc_2">Edeliver &amp; Distillery 配置</h3>
-
-<pre><code class="language-shell">cd ~/phoenix.demo
-mix release.init
-</code></pre>
-
-<p><code>.edeliver/config</code>中添加</p>
-
-<pre><code>APP=&quot;myproject&quot;
-
-BUILD_HOST=&quot;phoenix.demo&quot;
-BUILD_USER=&quot;tony&quot;
-BUILD_AT=&quot;/home/tony/app_build&quot;
-
-PRODUCTION_HOSTS=&quot;phoenix.demo&quot; 
-PRODUCTION_USER=&quot;tony&quot; 
-DELIVER_TO=&quot;/home/tony/app_release&quot; 
-
-pre_erlang_get_and_update_deps() {
-  local _prod_secret_path=&quot;/home/tony/app_config/prod.secret.exs&quot;
-  if [ &quot;$TARGET_MIX_ENV&quot; = &quot;prod&quot; ]; then
-    __sync_remote &quot;
-      ln -sfn &#39;$_prod_secret_path&#39; &#39;$BUILD_AT/config/prod.secret.exs&#39;
-    &quot;
-  fi
-}
-</code></pre>
-
-<pre><code class="language-git">git add .
-git commit -m &#39;demo&#39;
-git push
-</code></pre>
-
-<h2 id="toc_3">部署</h2>
-
-<pre><code class="language-shell">mix edeliver build release # 构建
-mix edeliver deploy release to production # 部署到正式环境
-mix edeliver start production # 启动升级环境
-</code></pre>
-
-<h2 id="toc_4">热升级</h2>
-
-<p>任意修改代码后升级mix.exs中的版本号</p>
-
-<pre><code>- version: &quot;0.0.1&quot;,
-+ version: &quot;0.0.2&quot;,
-</code></pre>
-
-<p>git</p>
-
-<pre><code>git add . &amp;&amp; git commit -m &quot;upgrade&quot; &amp;&amp; git push
-</code></pre>
-
-<p>执行</p>
-
-<pre><code>mix edeliver upgrade production
-</code></pre>
-
-<h2 id="toc_5">参考</h2>
+<p>参考</p>
 
 <ol>
-<li><a href="https://www.digitalocean.com/community/tutorials/how-to-automate-elixir-phoenix-deployment-with-distillery-and-edeliver-on-ubuntu-16-04#step-2-%E2%80%94-installing-elixir-and-phoenix-on-the-production-server">how to automate elixir phoenix deployment with distillery and edeliver on ubuntu 16.04</a></li>
+<li><a href="https://stackoverflow.com/questions/29677418/websockets-over-https-403-forbidden">websockets over https 403 forbidden</a></li>
 </ol>
 
 
@@ -232,16 +146,13 @@ mix edeliver start production # 启动升级环境
         <div class="large-6 columns">
         <p class="text-left" style="padding:15px 0px;">
       
-          <a href="15296457833065.html" 
-          title="Previous Post: 调试三方websocket服务被墙解决方案">&laquo; 调试三方websocket服务被墙解决方案</a>
-      
         </p>
         </div>
         <div class="large-6 columns">
       <p class="text-right" style="padding:15px 0px;">
       
-          <a  href="15285278634325.html" 
-          title="Next Post: 使用MWeb写博客">使用MWeb写博客 &raquo;</a>
+          <a  href="15286454861033.html" 
+          title="Next Post: elixir phoenix 部署与热升级">elixir phoenix 部署与热升级 &raquo;</a>
       
       </p>
         </div>
