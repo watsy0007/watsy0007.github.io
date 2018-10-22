@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[watsy0007]]></title>
-  <link href="http://blog.watsy0007.com/atom.xml" rel="self"/>
-  <link href="http://blog.watsy0007.com/"/>
-  <updated>2018-10-22T23:05:04+08:00</updated>
-  <id>http://blog.watsy0007.com/</id>
+  <link href="http://watsy0007.github.io/atom.xml" rel="self"/>
+  <link href="http://watsy0007.github.io/"/>
+  <updated>2018-10-22T23:11:29+08:00</updated>
+  <id>http://watsy0007.github.io/</id>
   <author>
     <name><![CDATA[]]></name>
     
@@ -14,9 +14,9 @@
   
   <entry>
     <title type="html"><![CDATA[每周分享 第3期]]></title>
-    <link href="http://blog.watsy0007.com/15401834366686.html"/>
+    <link href="http://watsy0007.github.io/15401834366686.html"/>
     <updated>2018-10-22T12:43:56+08:00</updated>
-    <id>http://blog.watsy0007.com/15401834366686.html</id>
+    <id>http://watsy0007.github.io/15401834366686.html</id>
     <content type="html"><![CDATA[
 <h2 id="toc_0">新闻</h2>
 
@@ -55,9 +55,9 @@
   
   <entry>
     <title type="html"><![CDATA[巴西柔术给我带来了什么]]></title>
-    <link href="http://blog.watsy0007.com/15396093375164.html"/>
+    <link href="http://watsy0007.github.io/15396093375164.html"/>
     <updated>2018-10-15T21:15:37+08:00</updated>
-    <id>http://blog.watsy0007.com/15396093375164.html</id>
+    <id>http://watsy0007.github.io/15396093375164.html</id>
     <content type="html"><![CDATA[
 <h2 id="toc_0">学习巴西柔术的初衷</h2>
 
@@ -115,9 +115,9 @@
   
   <entry>
     <title type="html"><![CDATA[每周分享 第2期]]></title>
-    <link href="http://blog.watsy0007.com/15395811349845.html"/>
+    <link href="http://watsy0007.github.io/15395811349845.html"/>
     <updated>2018-10-15T13:25:34+08:00</updated>
-    <id>http://blog.watsy0007.com/15395811349845.html</id>
+    <id>http://watsy0007.github.io/15395811349845.html</id>
     <content type="html"><![CDATA[
 <h2 id="toc_0">新闻</h2>
 
@@ -161,9 +161,9 @@
   
   <entry>
     <title type="html"><![CDATA[每周分享第1期]]></title>
-    <link href="http://blog.watsy0007.com/15389266152691.html"/>
+    <link href="http://watsy0007.github.io/15389266152691.html"/>
     <updated>2018-10-07T23:36:55+08:00</updated>
-    <id>http://blog.watsy0007.com/15389266152691.html</id>
+    <id>http://watsy0007.github.io/15389266152691.html</id>
     <content type="html"><![CDATA[
 <p>和大家自己每周看到的观点, 技术.<br/>
 内容形式后期随时会调整. </p>
@@ -196,9 +196,9 @@
   
   <entry>
     <title type="html"><![CDATA[调试三方websocket服务被墙解决方案]]></title>
-    <link href="http://blog.watsy0007.com/15296457833065.html"/>
+    <link href="http://watsy0007.github.io/15296457833065.html"/>
     <updated>2018-06-22T13:36:23+08:00</updated>
-    <id>http://blog.watsy0007.com/15296457833065.html</id>
+    <id>http://watsy0007.github.io/15296457833065.html</id>
     <content type="html"><![CDATA[
 <p>最近需要调试一些websocket服务, 因为对方服务器在墙外, 开始时候尝试在服务器上写代码, 不过总是没有本地方便, 还是考虑代理转发的方案.</p>
 
@@ -227,9 +227,9 @@
   
   <entry>
     <title type="html"><![CDATA[elixir phoenix 部署与热升级]]></title>
-    <link href="http://blog.watsy0007.com/15286454861033.html"/>
+    <link href="http://watsy0007.github.io/15286454861033.html"/>
     <updated>2018-06-10T23:44:46+08:00</updated>
-    <id>http://blog.watsy0007.com/15286454861033.html</id>
+    <id>http://watsy0007.github.io/15286454861033.html</id>
     <content type="html"><![CDATA[
 <p>主要使用edeliver + distillery</p>
 
@@ -344,9 +344,9 @@ mix edeliver start production # 启动升级环境
   
   <entry>
     <title type="html"><![CDATA[使用MWeb写博客]]></title>
-    <link href="http://blog.watsy0007.com/15285278634325.html"/>
+    <link href="http://watsy0007.github.io/15285278634325.html"/>
     <updated>2018-06-09T15:04:23+08:00</updated>
-    <id>http://blog.watsy0007.com/15285278634325.html</id>
+    <id>http://watsy0007.github.io/15285278634325.html</id>
     <content type="html"><![CDATA[
 <p>真的不折腾了.</p>
 
