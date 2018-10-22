@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
     
-  elixir phoenix 部署与热升级 - watsy0007
+  巴西柔术给我带来了什么 - watsy0007
   
   </title>
   
@@ -98,10 +98,10 @@
       <div class="markdown-body article-wrap">
        <div class="article">
           
-          <h1>elixir phoenix 部署与热升级</h1>
+          <h1>巴西柔术给我带来了什么</h1>
      
         <div class="read-more clearfix">
-          <span class="date">2018/6/10</span>
+          <span class="date">2018/10/22</span>
 
           
            
@@ -116,113 +116,56 @@
       </div><!-- article -->
 
       <div class="article-content">
-      <p>主要使用edeliver + distillery</p>
+      <h2 id="toc_0">学习巴西柔术的初衷</h2>
 
-<p>distillery负责打包<br/>
-edeliver负责部署与热升级</p>
+<p>不想中年油腻, 想拥有更好的身体, 给自己定了一个减肥的目标, 健身房训练太枯燥, 我个人更喜欢精神和肉体结合的挑战, 最初打算继续练习攀岩的, 但是附近的攀岩馆太少, 而且有点远, 在附近武馆可选的竞技选项中最后选择了巴西柔术.</p>
 
-<h2 id="toc_0">服务器配置</h2>
+<h2 id="toc_1">巴西柔术是什么</h2>
 
-<p>预设部署环境为ubuntu</p>
+<p>巴西柔术，即Brazilian jiu-jitsu，简写巴柔或者bjj。始创于巴西的格雷西Gracie家族，又称格雷西柔术。日本有几百种传统柔术，后来被体育化成为柔道，日本人传播去了巴西，然后巴西人将他演变成注重地板技巧的一种新的竞技格斗术.</p>
 
-<pre><code class="language-shell">wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb
-sudo dpkg -i erlang-solutions_1.0_all.deb &amp;&amp; \
-    sudo apt-get update &amp;&amp; \
-    sudo apt-get install esl-erlang elixir -y &amp;&amp; \
-    sudo upgrade -y
-    
-mix local.hex
-</code></pre>
+<p>要说柔术和柔道的区别<br/>
+柔道更多注重摔技, 地面战斗限时30秒<br/>
+柔术更多训练地面缠斗和关节锁技, 地面格斗控制对方不能动才算结束.</p>
 
-<p>ssh config中添加</p>
-
-<pre><code class="language-text">Host phoenix.demo 
-    HostName phoenix.demo
-    User tony
-    IdentityFile ~/.ssh/id_rsa.pub
-</code></pre>
-
-<p>添加服务器配置到服务器</p>
-
-<pre><code class="language-shell">scp ~/phoenix.demo/config/prod.secret.exs phoenix.demo:/home/tony/app_config/prod.secret.exs
-</code></pre>
-
-<h2 id="toc_1">项目配置</h2>
-
-<p>项目根目录mix.exs中 deps方法中添加</p>
-
-<pre><code class="language-elixir">    {:edeliver, &quot;~&gt; 1.4.3&quot;},
-    {:distillery, &quot;~&gt; 1.4&quot;}
-</code></pre>
-
-<p>执行</p>
-
-<pre><code class="language-shell">mix deps.get
-</code></pre>
-
-<h3 id="toc_2">Edeliver &amp; Distillery 配置</h3>
-
-<pre><code class="language-shell">cd ~/phoenix.demo
-mix release.init
-</code></pre>
-
-<p><code>.edeliver/config</code>中添加</p>
-
-<pre><code class="language-text">APP=&quot;myproject&quot;
-
-BUILD_HOST=&quot;phoenix.demo&quot;
-BUILD_USER=&quot;tony&quot;
-BUILD_AT=&quot;/home/tony/app_build&quot;
-
-PRODUCTION_HOSTS=&quot;phoenix.demo&quot; 
-PRODUCTION_USER=&quot;tony&quot; 
-DELIVER_TO=&quot;/home/tony/app_release&quot; 
-
-pre_erlang_get_and_update_deps() {
-  local _prod_secret_path=&quot;/home/tony/app_config/prod.secret.exs&quot;
-  if [ &quot;$TARGET_MIX_ENV&quot; = &quot;prod&quot; ]; then
-    __sync_remote &quot;
-      ln -sfn &#39;$_prod_secret_path&#39; &#39;$BUILD_AT/config/prod.secret.exs&#39;
-    &quot;
-  fi
-}
-</code></pre>
-
-<pre><code class="language-git">git add .
-git commit -m &#39;demo&#39;
-git push
-</code></pre>
-
-<h2 id="toc_3">部署</h2>
-
-<pre><code class="language-shell">mix edeliver build release # 构建
-mix edeliver deploy release to production # 部署到正式环境
-mix edeliver start production # 启动升级环境
-</code></pre>
-
-<h2 id="toc_4">热升级</h2>
-
-<p>任意修改代码后升级mix.exs中的版本号</p>
-
-<pre><code class="language-text">- version: &quot;0.0.1&quot;,
-+ version: &quot;0.0.2&quot;,
-</code></pre>
-
-<p>git</p>
-
-<pre><code class="language-text">git add . &amp;&amp; git commit -m &quot;upgrade&quot; &amp;&amp; git push
-</code></pre>
-
-<p>执行</p>
-
-<pre><code class="language-text">mix edeliver upgrade production
-</code></pre>
-
-<h2 id="toc_5">参考</h2>
+<h2 id="toc_2">巴西柔术给我带来哪些变化</h2>
 
 <ol>
-<li><a href="https://www.digitalocean.com/community/tutorials/how-to-automate-elixir-phoenix-deployment-with-distillery-and-edeliver-on-ubuntu-16-04#step-2-%E2%80%94-installing-elixir-and-phoenix-on-the-production-server">how to automate elixir phoenix deployment with distillery and edeliver on ubuntu 16.04</a></li>
+<li><p><strong>不同阶段和不同对手要用不一样策略</strong></p>
+<blockquote>
+<p>不同体重, 不同水平的人, 对方的优势和自己的优势要在开始前综合考虑. 落实到工作中, 我们的优势, 竞品的优势.我们要时刻关注分析. 做到心中有概念.</p>
+</blockquote></li>
+<li><p><strong>所有的想法如果不能实践只能是屠龙术</strong></p>
+<blockquote>
+<p>看了很多视频, 看的时候感觉每一个动作都很简单, 真上场时候发现全忘了. 工作时候一样, 很多想法想起来自己挺激动的, 但是没有落实的话,只能止于想法, 如何落实?</p>
+</blockquote></li>
+<li><p><strong>不要害怕困难和失败, 要用于尝试</strong></p>
+<blockquote>
+<p>做好心理准备真上场时候, 才发现首先要面对的并不是敌人, 而是要直面自己, 学习的时候所有的动作都是固定的套路, 有对应的克制方案, 实战的时候面临对手时候如何下手都好像不对, 被对手克制以后, 直接陷入了迷茫阶段, 为此花了好几节课, 靠着身体本能进行实战, 慢慢才找到感觉, 哦, 当处于这种状态时候应该这个技巧.</p>
+</blockquote></li>
+<li><p><strong>时机很重要</strong></p>
+<blockquote>
+<p>随着训练, 更痛苦的阶段来了, 实战过程中, 机会稍纵即逝, 现场根本没有对应的应对方案, 被虐完回想时候才发现对手和自己都没有很好的把握时机.</p>
+</blockquote></li>
+<li><p><strong>不要计较一时的成败, 要有长远的规划</strong></p>
+<blockquote>
+<p>刚开始练习时候, 心态很不稳定, 总想着实战时候我要赢, 如何快速克制对手, 防止被对手克制, 现实每次都啪啪打脸, 一直被虐. 有过沮丧时候, 想过是不是要逃避, 后来网上查了一下柔术从入门到升蓝带平均时间是2~3年左右, 我这才哪里和哪里, 眼光放长远一点, 慢慢练习, 失败了总结再来好了.</p>
+</blockquote></li>
+<li><p><strong>成长来源于日常的自律</strong></p>
+<blockquote>
+<p>这条不用展开说了吧? 每次训练都能感觉自己在一点点进步. 每次实战多坚持一会都觉得自己有所提升. </p>
+</blockquote></li>
+<li><p><strong>要学会劳逸结合</strong></p>
+<blockquote>
+<p>虽然只训练了不到4周, 已经见了几位受伤的队友. 意识到身体是自己的, 要学会保护好自己, 不争一时得失, 劳逸结合更好的稳步提升 </p>
+</blockquote></li>
 </ol>
+
+<h2 id="toc_3">以后规划</h2>
+
+<p>回顾这几周的训练, 我原本的计划是减肥, 结果现在体重反而增加了. 还是改成减体脂更合理吧.</p>
+
+<p>把更多的经验应用到工作中.</p>
 
 
     
@@ -233,16 +176,16 @@ mix edeliver start production # 启动升级环境
         <div class="large-6 columns">
         <p class="text-left" style="padding:15px 0px;">
       
-          <a href="15296457833065.html" 
-          title="Previous Post: 调试三方websocket服务被墙解决方案">&laquo; 调试三方websocket服务被墙解决方案</a>
+          <a href="15401834366686.html" 
+          title="Previous Post: 每周分享 第3期">&laquo; 每周分享 第3期</a>
       
         </p>
         </div>
         <div class="large-6 columns">
       <p class="text-right" style="padding:15px 0px;">
       
-          <a  href="15285278634325.html" 
-          title="Next Post: 使用MWeb写博客">使用MWeb写博客 &raquo;</a>
+          <a  href="15395811349845.html" 
+          title="Next Post: 每周分享 第2期">每周分享 第2期 &raquo;</a>
       
       </p>
         </div>

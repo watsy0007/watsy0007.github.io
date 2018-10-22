@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
     
-  elixir phoenix 部署与热升级 - watsy0007
+  每周分享第1期 - watsy0007
   
   </title>
   
@@ -98,10 +98,10 @@
       <div class="markdown-body article-wrap">
        <div class="article">
           
-          <h1>elixir phoenix 部署与热升级</h1>
+          <h1>每周分享第1期</h1>
      
         <div class="read-more clearfix">
-          <span class="date">2018/6/10</span>
+          <span class="date">2018/10/7</span>
 
           
            
@@ -116,113 +116,31 @@
       </div><!-- article -->
 
       <div class="article-content">
-      <p>主要使用edeliver + distillery</p>
+      <p>和大家自己每周看到的观点, 技术.<br/>
+内容形式后期随时会调整. </p>
 
-<p>distillery负责打包<br/>
-edeliver负责部署与热升级</p>
+<h2 id="toc_0">技术</h2>
 
-<h2 id="toc_0">服务器配置</h2>
+<p><a href="https://github.com/zombodb/zombodb">zombodb</a> postgres和elasticsearch搭配使用, 减少不必要的三方语言建索引更新索引等步骤.提高开发效率. <br/>
+<a href="https://github.com/benfred/py-spy/">py-spy</a> python程序分析<br/>
+<a href="https://github.com/cfenollosa/os-tutorial">os-tutorial</a> 从零建立一个操作系统.</p>
 
-<p>预设部署环境为ubuntu</p>
+<h2 id="toc_1">工具</h2>
 
-<pre><code class="language-shell">wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb
-sudo dpkg -i erlang-solutions_1.0_all.deb &amp;&amp; \
-    sudo apt-get update &amp;&amp; \
-    sudo apt-get install esl-erlang elixir -y &amp;&amp; \
-    sudo upgrade -y
-    
-mix local.hex
-</code></pre>
+<p><a href="https://github.com/apifytech/apify-js">apify-js</a> js爬虫框架</p>
 
-<p>ssh config中添加</p>
+<h2 id="toc_2">文章</h2>
 
-<pre><code class="language-text">Host phoenix.demo 
-    HostName phoenix.demo
-    User tony
-    IdentityFile ~/.ssh/id_rsa.pub
-</code></pre>
+<p><a href="https://github.com/you-dont-need/You-Dont-Need-Momentjs">You Dont need moment.js</a> moment.js太大, 如何利用其它模块组合实现moment.js的功能<br/>
+<a href="https://jvns.ca/blog/2018/09/01/learning-skills-you-can-practice/">How to teach yourself hard things</a> 作者分享了自己总结的. 如何自学高深的东西</p>
 
-<p>添加服务器配置到服务器</p>
+<h2 id="toc_3">读书</h2>
 
-<pre><code class="language-shell">scp ~/phoenix.demo/config/prod.secret.exs phoenix.demo:/home/tony/app_config/prod.secret.exs
-</code></pre>
+<p><a href="https://basecamp.com/books/calm">It Doesn&#39;t Have to Be Crazy at Work</a> 上班本不应该那么拼命</p>
 
-<h2 id="toc_1">项目配置</h2>
+<h2 id="toc_4">视频</h2>
 
-<p>项目根目录mix.exs中 deps方法中添加</p>
-
-<pre><code class="language-elixir">    {:edeliver, &quot;~&gt; 1.4.3&quot;},
-    {:distillery, &quot;~&gt; 1.4&quot;}
-</code></pre>
-
-<p>执行</p>
-
-<pre><code class="language-shell">mix deps.get
-</code></pre>
-
-<h3 id="toc_2">Edeliver &amp; Distillery 配置</h3>
-
-<pre><code class="language-shell">cd ~/phoenix.demo
-mix release.init
-</code></pre>
-
-<p><code>.edeliver/config</code>中添加</p>
-
-<pre><code class="language-text">APP=&quot;myproject&quot;
-
-BUILD_HOST=&quot;phoenix.demo&quot;
-BUILD_USER=&quot;tony&quot;
-BUILD_AT=&quot;/home/tony/app_build&quot;
-
-PRODUCTION_HOSTS=&quot;phoenix.demo&quot; 
-PRODUCTION_USER=&quot;tony&quot; 
-DELIVER_TO=&quot;/home/tony/app_release&quot; 
-
-pre_erlang_get_and_update_deps() {
-  local _prod_secret_path=&quot;/home/tony/app_config/prod.secret.exs&quot;
-  if [ &quot;$TARGET_MIX_ENV&quot; = &quot;prod&quot; ]; then
-    __sync_remote &quot;
-      ln -sfn &#39;$_prod_secret_path&#39; &#39;$BUILD_AT/config/prod.secret.exs&#39;
-    &quot;
-  fi
-}
-</code></pre>
-
-<pre><code class="language-git">git add .
-git commit -m &#39;demo&#39;
-git push
-</code></pre>
-
-<h2 id="toc_3">部署</h2>
-
-<pre><code class="language-shell">mix edeliver build release # 构建
-mix edeliver deploy release to production # 部署到正式环境
-mix edeliver start production # 启动升级环境
-</code></pre>
-
-<h2 id="toc_4">热升级</h2>
-
-<p>任意修改代码后升级mix.exs中的版本号</p>
-
-<pre><code class="language-text">- version: &quot;0.0.1&quot;,
-+ version: &quot;0.0.2&quot;,
-</code></pre>
-
-<p>git</p>
-
-<pre><code class="language-text">git add . &amp;&amp; git commit -m &quot;upgrade&quot; &amp;&amp; git push
-</code></pre>
-
-<p>执行</p>
-
-<pre><code class="language-text">mix edeliver upgrade production
-</code></pre>
-
-<h2 id="toc_5">参考</h2>
-
-<ol>
-<li><a href="https://www.digitalocean.com/community/tutorials/how-to-automate-elixir-phoenix-deployment-with-distillery-and-edeliver-on-ubuntu-16-04#step-2-%E2%80%94-installing-elixir-and-phoenix-on-the-production-server">how to automate elixir phoenix deployment with distillery and edeliver on ubuntu 16.04</a></li>
-</ol>
+<p><a href="https://www.bilibili.com/video/av2261575/?p=1">世界上最佳瘦身饮食方法排行-The World&#39;s Best Diet</a> 看名字就知道了.按照寿命和疾病统计对全球城市进行排名. 并分析健康与饮食的关系. 可以看出食物的加工程度和健康呈反比关系, 加工程度越低,越健康. 推荐多吃蔬菜多吃鱼, 中国人少吃精米饭.</p>
 
 
     
@@ -233,16 +151,16 @@ mix edeliver start production # 启动升级环境
         <div class="large-6 columns">
         <p class="text-left" style="padding:15px 0px;">
       
-          <a href="15296457833065.html" 
-          title="Previous Post: 调试三方websocket服务被墙解决方案">&laquo; 调试三方websocket服务被墙解决方案</a>
+          <a href="15395811349845.html" 
+          title="Previous Post: 每周分享 第2期">&laquo; 每周分享 第2期</a>
       
         </p>
         </div>
         <div class="large-6 columns">
       <p class="text-right" style="padding:15px 0px;">
       
-          <a  href="15285278634325.html" 
-          title="Next Post: 使用MWeb写博客">使用MWeb写博客 &raquo;</a>
+          <a  href="15296457833065.html" 
+          title="Next Post: 调试三方websocket服务被墙解决方案">调试三方websocket服务被墙解决方案 &raquo;</a>
       
       </p>
         </div>

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
     
-  elixir phoenix 部署与热升级 - watsy0007
+  每周分享 第3期 - watsy0007
   
   </title>
   
@@ -98,10 +98,10 @@
       <div class="markdown-body article-wrap">
        <div class="article">
           
-          <h1>elixir phoenix 部署与热升级</h1>
+          <h1>每周分享 第3期</h1>
      
         <div class="read-more clearfix">
-          <span class="date">2018/6/10</span>
+          <span class="date">2018/10/22</span>
 
           
            
@@ -116,113 +116,37 @@
       </div><!-- article -->
 
       <div class="article-content">
-      <p>主要使用edeliver + distillery</p>
+      <h2 id="toc_0">新闻</h2>
 
-<p>distillery负责打包<br/>
-edeliver负责部署与热升级</p>
+<p><a href="http://www.dgtle.com/article-25717-1.html">Switch 家庭模式不够用？OJO 投影仪随时随地给你大屏游戏体验丨数字尾巴 </a> 自从有了 Switch 以后, 我一直觉得55寸电视机是最好的选择. 价格朋友玩正好. 对于投影仪玩游戏一直不是很看好, 作为实在没办法的补偿方案.</p>
 
-<h2 id="toc_0">服务器配置</h2>
+<p><a href="https://www.ifanr.com/1115347">「补贴前」 40 万内，没有里程焦虑，车和家首款量产车发布</a> 国内 ppt 造车最晚的参与者, 从能源的角度来看, 最终汽车应该全部电动化, 但是在化石燃料和纯电过渡这个阶段, 增程式其实是挺好的解决方案, 但是从目前的提供的参数和报价上来看, 持保守的态度, 期待真车测评.</p>
 
-<p>预设部署环境为ubuntu</p>
+<p><a href="http://www.dgtle.com/article-25751-1.html">定了！完整版 Photoshop 将于 2019 年登陆 iPad</a> 最近几年Native App 使用的越来越少, 越来越多的日常习惯转移到手机和 iPad 上, 作为生产力工具, PS 登陆 iPad 意味着这个过程的加速. PC 以后会逐渐沦为重型工作站需要的设备. 有些人可能要争辩 PC 端的大型游戏...在我看来 PC 端的游戏应该被专业游戏机所代替. (PS: 配了1台高性能的台式机吃灰很久了, 有小伙伴需要的可以联系我)</p>
 
-<pre><code class="language-shell">wget https://packages.erlang-solutions.com/erlang-solutions_1.0_all.deb
-sudo dpkg -i erlang-solutions_1.0_all.deb &amp;&amp; \
-    sudo apt-get update &amp;&amp; \
-    sudo apt-get install esl-erlang elixir -y &amp;&amp; \
-    sudo upgrade -y
-    
-mix local.hex
-</code></pre>
+<p><a href="https://mp.weixin.qq.com/s/sgtaY8Aj2fFH0J-MaL6RGA">作为普通Ruby开发，我如何从零转型机器学习</a> 标题前半段其实可有可无, 重点是后半段, 讲解了作者如何零基础到入行, 分享的经验也可以用于其他领域的学习, 比如很多人一直想了解的我如何学习 Python, 我如何学习巴西柔术等等.举一反三...跨领域学习思路.</p>
 
-<p>ssh config中添加</p>
+<p><a href="https://www.ifanr.com/1113404">Uber 的秘密武器是一队经济学家</a> 早先体验 Uber 时候就体验过这个功能, 是否同意加价. 当时隐隐觉得这个模型很符合经济学的供求关系决定价格理论. 后来随着国内打车补贴大战的开启, 慢慢忘记了 Uber, 现在对比滴滴和 Uber 模式, 发现滴滴仍在寻找盈利机会, 而 Uber 已经实现盈利. 仔细观察 Uber 亏损的原因, 有一部分是不务正业, 研发自动驾驶...对于用户认可的打车, 基本上属于用户和司机自调节. 而滴滴无论在用户还是在司机端都颇有微词.</p>
 
-<pre><code class="language-text">Host phoenix.demo 
-    HostName phoenix.demo
-    User tony
-    IdentityFile ~/.ssh/id_rsa.pub
-</code></pre>
+<p><a href="https://www.v2ex.com/t/497542">在京东买的 MacBook 经 Apple store 鉴定居然是一台展示机。。。</a> 京东全球购再一次被发现造假.</p>
 
-<p>添加服务器配置到服务器</p>
+<p><a href="https://sspai.com/post/47602">slack使用入门</a> 对国内很多工作都用微信的人来说, slack 非常值得推荐.</p>
 
-<pre><code class="language-shell">scp ~/phoenix.demo/config/prod.secret.exs phoenix.demo:/home/tony/app_config/prod.secret.exs
-</code></pre>
+<p><a href="https://www.cnbeta.com/articles/tech/779509.htm">安永发布2018虚拟币报告：30%虚拟币已经失去全部价值</a> 投资本身就是一件赌博的事情, 九死一生, 虚拟货币把这个专业化的事情放到全社会, 全民赌博, 没有监管导致乱象丛生, 估计90%的项目都将失去全部价值.</p>
 
-<h2 id="toc_1">项目配置</h2>
+<p><a href="https://www.ifanr.com/1116213?utm_source=rss&amp;utm_medium=rss&amp;utm_campaign=">又一航司取消免费飞机餐，坐飞机吃泡面其实没你想象中忧伤</a> 其实这样挺好的, 把不必要的项目全部去掉变成附加项目, 节省成本的同时增加收入, 对于我这种基本不带行李, 上飞机就睡觉的人兼职是福音.</p>
 
-<p>项目根目录mix.exs中 deps方法中添加</p>
+<h2 id="toc_1">技术</h2>
 
-<pre><code class="language-elixir">    {:edeliver, &quot;~&gt; 1.4.3&quot;},
-    {:distillery, &quot;~&gt; 1.4&quot;}
-</code></pre>
+<p><a href="https://github.com/jlaine/aiortc">aiortc</a> WebRTC and ORTC implementation for Python using asyncio</p>
 
-<p>执行</p>
+<p><a href="https://hacks.mozilla.org/2018/10/calls-between-javascript-and-webassembly-are-finally-fast-%F0%9F%8E%89/">Calls between JavaScript and WebAssembly are finally fast</a></p>
 
-<pre><code class="language-shell">mix deps.get
-</code></pre>
+<p><a href="https://www.oreilly.com/ideas/best-design-practices-to-get-the-most-out-of-your-api">Best design practices to get the most out of your API</a></p>
 
-<h3 id="toc_2">Edeliver &amp; Distillery 配置</h3>
+<h2 id="toc_2">小说</h2>
 
-<pre><code class="language-shell">cd ~/phoenix.demo
-mix release.init
-</code></pre>
-
-<p><code>.edeliver/config</code>中添加</p>
-
-<pre><code class="language-text">APP=&quot;myproject&quot;
-
-BUILD_HOST=&quot;phoenix.demo&quot;
-BUILD_USER=&quot;tony&quot;
-BUILD_AT=&quot;/home/tony/app_build&quot;
-
-PRODUCTION_HOSTS=&quot;phoenix.demo&quot; 
-PRODUCTION_USER=&quot;tony&quot; 
-DELIVER_TO=&quot;/home/tony/app_release&quot; 
-
-pre_erlang_get_and_update_deps() {
-  local _prod_secret_path=&quot;/home/tony/app_config/prod.secret.exs&quot;
-  if [ &quot;$TARGET_MIX_ENV&quot; = &quot;prod&quot; ]; then
-    __sync_remote &quot;
-      ln -sfn &#39;$_prod_secret_path&#39; &#39;$BUILD_AT/config/prod.secret.exs&#39;
-    &quot;
-  fi
-}
-</code></pre>
-
-<pre><code class="language-git">git add .
-git commit -m &#39;demo&#39;
-git push
-</code></pre>
-
-<h2 id="toc_3">部署</h2>
-
-<pre><code class="language-shell">mix edeliver build release # 构建
-mix edeliver deploy release to production # 部署到正式环境
-mix edeliver start production # 启动升级环境
-</code></pre>
-
-<h2 id="toc_4">热升级</h2>
-
-<p>任意修改代码后升级mix.exs中的版本号</p>
-
-<pre><code class="language-text">- version: &quot;0.0.1&quot;,
-+ version: &quot;0.0.2&quot;,
-</code></pre>
-
-<p>git</p>
-
-<pre><code class="language-text">git add . &amp;&amp; git commit -m &quot;upgrade&quot; &amp;&amp; git push
-</code></pre>
-
-<p>执行</p>
-
-<pre><code class="language-text">mix edeliver upgrade production
-</code></pre>
-
-<h2 id="toc_5">参考</h2>
-
-<ol>
-<li><a href="https://www.digitalocean.com/community/tutorials/how-to-automate-elixir-phoenix-deployment-with-distillery-and-edeliver-on-ubuntu-16-04#step-2-%E2%80%94-installing-elixir-and-phoenix-on-the-production-server">how to automate elixir phoenix deployment with distillery and edeliver on ubuntu 16.04</a></li>
-</ol>
+<p><a href="https://book.qidian.com/info/1011337604">谋断九州</a> 网络小说通常有2大毛病, 1是只有主角智商在线(甚至主角也不在线), 还有就是一直让读者站在上帝视角, 导致看小说时候全程不用动脑, 打发时间. 这本小说所有配角智商完全在线, 阅读时候有一种第三人称视觉玩游戏的感觉, 只知道当下发生的事情, 事情发生时候才知道发生了什么. 跟随着主角一起历险.</p>
 
 
     
@@ -233,16 +157,13 @@ mix edeliver start production # 启动升级环境
         <div class="large-6 columns">
         <p class="text-left" style="padding:15px 0px;">
       
-          <a href="15296457833065.html" 
-          title="Previous Post: 调试三方websocket服务被墙解决方案">&laquo; 调试三方websocket服务被墙解决方案</a>
-      
         </p>
         </div>
         <div class="large-6 columns">
       <p class="text-right" style="padding:15px 0px;">
       
-          <a  href="15285278634325.html" 
-          title="Next Post: 使用MWeb写博客">使用MWeb写博客 &raquo;</a>
+          <a  href="15396093375164.html" 
+          title="Next Post: 巴西柔术给我带来了什么">巴西柔术给我带来了什么 &raquo;</a>
       
       </p>
         </div>
