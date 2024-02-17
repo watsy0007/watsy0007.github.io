@@ -1,0 +1,17 @@
+---
+title: "About"
+about:
+  id: hero-heading
+  template: solana
+  links:
+    - icon: github
+      text: Github
+      href: https://github.com/watsy0007
+
+---
+
+## Experience
+
+Elven | Head Data Scientist | June 2018 - present
+
+
