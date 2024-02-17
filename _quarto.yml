@@ -1,10 +1,13 @@
 project:
   type: website
   output-dir: docs
+  preview:
+    port: 4234
 
 website:
   title: "watsy0007"
   site-url: https://watsy0007.com
+  repo-url: https://github.com/watsy0007/watsy0007.github.io
   navbar:
     right:
       - about.qmd
