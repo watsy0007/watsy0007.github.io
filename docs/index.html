@@ -78,9 +78,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-image','listing-date','listing-title','listing-description','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
+      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description","listing-categories"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -186,40 +186,30 @@ window.Quarto = {
 
 
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="code" data-listing-date-sort="1708099200000" data-listing-file-modified-sort="1708186094864" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="56">
-<div class="thumbnail">
-<p><a href="./posts/duckdb-example/index.html" class="no-external"></a></p><a href="./posts/duckdb-example/index.html" class="no-external">
-<p><img src="./posts/duckdb-example/duckdb-sql-analysis.jpg" class="thumbnail-image"></p>
-</a><p><a href="./posts/duckdb-example/index.html" class="no-external"></a></p>
+<div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
+<div class="list grid quarto-listing-cols-3">
+<div class="g-col-1" data-index="0" data-categories="code" data-listing-date-sort="1708099200000" data-listing-file-modified-sort="1708186940823" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="55">
+<a href="./posts/duckdb-example/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top"><img src="posts/duckdb-example/duckdb-sql-analysis.jpg" style="height: 150px;"  class="thumbnail-image card-img"/></p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+DuckDB Example
+</h5>
+<div class="listing-reading-time card-text text-muted">
+1 min
 </div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./posts/duckdb-example/index.html" class="no-external">DuckDB Example</a>
-</h3>
-<div class="listing-subtitle">
-<a href="./posts/duckdb-example/index.html" class="no-external"></a>
+<div class="card-text listing-description">
+基于 <code>quarto</code> 测试 <code>DuckDB</code> 功能。
 </div>
-<div class="listing-categories">
-<div class="listing-category" onclick="window.quartoListingCategory('code'); return false;">
-code
-</div>
-</div>
-<div class="listing-description">
-<a href="./posts/duckdb-example/index.html" class="no-external">基于 <code>quarto</code> 测试 <code>DuckDB</code> 功能, 以下所有代码可以复制到 jupyter notebook 中执行。</a>
-</div>
-</div>
-<div class="metadata">
-<a href="./posts/duckdb-example/index.html" class="no-external">
+<div class="card-attribution card-text-small end">
 <div class="listing-date">
 Feb 17, 2024
 </div>
-<div class="listing-author">
-watsy0007
+</div>
+</div>
 </div>
 </a>
-</div>
 </div>
 </div>
 <div class="listing-no-matching d-none">

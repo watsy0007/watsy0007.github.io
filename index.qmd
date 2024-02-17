@@ -3,7 +3,8 @@ title: ""
 listing:
   contents: posts
   sort: "date desc"
-  type: default
+  type: grid
+  fields: [image, date, title, description, reading-time]
   categories: cloud
   sort-ui: false
   filter-ui: false

@@ -1,7 +1,5 @@
 ---
 title: "DuckDB Example"
-author: "watsy0007"
-image: duckdb-sql-analysis.jpg
 date: "2024-02-17"
 categories: [code]
 toc: true
@@ -11,7 +9,11 @@ format:
 jupyter: python3
 ---
 
-基于 `quarto` 测试 `DuckDB` 功能, 以下所有代码可以复制到 jupyter notebook 中执行。
+基于 `quarto` 测试 `DuckDB` 功能。
+
+![](duckdb-sql-analysis.jpg)
+
+以下所有代码可以复制到 jupyter notebook 中执行。
 
 # 安装依赖
 

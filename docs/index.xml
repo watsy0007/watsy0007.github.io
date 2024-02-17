@@ -13,7 +13,6 @@
 <lastBuildDate>Fri, 16 Feb 2024 16:00:00 GMT</lastBuildDate>
 <item>
   <title>DuckDB Example</title>
-  <dc:creator>watsy0007 </dc:creator>
   <link>https://watsy0007.com/posts/duckdb-example/</link>
   <description><![CDATA[ 
 
@@ -21,10 +20,12 @@
 
 
 
-<p>基于 <code>quarto</code> 测试 <code>DuckDB</code> 功能, 以下所有代码可以复制到 jupyter notebook 中执行。</p>
+<p>基于 <code>quarto</code> 测试 <code>DuckDB</code> 功能。</p>
+<p><img src="https://watsy0007.com/posts/duckdb-example/duckdb-sql-analysis.jpg" class="img-fluid"></p>
+<p>以下所有代码可以复制到 jupyter notebook 中执行。</p>
 <section id="安装依赖" class="level1">
 <h1>安装依赖</h1>
-<div id="45a07702" class="cell" data-execution_count="1">
+<div id="9869b8d2" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">!</span>pip install duckdb<span class="op" style="color: #5E5E5E;
@@ -43,7 +44,7 @@ font-style: inherit;">--</span>quiet</span></code></pre></div>
 </section>
 <section id="基础配置" class="level1">
 <h1>基础配置</h1>
-<div id="6178a2ba" class="cell" data-execution_count="2">
+<div id="8b855980" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> duckdb</span>
@@ -55,7 +56,7 @@ background-color: null;
 font-style: inherit;">connect</span>()</span></code></pre></div>
 </div>
 <p>jupysql 配置</p>
-<div id="95e9f283" class="cell" data-execution_count="3">
+<div id="e56cbab6" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">%</span>load_ext sql</span>
@@ -101,7 +102,7 @@ font-style: inherit;">-</span>native</span></code></pre></div>
 <section id="演示数据" class="level1">
 <h1>演示数据</h1>
 <p>参考 <a href="https://duckdb.org/docs/guides/python/jupyter">Jupyter Notebooks</a></p>
-<div id="0049192c" class="cell" data-execution_count="4">
+<div id="cc60b50f" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">%%</span>sql <span class="op" style="color: #5E5E5E;
@@ -126,7 +127,7 @@ font-style: inherit;">6.3</span></span></code></pre></div>
 <span style="None">Skipping execution...</span>
 </div>
 </div>
-<div id="564d7795" class="cell" data-execution_count="5">
+<div id="39bcbdad" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">%</span>sqlplot histogram <span class="op" style="color: #5E5E5E;
@@ -158,7 +159,6 @@ font-style: inherit;">with</span> short_trips</span></code></pre></div>
   <category>code</category>
   <guid>https://watsy0007.com/posts/duckdb-example/</guid>
   <pubDate>Fri, 16 Feb 2024 16:00:00 GMT</pubDate>
-  <media:content url="https://watsy0007.com/posts/duckdb-example/duckdb-sql-analysis.jpg" medium="image" type="image/jpeg"/>
 </item>
 </channel>
 </rss>
