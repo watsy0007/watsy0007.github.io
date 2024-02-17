@@ -10,7 +10,7 @@ format:
 jupyter: python3
 ---
 
-基于 `quarto` 测试 `DuckDB` 功能
+基于 `quarto` 测试 `DuckDB` 功能, 以下所有代码可以复制到 jupyter notebook 中执行。
 
 # 安装依赖
 
