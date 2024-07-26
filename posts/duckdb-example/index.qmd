@@ -18,7 +18,7 @@ jupyter: python3
 # 安装依赖
 
 ```{python}
-!pip install duckdb==0.10.0 jupysql --quiet
+!pip install duckdb jupysql --quiet
 ```
 
 # 基础配置
