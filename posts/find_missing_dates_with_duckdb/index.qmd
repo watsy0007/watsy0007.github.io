@@ -28,7 +28,7 @@ jupyter: python3
 
 ```{python}
 #| echo: false
-!pip install duckdb==1.0.0 plotly --quiet
+!pip install duckdb plotly --quiet
 ```
 
 ## 1. 获取数据
@@ -91,7 +91,7 @@ grouped_date_df = conn.execute(group_date_sql).df()
 grouped_date_df
 ```
 
-## 3. 根据 source_id 和 分组时间进行分组
+## 3. 根据 source_id 和分组时间分组
 
 ```{python}
 #| code-fold: false
@@ -117,7 +117,7 @@ fig.update_yaxes(autorange="reversed")
 fig.show()
 ```
 
-## 5. 完整代码如下
+## 5. 完整代码
 
 ```{python}
 #| echo: true
@@ -166,7 +166,6 @@ with raw_data as (
   GROUP BY source_id, group_date
   ORDER BY source_id, group_date
 )
-
 from final
 """
 date_df = conn.execute(sql).df()
