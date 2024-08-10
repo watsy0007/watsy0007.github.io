@@ -200,19 +200,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>以下所有代码可以复制到 jupyter notebook 中执行。</p>
 <section id="安装依赖" class="level1">
 <h1>安装依赖</h1>
-<div id="2bc5daee" class="cell" data-execution_count="1">
+<div id="1145a941" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install duckdb jupysql <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="基础配置" class="level1">
 <h1>基础配置</h1>
-<div id="dcd2a336" class="cell" data-execution_count="2">
+<div id="fa22a87d" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> duckdb</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>conn <span class="op">=</span> duckdb.<span class="ex">connect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>jupysql 配置</p>
-<div id="c03f9426" class="cell" data-execution_count="3">
+<div id="75260536" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>load_ext sql</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config SqlMagic.autopandas <span class="op">=</span> <span class="va">True</span></span>
@@ -226,7 +226,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="演示数据" class="level1">
 <h1>演示数据</h1>
 <p>参考 <a href="https://duckdb.org/docs/guides/python/jupyter">Jupyter Notebooks</a></p>
-<div id="bdaedea3" class="cell" data-execution_count="4">
+<div id="646e5980" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>sql <span class="op">--</span>save short_trips <span class="op">--</span>no<span class="op">-</span>execute</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>SELECT <span class="op">*</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>FROM <span class="st">'https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2021-01.parquet'</span></span>
@@ -235,7 +235,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span style="None">Skipping execution...</span>
 </div>
 </div>
-<div id="53500928" class="cell" data-execution_count="5">
+<div id="fb5fda54" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>sqlplot histogram <span class="op">--</span>table short_trips <span class="op">--</span>column trip_distance <span class="op">--</span>bins <span class="dv">10</span> <span class="op">--</span><span class="cf">with</span> short_trips</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
