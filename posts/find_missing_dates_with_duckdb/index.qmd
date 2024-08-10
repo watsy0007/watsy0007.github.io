@@ -3,7 +3,6 @@ title: "使用 DuckDB 查找空缺的日期"
 date: "2024-07-26"
 categories: [code, duckdb]
 image: "missing-dates.jpeg"
-toc: true
 format:
   html:
     code-fold: true

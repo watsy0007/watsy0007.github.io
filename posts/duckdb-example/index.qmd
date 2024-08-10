@@ -3,7 +3,6 @@ title: "DuckDB Example"
 date: "2024-02-17"
 categories: [code, duckdb]
 image: "duckdb-sql-analysis.jpg"
-toc: true
 format:
   html:
     code-fold: false
