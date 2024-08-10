@@ -123,8 +123,9 @@ from decode_transactions
 
 ## 方案2
 
-实际使用时候, 三方 API 字段可能会调整, 返回的数据会存在空值情况, 因此必须要做严格的字段约束, 这里也演示下.
+实际使用时候, 三方 API 字段可能会调整, 返回的数据会存在空值情况, 因此必须要**严格字段约束**, 这里也演示下.
 
+申明需要的字段与类型
 ```{python}
 fields = {
     'blockHash': str,
@@ -143,7 +144,12 @@ fields = {
     'txreceipt_status': int,
     'input': str,
 }
+```
 
+请求 `blockscout` API[^3] 并提取有效字段
+
+```{python}
+#| output: false
 field_keys = fields.keys()
 
 def blockscout_api_with_fields(module: str, action: str, address: str, start_block: int, end_block: int, page: int, offset: int):
