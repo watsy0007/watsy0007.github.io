@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/analyse_blockchain_data_with_duckdb_prepare/index.html",
       "/posts/find_missing_dates_with_duckdb/index.html",
       "/posts/duckdb-example/index.html"
     ]
