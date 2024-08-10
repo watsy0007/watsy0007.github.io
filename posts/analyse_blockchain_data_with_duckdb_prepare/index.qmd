@@ -2,14 +2,13 @@
 title: "使用 DuckDB 分析区块链数据 - 数据准备"
 date: "2024-08-10"
 categories: [duckdb, blockchain, analysis]
+image: "analyse-blockchain-data.jpeg"
 toc: true
 format:
   html:
     code-fold: false
 jupyter: python3
 ---
-
-![analyse blockchain data](analyse-blockchain-data.jpeg)
 
 最近使用 `DuckDB` 替换 `pandas` + `python` 做数据处理的部分越来越多, 用起来非常顺手. 
 

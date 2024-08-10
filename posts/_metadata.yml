@@ -4,5 +4,17 @@
 # (see https://quarto.org/docs/projects/code-execution.html#freeze)
 freeze: true
 
+# Enable CC licence appendix
+license: "CC BY-SA"
+
+# Default for table of contents
+toc: true
+toc-title: Table of contents
+toc-location: right
+
 # Enable banner style title blocks
 title-block-banner: true
+
+comments:
+  giscus:
+    repo: watsy0007/watsy0007.github.io

@@ -2,6 +2,7 @@
 title: "DuckDB Example"
 date: "2024-02-17"
 categories: [code, duckdb]
+image: "duckdb-sql-analysis.jpg"
 toc: true
 format:
   html:
@@ -10,8 +11,6 @@ jupyter: python3
 ---
 
 基于 `quarto` 测试 `DuckDB` 功能。
-
-![](duckdb-sql-analysis.jpg)
 
 以下所有代码可以复制到 jupyter notebook 中执行。
 
