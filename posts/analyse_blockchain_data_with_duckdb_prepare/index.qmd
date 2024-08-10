@@ -46,6 +46,7 @@ import json
 通过 `blockscout` API[^3] 获取 `ETH` 地址的交易信息, 代码如下:
 
 ```{python}
+#| code-fold: true
 def blockscout_api(module: str, action: str, address: str, start_block: int, end_block: int, page: int, offset: int) -> list[str]:
     url_prefix = f'https://eth.blockscout.com/api?module={module}&action={action}'
     
@@ -166,6 +167,7 @@ def blockscout_api_with_fields(module: str, action: str, address: str, start_blo
 注册 `DuckDB` 的自定义函数, 注意 `page` 和 `offset` 调整, 只获取 1 页面数据, 不做翻页演示.
 
 ```{python}
+#| code-fold: true
 #| output: false
 conn = duckdb.connect()
 conn = conn.create_function(blockscout_api_with_fields.__name__, blockscout_api_with_fields, [VARCHAR, VARCHAR, VARCHAR, INTEGER, INTEGER, INTEGER, INTEGER], DuckDBPyType(list[fields]))
