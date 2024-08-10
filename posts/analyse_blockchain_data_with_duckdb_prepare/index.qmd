@@ -80,8 +80,8 @@ conn = conn.create_function('blockscout_api', blockscout_api)
 ```{python}
 #| output: false
 conn.execute("""
-CREATE OR REPLACE MACRO blockscout_trxs(address, startblock, endblock) as table 
-    select blockscout_api('account', 'txlist',address,  startblock, endblock, 1, 2) as data
+CREATE OR REPLACE MACRO blockscout_trxs(address, start_block, end_block) as table 
+    select blockscout_api('account', 'txlist', address, start_block, end_block, 1, 2) as data
 """)
 ```
 
