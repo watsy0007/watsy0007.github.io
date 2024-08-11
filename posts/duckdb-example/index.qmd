@@ -2,7 +2,7 @@
 title: "DuckDB Example"
 date: "2024-02-17"
 categories: [code, duckdb]
-image: "duckdb-sql-analysis.webp"
+image: "duckdb-sql-analysis-thumbnail.webp"
 format:
   html:
     code-fold: false
