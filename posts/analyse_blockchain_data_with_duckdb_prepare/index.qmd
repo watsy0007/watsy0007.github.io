@@ -2,7 +2,7 @@
 title: "使用 DuckDB 分析区块链数据 - 数据准备"
 date: "2024-08-10"
 categories: [duckdb, blockchain, analysis]
-image: "analyse-blockchain-data.jpeg"
+image: "analyse-blockchain-data.webp"
 format:
   html:
     code-fold: false
