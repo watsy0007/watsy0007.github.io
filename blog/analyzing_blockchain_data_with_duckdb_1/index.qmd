@@ -1,5 +1,5 @@
 ---
-title: "使用 DuckDB 分析区块链数据 - 数据准备"
+title: "Analyzing Blockchain Data with DuckDB: Data Preparation"
 date: "2024-08-10"
 categories: [duckdb, blockchain, analysis]
 image: "analyse-blockchain-data-thumbnail.webp"
@@ -8,6 +8,8 @@ format:
     code-fold: false
 jupyter: python3
 ---
+
+::: {.content-visible when-profile="zh"}
 
 最近使用 `DuckDB` 替换 `pandas` + `python` 做数据处理的部分越来越多, 用起来非常顺手. 
 
@@ -31,6 +33,38 @@ jupyter: python3
 下面展示使用 `blockscout` API[^3], 通过 `DuckDB UDF`[^1] 和 `DuckDB Macro`[^2] 简化这个过程.
 
 导入相关依赖
+:::
+
+::: {.content-visible when-profile="en"}
+
+I've been using `DuckDB` as a replacement for `pandas` and `Python` for data processing tasks. It's proven to be incredibly convenient.
+
+A friend recently asked about my use of `DuckDB` in daily work, which inspired me to write a series of articles. This is the first in that series, focusing on how to use `DuckDB` for intial data processing.
+
+# Use Case: Analyzing ETH Address Transactions
+
+Let's consider a common scenario: analyzing the transaction information of a specific Ethereum (`ETH`) address.
+
+# The Traditional Process vs DuckDB
+
+Previously, this process involved several steps:
+
+1. Fetching data using `requests`
+2. Using `pandas` to preview and clean the data
+3. Finally, analyzing the data using `DuckDB`
+
+The data preparation stage typically involves three essential steps:
+
+1. Handing pagination for third-party APIs
+2. Extracting valid fields from the returned data
+3. Cleaning the data, including null values and ata types
+
+In this article, we'll demonstrate how to streamline this process using the `blockscout` API[^3], `DuckDB UDF`[^1], and `DuckDB Macro`[^2].
+
+# Demonstration
+
+We'll explore two solutions for processing data using `DuckDB`, First let's import related dependencies
+:::
 ```{python}
 #| code-fold: true
 import duckdb
@@ -38,11 +72,19 @@ import requests
 from duckdb.typing import VARCHAR, INTEGER, DuckDBPyType
 import json
 ```
-
+::: {.content-visible when-profile="zh"}
 ## 方案1
 
 通过 `blockscout` API[^3] 获取 `ETH` 地址的交易信息, 代码如下:
+:::
 
+::: {.content-visible when-profile="en"}
+## Solution 1: Explorer Implementation
+
+This approach focuses on quickly retrieving and processing transaction data. It's ideal for rapid analysis and verification during the development stage.
+
+Get the transaction information of the `ETH` address through the `blockscout` API[^3], the code is as follows:
+:::
 ```{python}
 #| code-fold: true
 def blockscout_api(module: str, action: str, address: str, start_block: int, end_block: int, page: int, offset: int) -> list[str]:
@@ -63,18 +105,28 @@ def blockscout_api(module: str, action: str, address: str, start_block: int, end
         page += 1
     return result
 ```
-
+::: {.content-visible when-profile="zh"}
 注册 `DuckDB` 的自定义函数
+:::
+
+::: {.content-visible when-profile="en"}
+Register the custom function of `DuckDB`
+:::
 
 ```{python}
 #| output: false
 conn = duckdb.connect()
 conn = conn.create_function('blockscout_api', blockscout_api)
 ```
-
+::: {.content-visible when-profile="zh"}
 定义 `DuckDB` 的宏, 这里为了演示, 限制 page 和 offset, 实际使用时会根据实际情况调整. 
 注意下面的输出 `query page 1` 和 `query page 2`
+:::
 
+::: {.content-visible when-profile="en"}
+Define the macro of `DuckDB`, here for demonstration, limit the page and offset, and adjust according to the actual situation when actually using.
+Note the output `query page 1` and `query page 2` below
+:::
 ```{python}
 #| output: false
 conn.execute("""
@@ -82,8 +134,13 @@ CREATE OR REPLACE MACRO blockscout_trxs(address, start_block, end_block) as tabl
     select blockscout_api('account', 'txlist', address, start_block, end_block, 1, 2) as data
 """)
 ```
-
+::: {.content-visible when-profile="zh"}
 查询 `ETH` 地址的交易信息
+:::
+
+::: {.content-visible when-profile="en"}
+Query the transaction information of the `ETH` address
+:::
 ```{python}
 conn.execute("""
 with raw_transactions as (
@@ -119,11 +176,21 @@ from decode_transactions
 """).df()
 ```
 
+::: {.content-visible when-profile="zh"}
 ## 方案2
 
 实际使用时候, 三方 API 字段可能会调整, 返回的数据会存在空值情况, 因此必须要**严格字段约束**, 这里也演示下.
 
 申明需要的字段与类型
+:::
+
+::: {.content-visible when-profile="en"}
+## Solution 2: Advanced Implementation with Field constraints
+
+This solution is more robust, suitable for production environments. It addresses potential issues like API field changes and null values in the returned data.
+
+Declare the required fields and types
+:::
 ```{python}
 fields = {
     'blockHash': str,
@@ -143,8 +210,13 @@ fields = {
     'input': str,
 }
 ```
-
+::: {.content-visible when-profile="zh"}
 请求 `blockscout` API[^3] 并提取有效字段
+:::
+
+::: {.content-visible when-profile="en"}
+Request the `blockscout` API[^3] and extract valid fields
+:::
 
 ```{python}
 #| output: false
@@ -168,9 +240,13 @@ def blockscout_api_with_fields(module: str, action: str, address: str, start_blo
         page += 1
     return result
 ```
-
+::: {.content-visible when-profile="zh"}
 注册 `DuckDB` 的自定义函数, 注意 `page` 和 `offset` 调整, 只获取 1 页面数据, 不做翻页演示.
+:::
 
+::: {.content-visible when-profile="en"}
+Register the custom function of `DuckDB`, note the adjustment of `page` and `offset`, only get 1 page of data, no pagination demonstration.
+:::
 ```{python}
 #| output: false
 #| code-fold: true
@@ -181,8 +257,13 @@ CREATE OR REPLACE MACRO blockscout_trxs_with_fields(address, start_block, end_bl
     select blockscout_api_with_fields('account', 'txlist', address, start_block, end_block, 1, 5) as data
 """)
 ```
-
+::: {.content-visible when-profile="zh"}
 查询 `ETH` 地址的交易信息
+:::
+
+::: {.content-visible when-profile="en"}
+Query the transaction information of the `ETH` address
+:::
 
 ```{python}
 conn.execute("""
@@ -202,12 +283,24 @@ from flatten_transactions
 """).df()
 ```
 
+::: {.content-visible when-profile="zh"}
 # 总结
 
 通过 `DuckDB` 的 `UDF`[^1] 和 `Macro`[^2] 可以简化数据处理的过程, 使得数据处理更加高效, 代码更加简洁.
 日常使用, 分析阶段推荐大家使用方案 1 快速验证, 发布生产环境推荐大家使用方案2, 严格字段约束, 避免数据处理过程中出现问题.
 
 另外, 也可以通过 `with recursive`[^4] 实现翻页查询, 但是这个过程比较复杂, `SQL` 写的更多, 不推荐使用, 如果大家感兴趣后续有时间会写篇文章分享.
+:::
+
+::: {.content-visible when-profile="en"}
+# Summary
+
+By leveraging `UDF`[^1] and `Macro`[^2] of `DuckDB`, we can significantly simplify the data processing workflow. This approach makes data analysis more efficient and results in cleaner, more maintainable code.
+
+For day-to-day use, Solution 1 is recommended for quick analysis and verification. However, for production environments, Solution 2 is preferred due to its stricter field constraints, which help prevent issues during data processing.
+
+In addition, you can also use `with recursive`[^4] to achieve pagination query, but this process is more complicated, more `SQL` writing, not recommended for use. If you are interested, I will write an article to share it later.
+:::
 
 # references
 

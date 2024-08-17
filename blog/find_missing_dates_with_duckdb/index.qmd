@@ -1,5 +1,5 @@
 ---
-title: "使用 DuckDB 查找空缺的日期"
+title: "find missing dates with DuckDB"
 date: "2024-07-26"
 categories: [code, duckdb]
 image: "missing-dates-thumbnail.webp"
@@ -9,6 +9,7 @@ format:
 jupyter: python3
 ---
 
+::: {.content-visible when-profile="zh"}
 # 需求背景
 
 近期业务反馈存在数据缺失的情况, 需要定位出缺失的日期, 以便补充历史数据. 
@@ -26,14 +27,44 @@ jupyter: python3
 
 省去掉不想关的代码, 代码逻辑分成几个步骤
 
+:::
+
+::: {.content-visible when-profile="en"}
+# Background
+
+Recently, the business feedback that there is data missing, and it is necessary to locate the missing dates in order to supplement historical data.
+
+After research, it was decided to use the Gantt chart to display the daily execution of all tasks.
+
+# DuckDB
+
+Considering that the task data already exists in `Postgres`, and visualization is needed, `DuckDB` has a `Postgres` plugin that can directly obtain data
+Therefore, choose to use `DuckDB` with `Jupyter Notebook` to quickly verify the logic.
+
+# Actual operation
+
+The part of `DuckDB` operating `Postgres` can refer to [PostgreSQL Extension](https://duckdb.org/docs/extensions/postgres)
+
+Omit the irrelevant code, the code logic is divided into several steps
+:::
+
 ```{python}
 #| echo: false
+#| output: false
 !pip install duckdb plotly --quiet
 ```
 
+::: {.content-visible when-profile="zh"}
 ## 1. 获取数据
 
 这里使用 mock 数据
+:::
+
+::: {.content-visible when-profile="en"}
+## 1. Get data
+
+Here use mock data
+:::
 
 ```{python}
 import duckdb
@@ -70,13 +101,21 @@ SELECT * FROM (
 df = conn.execute(mock_data_sql).df()
 df
 ```
-
+::: {.content-visible when-profile="zh"}
 ## 2. 对时间进行分组
 
 寻找缺失的日期, 主要难点在于按照时间连续性进行分组, 连续的时间放在同一个分组中, 这样如果一个 `source_id` 有多个时间段, 那么表示存在时间空缺.
 
 使用窗口函数, 对当前行的时间进行处理, 根据时间差, 获得当前行的分组时间. 代码如下:
+:::
 
+::: {.content-visible when-profile="en"}
+## 2. Group by date
+
+The main difficulty in finding missing dates is to group by time continuity, continuous time is placed in the same group, so if a `source_id` has multiple time periods, it means that there is a time gap.
+
+Use window functions to process the time of the current row, and get the grouping time of the current row based on the time difference. The code is as follows:
+:::
 ```{python}
 #| code-fold: false
 group_date_sql = """
@@ -91,8 +130,12 @@ grouped_date_df = conn.execute(group_date_sql).df()
 grouped_date_df
 ```
 
+::: {.content-visible when-profile="zh"}
 ## 3. 根据 source_id 和分组时间分组
-
+:::
+::: {.content-visible when-profile="en"}
+## 3. Group by source_id and group date
+:::
 ```{python}
 #| code-fold: false
 group_sql = """
@@ -108,7 +151,12 @@ grouped_df = conn.execute(group_sql).df()
 grouped_df
 ```
 
+::: {.content-visible when-profile="zh"}
 ## 4. 可视化
+:::
+::: {.content-visible when-profile="en"}
+## 4. Visualization
+:::
 
 ```{python}
 import plotly.express as px
@@ -117,7 +165,13 @@ fig.update_yaxes(autorange="reversed")
 fig.show()
 ```
 
+::: {.content-visible when-profile="zh"}
 ## 5. 完整代码
+:::
+
+::: {.content-visible when-profile="en"}
+## 5. Full code
+:::
 
 ```{python}
 #| echo: true
@@ -174,8 +228,18 @@ gap_fig.update_yaxes(autorange="reversed")
 gap_fig.show()
 ```
 
+::: {.content-visible when-profile="zh"}
 # 总结
 
 本文主要介绍如何使用 DuckDB 查找缺失的日期, 通过窗口函数和分组函数, 可以快速定位出缺失的日期.
 
 PS: 最近工作中使用 DuckDB 的频率越来越高, 究其原因是 DuckDB 轻量, 速度快, 配合 Jupyter Notebook 效率出奇的高.
+:::
+
+::: {.content-visible when-profile="en"}
+# Summary
+
+This article mainly introduces how to use DuckDB to find missing dates. Through window functions and grouping functions, missing dates can be quickly located.
+
+PS: Recently, the frequency of using DuckDB in work is getting higher and higher. The reason is that DuckDB is lightweight, fast, and the efficiency is surprisingly high when combined with Jupyter Notebook.
+:::

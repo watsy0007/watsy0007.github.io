@@ -1,21 +1,12 @@
 project:
   type: website
-  output-dir: docs
   preview:
     port: 4234
 
-website:
-  title: "watsy0007"
-  site-url: https://watsy0007.com
-  repo-url: https://github.com/watsy0007/watsy0007.github.io
-  navbar:
-    right:
-      - about.qmd
-      - icon: github
-        href: https://github.com/watsy0007
-      - icon: rss
-        href: index.xml
-format:
-  html:
-    theme: simplex
-    css: styles.css
+profile:
+  default: en
+  group:
+    - [en, zh]
+
+execute: 
+  freeze: auto
