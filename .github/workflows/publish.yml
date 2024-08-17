@@ -6,7 +6,7 @@ on:
 name: Quarto Publish
 
 jobs:
-  build-deploy:
+  build:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -25,9 +25,46 @@ jobs:
       - run: pip install jupyter
       - run: pip install -r requirements.txt
 
-      - name: Render and Publish
-        uses: quarto-dev/quarto-actions/publish@v2
-        with:
-          target: gh-pages
+      - name: Render CN
+        uses: quarto-dev/quarto-actions/render@v2
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAGE_TOKEN }}
+          QUARTO_PROFILE: zh
+        with:
+          to: html
+      - name: Render EN
+        uses: quarto-dev/quarto-actions/render@v2
+        env:
+          QUARTO_PROFILE: en
+        with:
+          to: html
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: site-content
+          path: _site/
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout gh-pages branch
+        uses: actions/checkout@v4
+        with:
+          ref: 'gh-pages'
+
+      - name: Download Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: site-content
+          path: _site
+      - name: deploy gh-pages
+        run: |
+          cp -r _site/en/* .
+          cp -r _site/zh .
+          rm -rf _site
+          git add .
+          git commit -m "update gh-pages"
+          git push -f origin HEAD:gh-pages
+          echo "done"

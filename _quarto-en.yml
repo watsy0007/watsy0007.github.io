@@ -1,0 +1,31 @@
+project:
+  output-dir: ./_site/en
+
+website:
+  title: "watsy0007"
+  site-url: https://watsy0007.com
+  repo-url: https://github.com/watsy0007/watsy0007.github.io
+  description: "data, statistics, and programming"
+  navbar:
+    left:
+      - text: blog
+        href: blog.qmd
+      - text: about
+        href: about.qmd
+    right:
+      - text: 中文
+        href: ../zh
+      - icon: rss
+        href: blog.xml
+    # right:
+    #   - about.qmd
+    #   - icon: github
+    #     href: https://github.com/watsy0007
+    #   - icon: rss
+    #     href: index.xml
+format:
+  html:
+    theme: simplex
+    css: styles.css
+
+lang: en
