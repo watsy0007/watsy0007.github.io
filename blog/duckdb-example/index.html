@@ -125,18 +125,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html"> 
+<span class="menu-text">blog</span></a>
+  </li>  
   <li class="nav-item">
     <a class="nav-link" href="../../about.html"> 
-<span class="menu-text">About</span></a>
+<span class="menu-text">about</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../zh"> 
+<span class="menu-text">中文</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../."> 
+<span class="menu-text">English</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/watsy0007"> <i class="bi bi-github" role="img">
-</i> 
-<span class="menu-text"></span></a>
-  </li>  
-  <li class="nav-item compact">
-    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
+    <a class="nav-link" href="../../blog.xml"> <i class="bi bi-rss" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -182,9 +191,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#安装依赖" id="toc-安装依赖" class="nav-link active" data-scroll-target="#安装依赖">安装依赖</a></li>
-  <li><a href="#基础配置" id="toc-基础配置" class="nav-link" data-scroll-target="#基础配置">基础配置</a></li>
-  <li><a href="#演示数据" id="toc-演示数据" class="nav-link" data-scroll-target="#演示数据">演示数据</a></li>
+  <li><a href="#install-dependencies" id="toc-install-dependencies" class="nav-link active" data-scroll-target="#install-dependencies">Install dependencies</a></li>
+  <li><a href="#basic-configuration" id="toc-basic-configuration" class="nav-link" data-scroll-target="#basic-configuration">Basic configuration</a></li>
+  <li><a href="#demo-data" id="toc-demo-data" class="nav-link" data-scroll-target="#demo-data">Demo data</a></li>
   </ul>
 </nav>
     </div>
@@ -195,23 +204,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<p>基于 <code>quarto</code> 测试 <code>DuckDB</code> 功能。</p>
-<p>以下所有代码可以复制到 jupyter notebook 中执行。</p>
-<section id="安装依赖" class="level1">
-<h1>安装依赖</h1>
-<div id="0ab4a7e4" class="cell" data-execution_count="1">
+<p>Test <code>DuckDB</code> features based on <code>quarto</code>.</p>
+<p>All the code below can be copied and executed in a jupyter notebook.</p>
+<section id="install-dependencies" class="level1">
+<h1>Install dependencies</h1>
+<div id="4314c91f" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="op">!</span>pip install duckdb jupysql <span class="op">--</span>quiet</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="基础配置" class="level1">
-<h1>基础配置</h1>
-<div id="36c3bf82" class="cell" data-execution_count="2">
+<section id="basic-configuration" class="level1">
+<h1>Basic configuration</h1>
+<div id="653aeb2f" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> duckdb</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>conn <span class="op">=</span> duckdb.<span class="ex">connect</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>jupysql 配置</p>
-<div id="ae2982b6" class="cell" data-execution_count="3">
+<p>jupysql configuration</p>
+<div id="4a6f2396" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>load_ext sql</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config SqlMagic.autopandas <span class="op">=</span> <span class="va">True</span></span>
@@ -222,10 +231,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>sql conn <span class="op">--</span>alias duckdb<span class="op">-</span>native</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="演示数据" class="level1">
-<h1>演示数据</h1>
-<p>参考 <a href="https://duckdb.org/docs/guides/python/jupyter">Jupyter Notebooks</a></p>
-<div id="9293bcfd" class="cell" data-execution_count="4">
+<section id="demo-data" class="level1">
+<h1>Demo data</h1>
+<p>Refer to <a href="https://duckdb.org/docs/guides/python/jupyter">Jupyter Notebooks</a></p>
+<div id="615a378e" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>sql <span class="op">--</span>save short_trips <span class="op">--</span>no<span class="op">-</span>execute</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>SELECT <span class="op">*</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>FROM <span class="st">'https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2021-01.parquet'</span></span>
@@ -234,7 +243,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span style="None">Skipping execution...</span>
 </div>
 </div>
-<div id="9326f338" class="cell" data-execution_count="5">
+<div id="eff7d2b6" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>sqlplot histogram <span class="op">--</span>table short_trips <span class="op">--</span>column trip_distance <span class="op">--</span>bins <span class="dv">10</span> <span class="op">--</span><span class="cf">with</span> short_trips</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>

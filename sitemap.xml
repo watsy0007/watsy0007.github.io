@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://watsy0007.com/posts/find_missing_dates_with_duckdb/index.html</loc>
-    <lastmod>2024-08-11T01:36:26.152Z</lastmod>
+    <loc>https://watsy0007.com/index.html</loc>
+    <lastmod>2024-08-17T16:19:11.467Z</lastmod>
   </url>
   <url>
-    <loc>https://watsy0007.com/posts/analyse_blockchain_data_with_duckdb_prepare/index.html</loc>
-    <lastmod>2024-08-11T01:36:26.152Z</lastmod>
+    <loc>https://watsy0007.com/blog/analyzing_blockchain_data_with_duckdb_1/index.html</loc>
+    <lastmod>2024-08-17T16:19:11.467Z</lastmod>
+  </url>
+  <url>
+    <loc>https://watsy0007.com/blog.html</loc>
+    <lastmod>2024-08-17T16:19:11.463Z</lastmod>
   </url>
   <url>
     <loc>https://watsy0007.com/about.html</loc>
-    <lastmod>2024-08-11T01:36:26.152Z</lastmod>
+    <lastmod>2024-08-17T16:19:11.463Z</lastmod>
   </url>
   <url>
-    <loc>https://watsy0007.com/index.html</loc>
-    <lastmod>2024-08-11T01:36:26.152Z</lastmod>
+    <loc>https://watsy0007.com/blog/duckdb-example/index.html</loc>
+    <lastmod>2024-08-17T16:19:11.467Z</lastmod>
   </url>
   <url>
-    <loc>https://watsy0007.com/posts/duckdb-example/index.html</loc>
-    <lastmod>2024-08-11T01:36:26.152Z</lastmod>
+    <loc>https://watsy0007.com/blog/find_missing_dates_with_duckdb/index.html</loc>
+    <lastmod>2024-08-17T16:19:11.467Z</lastmod>
   </url>
 </urlset>

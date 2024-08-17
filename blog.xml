@@ -6,8 +6,8 @@
       version="2.0">
 <channel>
 <title>watsy0007</title>
-<link>https://watsy0007.com/</link>
-<atom:link href="https://watsy0007.com/index.xml" rel="self" type="application/rss+xml"/>
+<link>https://watsy0007.com/blog.html</link>
+<atom:link href="https://watsy0007.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description>data, statistics, and programming</description>
 <generator>quarto-1.5.56</generator>
 <lastBuildDate>Sat, 10 Aug 2024 00:00:00 GMT</lastBuildDate>

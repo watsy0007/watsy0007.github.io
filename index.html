@@ -147,18 +147,27 @@ window.Quarto = {
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./blog.html"> 
+<span class="menu-text">blog</span></a>
+  </li>  
   <li class="nav-item">
     <a class="nav-link" href="./about.html"> 
-<span class="menu-text">About</span></a>
+<span class="menu-text">about</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./../zh"> 
+<span class="menu-text">中文</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./."> 
+<span class="menu-text">English</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/watsy0007"> <i class="bi bi-github" role="img">
-</i> 
-<span class="menu-text"></span></a>
-  </li>  
-  <li class="nav-item compact">
-    <a class="nav-link" href="./index.xml"> <i class="bi bi-rss" role="img">
+    <a class="nav-link" href="./blog.xml"> <i class="bi bi-rss" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -188,21 +197,21 @@ window.Quarto = {
 
 <div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
 <div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="duckdb,blockchain,analysis" data-listing-date-sort="1723248000000" data-listing-file-modified-sort="1723340186152" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="809">
-<a href="./posts/analyse_blockchain_data_with_duckdb_prepare/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="0" data-categories="duckdb,blockchain,analysis" data-listing-date-sort="1723248000000" data-listing-file-modified-sort="1723911551467" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1267">
+<a href="./blog/analyzing_blockchain_data_with_duckdb_1/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
-<img loading="lazy" src="./posts/analyse_blockchain_data_with_duckdb_prepare/analyse-blockchain-data-thumbnail.webp" class="thumbnail-image card-img" style="height: 150px;">
+<img loading="lazy" src="./blog/analyzing_blockchain_data_with_duckdb_1/analyse-blockchain-data-thumbnail.webp" class="thumbnail-image card-img" style="height: 150px;">
 </p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
-使用 DuckDB 分析区块链数据 - 数据准备
+Analyzing Blockchain Data with DuckDB: Data Preparation
 </h5>
 <div class="listing-reading-time card-text text-muted">
-5 min
+7 min
 </div>
 <div class="card-text listing-description">
-最近使用 <code>DuckDB</code> 替换 <code>pandas</code> + <code>python</code> 做数据处理的部分越来越多, 用起来非常顺手.
+I’ve been using <code>DuckDB</code> as a replacement for <code>pandas</code> and <code>Python</code> for data processing tasks. It’s proven to be incredibly convenient.
 </div>
 <div class="card-attribution card-text-small end">
 <div class="listing-date">
@@ -213,21 +222,21 @@ Aug 10, 2024
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="1" data-categories="code,duckdb" data-listing-date-sort="1721952000000" data-listing-file-modified-sort="1723340186152" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="642">
-<a href="./posts/find_missing_dates_with_duckdb/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="1" data-categories="code,duckdb" data-listing-date-sort="1721952000000" data-listing-file-modified-sort="1723911551467" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="914">
+<a href="./blog/find_missing_dates_with_duckdb/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
-<img loading="lazy" src="./posts/find_missing_dates_with_duckdb/missing-dates-thumbnail.webp" class="thumbnail-image card-img" style="height: 150px;">
+<img loading="lazy" src="./blog/find_missing_dates_with_duckdb/missing-dates-thumbnail.webp" class="thumbnail-image card-img" style="height: 150px;">
 </p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
-使用 DuckDB 查找空缺的日期
+find missing dates with DuckDB
 </h5>
 <div class="listing-reading-time card-text text-muted">
-4 min
+5 min
 </div>
 <div class="card-text listing-description">
-近期业务反馈存在数据缺失的情况, 需要定位出缺失的日期, 以便补充历史数据.
+Recently, the business feedback that there is data missing, and it is necessary to locate the missing dates in order to supplement historical data.
 </div>
 <div class="card-attribution card-text-small end">
 <div class="listing-date">
@@ -238,11 +247,11 @@ Jul 26, 2024
 </div>
 </a>
 </div>
-<div class="g-col-1" data-index="2" data-categories="code,duckdb" data-listing-date-sort="1708128000000" data-listing-file-modified-sort="1723340186152" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="55">
-<a href="./posts/duckdb-example/index.html" class="quarto-grid-link">
+<div class="g-col-1" data-index="2" data-categories="code,duckdb" data-listing-date-sort="1708128000000" data-listing-file-modified-sort="1723911551467" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="100">
+<a href="./blog/duckdb-example/index.html" class="quarto-grid-link">
 <div class="quarto-grid-item card h-100 card-left">
 <p class="card-img-top">
-<img loading="lazy" src="./posts/duckdb-example/duckdb-sql-analysis-thumbnail.webp" class="thumbnail-image card-img" style="height: 150px;">
+<img loading="lazy" src="./blog/duckdb-example/duckdb-sql-analysis-thumbnail.webp" class="thumbnail-image card-img" style="height: 150px;">
 </p>
 <div class="card-body post-contents">
 <h5 class="no-anchor card-title listing-title">
@@ -252,7 +261,7 @@ DuckDB Example
 1 min
 </div>
 <div class="card-text listing-description">
-基于 <code>quarto</code> 测试 <code>DuckDB</code> 功能。
+Test <code>DuckDB</code> features based on <code>quarto</code>.
 </div>
 <div class="card-attribution card-text-small end">
 <div class="listing-date">

@@ -2,9 +2,17 @@
   {
     "listing": "/index.html",
     "items": [
-      "/posts/analyse_blockchain_data_with_duckdb_prepare/index.html",
-      "/posts/find_missing_dates_with_duckdb/index.html",
-      "/posts/duckdb-example/index.html"
+      "/blog/analyzing_blockchain_data_with_duckdb_1/index.html",
+      "/blog/find_missing_dates_with_duckdb/index.html",
+      "/blog/duckdb-example/index.html"
+    ]
+  },
+  {
+    "listing": "/blog.html",
+    "items": [
+      "/blog/analyzing_blockchain_data_with_duckdb_1/index.html",
+      "/blog/find_missing_dates_with_duckdb/index.html",
+      "/blog/duckdb-example/index.html"
     ]
   }
 ]
