@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-Hans" xml:lang="zh-Hans"><head>
 
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.5.56">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2024-08-10">
 
 <title>Analyzing Blockchain Data with DuckDB: Data Preparation – watsy0007</title>
 <style>
@@ -88,17 +87,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   ],
   "show-item-context": false,
   "language": {
-    "search-no-results-text": "No results",
-    "search-matching-documents-text": "matching documents",
-    "search-copy-link-title": "Copy link to search",
-    "search-hide-matches-text": "Hide additional matches",
-    "search-more-match-text": "more match in this document",
-    "search-more-matches-text": "more matches in this document",
-    "search-clear-button-title": "Clear",
+    "search-no-results-text": "没有结果",
+    "search-matching-documents-text": "匹配的文档",
+    "search-copy-link-title": "复制搜索链接",
+    "search-hide-matches-text": "隐藏其它匹配结果",
+    "search-more-match-text": "更多匹配结果",
+    "search-more-matches-text": "更多匹配结果",
+    "search-clear-button-title": "清除",
     "search-text-placeholder": "",
-    "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit",
-    "search-label": "Search"
+    "search-detached-cancel-button-title": "取消",
+    "search-submit-button-title": "提交",
+    "search-label": "搜索"
   }
 }</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
@@ -120,25 +119,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <span class="navbar-title">watsy0007</span>
     </a>
   </div>
-            <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+            <div id="quarto-search" class="" title="搜索"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="展开或折叠导航栏" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
     <a class="nav-link" href="../../blog.html"> 
-<span class="menu-text">blog</span></a>
+<span class="menu-text">博客</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="../../about.html"> 
-<span class="menu-text">about</span></a>
+<span class="menu-text">关于</span></a>
   </li>  
 </ul>
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../../zh"> 
-<span class="menu-text">中文</span></a>
+    <a class="nav-link" href="../../../en"> 
+<span class="menu-text">English</span></a>
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="../../blog.xml"> <i class="bi bi-rss" role="img">
@@ -170,9 +169,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
       
       <div>
-      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-heading">发布于</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">August 10, 2024</p>
+        <p class="date">2024年8月10日</p>
       </div>
     </div>
     
@@ -188,14 +187,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#use-case-analyzing-eth-address-transactions" id="toc-use-case-analyzing-eth-address-transactions" class="nav-link active" data-scroll-target="#use-case-analyzing-eth-address-transactions">Use Case: Analyzing ETH Address Transactions</a></li>
-  <li><a href="#the-traditional-process-vs-duckdb" id="toc-the-traditional-process-vs-duckdb" class="nav-link" data-scroll-target="#the-traditional-process-vs-duckdb">The Traditional Process vs DuckDB</a></li>
-  <li><a href="#demonstration" id="toc-demonstration" class="nav-link" data-scroll-target="#demonstration">Demonstration</a>
+  <li><a href="#案例" id="toc-案例" class="nav-link active" data-scroll-target="#案例">案例</a></li>
+  <li><a href="#演示" id="toc-演示" class="nav-link" data-scroll-target="#演示">演示</a>
   <ul class="collapse">
-  <li><a href="#solution-1-explorer-implementation" id="toc-solution-1-explorer-implementation" class="nav-link" data-scroll-target="#solution-1-explorer-implementation">Solution 1: Explorer Implementation</a></li>
-  <li><a href="#solution-2-advanced-implementation-with-field-constraints" id="toc-solution-2-advanced-implementation-with-field-constraints" class="nav-link" data-scroll-target="#solution-2-advanced-implementation-with-field-constraints">Solution 2: Advanced Implementation with Field constraints</a></li>
+  <li><a href="#方案1" id="toc-方案1" class="nav-link" data-scroll-target="#方案1">方案1</a></li>
+  <li><a href="#方案2" id="toc-方案2" class="nav-link" data-scroll-target="#方案2">方案2</a></li>
   </ul></li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#总结" id="toc-总结" class="nav-link" data-scroll-target="#总结">总结</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">references</a></li>
   </ul>
 </nav>
@@ -207,47 +205,38 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 
-<p>I’ve been using <code>DuckDB</code> as a replacement for <code>pandas</code> and <code>Python</code> for data processing tasks. It’s proven to be incredibly convenient.</p>
-<p>A friend recently asked about my use of <code>DuckDB</code> in daily work, which inspired me to write a series of articles. This is the first in that series, focusing on how to use <code>DuckDB</code> for intial data processing.</p>
-<section id="use-case-analyzing-eth-address-transactions" class="level1">
-<h1>Use Case: Analyzing ETH Address Transactions</h1>
-<p>Let’s consider a common scenario: analyzing the transaction information of a specific Ethereum (<code>ETH</code>) address.</p>
+<p>最近使用 <code>DuckDB</code> 替换 <code>pandas</code> + <code>python</code> 做数据处理的部分越来越多, 用起来非常顺手.</p>
+<p>有朋友想了解下我日常是如何使用 DuckDB 的, 考虑写成系列文章, 本篇是第一篇, 主要分享如何使用 <code>DuckDB</code> 做前期数据处理.</p>
+<section id="案例" class="level1">
+<h1>案例</h1>
+<p>用日常案例举例, 希望分析 <code>ETH</code> 某个地址交易信息.</p>
 </section>
-<section id="the-traditional-process-vs-duckdb" class="level1">
-<h1>The Traditional Process vs DuckDB</h1>
-<p>Previously, this process involved several steps:</p>
+<section id="演示" class="level1">
+<h1>演示</h1>
+<p>这个过程在以往, 首先通过 <code>requests</code> 获取数据, 接着用 <code>pandas</code> 预览数据和清洗数据, 最后才会使用 <code>DuckDB</code> 进行分析.</p>
+<p>在准备数据阶段有 3 个必要步骤</p>
 <ol type="1">
-<li>Fetching data using <code>requests</code></li>
-<li>Using <code>pandas</code> to preview and clean the data</li>
-<li>Finally, analyzing the data using <code>DuckDB</code></li>
+<li>三方接口的翻页处理</li>
+<li>提取接口返回数据中的有效字段</li>
+<li>清洗数据,空值和类型等处理</li>
 </ol>
-<p>The data preparation stage typically involves three essential steps:</p>
-<ol type="1">
-<li>Handing pagination for third-party APIs</li>
-<li>Extracting valid fields from the returned data</li>
-<li>Cleaning the data, including null values and ata types</li>
-</ol>
-<p>In this article, we’ll demonstrate how to streamline this process using the <code>blockscout</code> API<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, <code>DuckDB UDF</code><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, and <code>DuckDB Macro</code><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</p>
-</section>
-<section id="demonstration" class="level1">
-<h1>Demonstration</h1>
-<p>We’ll explore two solutions for processing data using <code>DuckDB</code>, First let’s import related dependencies</p>
+<p>下面展示使用 <code>blockscout</code> API<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, 通过 <code>DuckDB UDF</code><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> 和 <code>DuckDB Macro</code><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> 简化这个过程.</p>
+<p>导入相关依赖</p>
 <div id="7e7c0d74" class="cell" data-execution_count="1">
 <details class="code-fold">
-<summary>Code</summary>
+<summary>代码</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> duckdb</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> requests</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> duckdb.typing <span class="im">import</span> VARCHAR, INTEGER, DuckDBPyType</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<section id="solution-1-explorer-implementation" class="level2">
-<h2 class="anchored" data-anchor-id="solution-1-explorer-implementation">Solution 1: Explorer Implementation</h2>
-<p>This approach focuses on quickly retrieving and processing transaction data. It’s ideal for rapid analysis and verification during the development stage.</p>
-<p>Get the transaction information of the <code>ETH</code> address through the <code>blockscout</code> API<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>, the code is as follows:</p>
+<section id="方案1" class="level2">
+<h2 class="anchored" data-anchor-id="方案1">方案1</h2>
+<p>通过 <code>blockscout</code> API<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> 获取 <code>ETH</code> 地址的交易信息, 代码如下:</p>
 <div id="39314b4f" class="cell" data-execution_count="2">
 <details class="code-fold">
-<summary>Code</summary>
+<summary>代码</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> blockscout_api(module: <span class="bu">str</span>, action: <span class="bu">str</span>, address: <span class="bu">str</span>, start_block: <span class="bu">int</span>, end_block: <span class="bu">int</span>, page: <span class="bu">int</span>, offset: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">str</span>]:</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    url_prefix <span class="op">=</span> <span class="ss">f'https://eth.blockscout.com/api?module=</span><span class="sc">{</span>module<span class="sc">}</span><span class="ss">&amp;action=</span><span class="sc">{</span>action<span class="sc">}</span><span class="ss">'</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    </span>
@@ -264,22 +253,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">len</span>(items) <span class="op">&lt;</span> offset:</span>
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>        page <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> result</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> result</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>Register the custom function of <code>DuckDB</code></p>
+<p>注册 <code>DuckDB</code> 的自定义函数</p>
 <div id="ce916ba0" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>conn <span class="op">=</span> duckdb.<span class="ex">connect</span>()</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>conn <span class="op">=</span> conn.create_function(<span class="st">'blockscout_api'</span>, blockscout_api)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>conn <span class="op">=</span> conn.create_function(<span class="st">'blockscout_api'</span>, blockscout_api)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Define the macro of <code>DuckDB</code>, here for demonstration, limit the page and offset, and adjust according to the actual situation when actually using. Note the output <code>query page 1</code> and <code>query page 2</code> below</p>
+<p>定义 <code>DuckDB</code> 的宏, 这里为了演示, 限制 page 和 offset, 实际使用时会根据实际情况调整. 注意下面的输出 <code>query page 1</code> 和 <code>query page 2</code></p>
 <div id="91743eac" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>conn.execute(<span class="st">"""</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="st">CREATE OR REPLACE MACRO blockscout_trxs(address, start_block, end_block) as table </span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="st">    select blockscout_api('account', 'txlist', address, start_block, end_block, 1, 2) as data</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Query the transaction information of the <code>ETH</code> address</p>
+<p>查询 <code>ETH</code> 地址的交易信息</p>
 <div id="09554385" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>conn.execute(<span class="st">"""</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="st">with raw_transactions as (</span></span>
@@ -312,7 +301,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="st">  'to',</span></span>
 <span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a><span class="st">  value,</span></span>
 <span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="st">from decode_transactions</span></span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>).df()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>).df()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>query page 1
 query page 2</code></pre>
@@ -368,10 +357,10 @@ query page 2</code></pre>
 </div>
 </div>
 </section>
-<section id="solution-2-advanced-implementation-with-field-constraints" class="level2">
-<h2 class="anchored" data-anchor-id="solution-2-advanced-implementation-with-field-constraints">Solution 2: Advanced Implementation with Field constraints</h2>
-<p>This solution is more robust, suitable for production environments. It addresses potential issues like API field changes and null values in the returned data.</p>
-<p>Declare the required fields and types</p>
+<section id="方案2" class="level2">
+<h2 class="anchored" data-anchor-id="方案2">方案2</h2>
+<p>实际使用时候, 三方 API 字段可能会调整, 返回的数据会存在空值情况, 因此必须要<strong>严格字段约束</strong>, 这里也演示下.</p>
+<p>申明需要的字段与类型</p>
 <div id="f7ee9a3a" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fields <span class="op">=</span> {</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'blockHash'</span>: <span class="bu">str</span>,</span>
@@ -389,12 +378,12 @@ query page 2</code></pre>
 <span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">'isError'</span>: <span class="bu">int</span>,</span>
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">'txreceipt_status'</span>: <span class="bu">int</span>,</span>
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">'input'</span>: <span class="bu">str</span>,</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Request the <code>blockscout</code> API<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> and extract valid fields</p>
+<p>请求 <code>blockscout</code> API<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> 并提取有效字段</p>
 <div id="a7961e31" class="cell" data-execution_count="7">
 <details class="code-fold">
-<summary>Code</summary>
+<summary>代码</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>field_keys <span class="op">=</span> fields.keys()</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> blockscout_api_with_fields(module: <span class="bu">str</span>, action: <span class="bu">str</span>, address: <span class="bu">str</span>, start_block: <span class="bu">int</span>, end_block: <span class="bu">int</span>, page: <span class="bu">int</span>, offset: <span class="bu">int</span>):</span>
@@ -412,22 +401,22 @@ query page 2</code></pre>
 <span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
 <span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>            <span class="cf">break</span></span>
 <span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>        page <span class="op">+=</span> <span class="dv">1</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> result</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> result</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>Register the custom function of <code>DuckDB</code>, note the adjustment of <code>page</code> and <code>offset</code>, only get 1 page of data, no pagination demonstration.</p>
+<p>注册 <code>DuckDB</code> 的自定义函数, 注意 <code>page</code> 和 <code>offset</code> 调整, 只获取 1 页面数据, 不做翻页演示.</p>
 <div id="55669c6e" class="cell" data-execution_count="8">
 <details class="code-fold">
-<summary>Code</summary>
+<summary>代码</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>conn <span class="op">=</span> duckdb.<span class="ex">connect</span>()</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>conn <span class="op">=</span> conn.create_function(blockscout_api_with_fields.<span class="va">__name__</span>, blockscout_api_with_fields, [VARCHAR, VARCHAR, VARCHAR, INTEGER, INTEGER, INTEGER, INTEGER], DuckDBPyType(<span class="bu">list</span>[fields]))</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>conn.execute(<span class="st">"""</span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="st">CREATE OR REPLACE MACRO blockscout_trxs_with_fields(address, start_block, end_block) as table </span></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="st">    select blockscout_api_with_fields('account', 'txlist', address, start_block, end_block, 1, 5) as data</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>Query the transaction information of the <code>ETH</code> address</p>
+<p>查询 <code>ETH</code> 地址的交易信息</p>
 <div id="e86ab09f" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>conn.execute(<span class="st">"""</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="st">with raw_transactions as (</span></span>
@@ -443,7 +432,7 @@ query page 2</code></pre>
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="st">  'to',</span></span>
 <span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a><span class="st">  value</span></span>
 <span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="st">from flatten_transactions</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>).df()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>).df()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>query page 1 -&gt; https://eth.blockscout.com/api?module=account&amp;action=txlist&amp;address=0x603602E9A2ac7f1E26717C2b2193Fd68f5fafFf6&amp;startblock=20485198&amp;endblock=20490674&amp;page=1&amp;offset=5&amp;sort=asc</code></pre>
 </div>
@@ -499,11 +488,10 @@ query page 2</code></pre>
 </div>
 </section>
 </section>
-<section id="summary" class="level1">
-<h1>Summary</h1>
-<p>By leveraging <code>UDF</code><a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> and <code>Macro</code><a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> of <code>DuckDB</code>, we can significantly simplify the data processing workflow. This approach makes data analysis more efficient and results in cleaner, more maintainable code.</p>
-<p>For day-to-day use, Solution 1 is recommended for quick analysis and verification. However, for production environments, Solution 2 is preferred due to its stricter field constraints, which help prevent issues during data processing.</p>
-<p>In addition, you can also use <code>with recursive</code><a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> to achieve pagination query, but this process is more complicated, more <code>SQL</code> writing, not recommended for use. If you are interested, I will write an article to share it later.</p>
+<section id="总结" class="level1">
+<h1>总结</h1>
+<p>通过 <code>DuckDB</code> 的 <code>UDF</code><a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> 和 <code>Macro</code><a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> 可以简化数据处理的过程, 使得数据处理更加高效, 代码更加简洁. 日常使用, 分析阶段推荐大家使用方案 1 快速验证, 发布生产环境推荐大家使用方案2, 严格字段约束, 避免数据处理过程中出现问题.</p>
+<p>另外, 也可以通过 <code>with recursive</code><a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> 实现翻页查询, 但是这个过程比较复杂, <code>SQL</code> 写的更多, 不推荐使用, 如果大家感兴趣后续有时间会写篇文章分享.</p>
 </section>
 <section id="references" class="level1">
 <h1>references</h1>
@@ -512,7 +500,7 @@ query page 2</code></pre>
 </section>
 
 
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">脚注</h2>
 
 <ol>
 <li id="fn1"><p><a href="https://docs.blockscout.com/for-users/api/rpc-endpoints/account#get-transactions-by-address">Get Transactions By Address - Blockscout</a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
@@ -524,7 +512,7 @@ query page 2</code></pre>
 <li id="fn7"><p><a href="https://duckdb.org/docs/sql/statements/create_macro">CREATE MACRO Statement - DuckDB</a><a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn8"><p><a href="https://duckdb.org/docs/sql/query_syntax/with#recursive-ctes">With Clause - DuckDB</a><a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
-</section><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></div></div></section></div></main> <!-- /main -->
+</section><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">二次使用</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh">CC BY-SA 4.0</a></div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -568,12 +556,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // flash "checked"
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
+    button.setAttribute("title", "已复制");
     let tooltip;
     if (window.bootstrap) {
       button.setAttribute("data-bs-toggle", "tooltip");
       button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
+      button.setAttribute("data-bs-title", "已复制");
       tooltip = new bootstrap.Tooltip(button, 
         { trigger: "manual", 
           customClass: "code-copy-button-tooltip",

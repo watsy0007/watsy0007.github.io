@@ -1,0 +1,107 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "watsy0007",
+    "section": "",
+    "text": "Analyzing Blockchain Data with DuckDB: Data Preparation\n\n\n7 分钟\n\n\n\n\n\n\n2024年8月10日\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nfind missing dates with DuckDB\n\n\n5 分钟\n\n\n\n\n\n\n2024年7月26日\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDuckDB Example\n\n\n1 分钟\n\n\n\n\n\n\n2024年2月17日\n\n\n\n\n\n\n\n\n无匹配项"
+  },
+  {
+    "objectID": "blog/analyzing_blockchain_data_with_duckdb_1/index.html",
+    "href": "blog/analyzing_blockchain_data_with_duckdb_1/index.html",
+    "title": "Analyzing Blockchain Data with DuckDB: Data Preparation",
+    "section": "",
+    "text": "最近使用 DuckDB 替换 pandas + python 做数据处理的部分越来越多, 用起来非常顺手.\n有朋友想了解下我日常是如何使用 DuckDB 的, 考虑写成系列文章, 本篇是第一篇, 主要分享如何使用 DuckDB 做前期数据处理."
+  },
+  {
+    "objectID": "blog/analyzing_blockchain_data_with_duckdb_1/index.html#方案1",
+    "href": "blog/analyzing_blockchain_data_with_duckdb_1/index.html#方案1",
+    "title": "Analyzing Blockchain Data with DuckDB: Data Preparation",
+    "section": "方案1",
+    "text": "方案1\n通过 blockscout API4 获取 ETH 地址的交易信息, 代码如下:\n\n\n代码\ndef blockscout_api(module: str, action: str, address: str, start_block: int, end_block: int, page: int, offset: int) -&gt; list[str]:\n    url_prefix = f'https://eth.blockscout.com/api?module={module}&action={action}'\n    \n    result = []\n    while True:\n        url = f'{url_prefix}&address={address}&startblock={start_block}&endblock={end_block}&page={page}&offset={offset}&sort=asc'\n        print(f'query page {page}')\n        data = requests.get(url).json()\n        if data['message'] == 'OK':\n            items = data['result']\n            result.extend(map(json.dumps,items))\n        else:\n            break\n        if len(items) &lt; offset:\n            break\n        page += 1\n    return result\n\n\n注册 DuckDB 的自定义函数\n\nconn = duckdb.connect()\nconn = conn.create_function('blockscout_api', blockscout_api)\n\n定义 DuckDB 的宏, 这里为了演示, 限制 page 和 offset, 实际使用时会根据实际情况调整. 注意下面的输出 query page 1 和 query page 2\n\nconn.execute(\"\"\"\nCREATE OR REPLACE MACRO blockscout_trxs(address, start_block, end_block) as table \n    select blockscout_api('account', 'txlist', address, start_block, end_block, 1, 2) as data\n\"\"\")\n\n查询 ETH 地址的交易信息\n\nconn.execute(\"\"\"\nwith raw_transactions as (\n    select unnest(data) as trx from blockscout_trxs('0x603602E9A2ac7f1E26717C2b2193Fd68f5fafFf6', 20485198, 20490674)\n), decode_transactions as (\nselect \n    trx-&gt;'$.blockHash' as block_hash,\n    (trx-&gt;'$.blockNumber')::integer as block_number,\n    (trx-&gt;'$.timeStamp')::integer as timestamp,\n    to_timestamp(timestamp) as datetime,\n    trx-&gt;'$.hash' as hash,\n    (trx-&gt;'$.transactionIndex')::integer as transaction_index,\n    trx-&gt;'$.from' as 'from',\n    trx-&gt;'$.to' as 'to',\n    trx-&gt;'$.value' as value,\n    trx-&gt;'$.contractAddress' as contract_address,\n    (trx-&gt;'$.gas')::integer as gas,\n    (trx-&gt;'$.gasPrice')::bigint as gas_price,\n    (trx-&gt;'$.gasUsed')::integer as gas_used,\n    trx-&gt;'$.isError' as is_error,\n    trx-&gt;'$.txreceipt_status' as txreceipt_status,\n    trx-&gt;'input' as 'input'\nfrom raw_transactions\n)\nselect \n  block_number,\n  datetime,\n  hash,\n  'from',\n  'to',\n  value,\nfrom decode_transactions\n\"\"\").df()\n\nquery page 1\nquery page 2\n\n\n\n\n\n\n\n\n\nblock_number\ndatetime\nhash\n'from'\n'to'\nvalue\n\n\n\n\n0\n20485198\n2024-08-08 16:55:23+00:00\n\"0x16e9d0643ce6bf9bc59d5e6c756a196af2941cefc46...\nfrom\nto\n\"500000000000000000\"\n\n\n1\n20488106\n2024-08-09 02:38:47+00:00\n\"0x3f29ab5ba5779df75aee038cb9d529ab7d7e94ff727...\nfrom\nto\n\"500000000000000000\"\n\n\n2\n20490674\n2024-08-09 11:14:23+00:00\n\"0xcba85af304112c712c978968ff19fb150cdfd18e1f4...\nfrom\nto\n\"200000000000000000\""
+  },
+  {
+    "objectID": "blog/analyzing_blockchain_data_with_duckdb_1/index.html#方案2",
+    "href": "blog/analyzing_blockchain_data_with_duckdb_1/index.html#方案2",
+    "title": "Analyzing Blockchain Data with DuckDB: Data Preparation",
+    "section": "方案2",
+    "text": "方案2\n实际使用时候, 三方 API 字段可能会调整, 返回的数据会存在空值情况, 因此必须要严格字段约束, 这里也演示下.\n申明需要的字段与类型\n\nfields = {\n    'blockHash': str,\n    'blockNumber': int,\n    'timeStamp': int,\n    'hash': str,\n    'transactionIndex': int,\n    'from': str,\n    'to': str,\n    'value': str,\n    'contractAddress': str,\n    'gas': int,\n    'gasPrice': int,\n    'gasUsed': int,\n    'isError': int,\n    'txreceipt_status': int,\n    'input': str,\n}\n\n请求 blockscout API5 并提取有效字段\n\n\n代码\nfield_keys = fields.keys()\n\ndef blockscout_api_with_fields(module: str, action: str, address: str, start_block: int, end_block: int, page: int, offset: int):\n    url_prefix = f'https://eth.blockscout.com/api?module={module}&action={action}'\n    result = []\n    while True:\n        url = f'{url_prefix}&address={address}&startblock={start_block}&endblock={end_block}&page={page}&offset={offset}&sort=asc'\n        print(f'query page {page} -&gt; {url}')\n        resp = requests.get(url).json()\n        if resp['message'] == 'OK':\n            items = resp['result']\n            result.extend([{f: i[f] for f in field_keys} for i in items])\n            if len(items) &lt; offset:\n                break\n        else:\n            break\n        page += 1\n    return result\n\n\n注册 DuckDB 的自定义函数, 注意 page 和 offset 调整, 只获取 1 页面数据, 不做翻页演示.\n\n\n代码\nconn = duckdb.connect()\nconn = conn.create_function(blockscout_api_with_fields.__name__, blockscout_api_with_fields, [VARCHAR, VARCHAR, VARCHAR, INTEGER, INTEGER, INTEGER, INTEGER], DuckDBPyType(list[fields]))\nconn.execute(\"\"\"\nCREATE OR REPLACE MACRO blockscout_trxs_with_fields(address, start_block, end_block) as table \n    select blockscout_api_with_fields('account', 'txlist', address, start_block, end_block, 1, 5) as data\n\"\"\")\n\n\n查询 ETH 地址的交易信息\n\nconn.execute(\"\"\"\nwith raw_transactions as (\n    select unnest(data) as trx from blockscout_trxs_with_fields('0x603602E9A2ac7f1E26717C2b2193Fd68f5fafFf6', 20485198, 20490674)\n), flatten_transactions as (\n  select unnest(trx) from raw_transactions\n)\nselect \n  blockNumber as block_number,\n  to_timestamp(timeStamp) as datetime,\n  hash,\n  'from',\n  'to',\n  value\nfrom flatten_transactions\n\"\"\").df()\n\nquery page 1 -&gt; https://eth.blockscout.com/api?module=account&action=txlist&address=0x603602E9A2ac7f1E26717C2b2193Fd68f5fafFf6&startblock=20485198&endblock=20490674&page=1&offset=5&sort=asc\n\n\n\n\n\n\n\n\n\nblock_number\ndatetime\nhash\n'from'\n'to'\nvalue\n\n\n\n\n0\n20485198\n2024-08-08 16:55:23+00:00\n0x16e9d0643ce6bf9bc59d5e6c756a196af2941cefc467...\nfrom\nto\n500000000000000000\n\n\n1\n20488106\n2024-08-09 02:38:47+00:00\n0x3f29ab5ba5779df75aee038cb9d529ab7d7e94ff7277...\nfrom\nto\n500000000000000000\n\n\n2\n20490674\n2024-08-09 11:14:23+00:00\n0xcba85af304112c712c978968ff19fb150cdfd18e1f48...\nfrom\nto\n200000000000000000"
+  },
+  {
+    "objectID": "blog/analyzing_blockchain_data_with_duckdb_1/index.html#footnotes",
+    "href": "blog/analyzing_blockchain_data_with_duckdb_1/index.html#footnotes",
+    "title": "Analyzing Blockchain Data with DuckDB: Data Preparation",
+    "section": "脚注",
+    "text": "脚注\n\n\nGet Transactions By Address - Blockscout↩︎\nPython Runction API - DuckDB↩︎\nCREATE MACRO Statement - DuckDB↩︎\nGet Transactions By Address - Blockscout↩︎\nGet Transactions By Address - Blockscout↩︎\nPython Runction API - DuckDB↩︎\nCREATE MACRO Statement - DuckDB↩︎\nWith Clause - DuckDB↩︎"
+  },
+  {
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "watsy0007",
+    "section": "",
+    "text": "Analyzing Blockchain Data with DuckDB: Data Preparation\n\n\n7 分钟\n\n\n\n\n\n\n2024年8月10日\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nfind missing dates with DuckDB\n\n\n5 分钟\n\n\n\n\n\n\n2024年7月26日\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDuckDB Example\n\n\n1 分钟\n\n\n\n\n\n\n2024年2月17日\n\n\n\n\n\n\n\n\n无匹配项"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "Elven | Head Data Scientist | June 2018 - present"
+  },
+  {
+    "objectID": "about.html#experience",
+    "href": "about.html#experience",
+    "title": "About",
+    "section": "",
+    "text": "Elven | Head Data Scientist | June 2018 - present"
+  },
+  {
+    "objectID": "blog/duckdb-example/index.html",
+    "href": "blog/duckdb-example/index.html",
+    "title": "DuckDB Example",
+    "section": "",
+    "text": "基于 quarto 测试 DuckDB 功能。\n以下所有代码可以复制到 jupyter notebook 中执行。\n\n安装依赖\n\n!pip install duckdb jupysql --quiet\n\n\n\n基础配置\n\nimport duckdb\n\nconn = duckdb.connect()\n\njupysql 配置\n\n%load_ext sql\n\n%config SqlMagic.autopandas = True\n%config SqlMagic.feedback = 0\n%config SqlMagic.displaycon = True\n%config SqlMagic.displaylimit = 10\n\n%sql conn --alias duckdb-native\n\n\n\n演示数据\n参考 Jupyter Notebooks\n\n%%sql --save short_trips --no-execute\nSELECT *\nFROM 'https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2021-01.parquet'\nWHERE trip_distance &lt; 6.3\n\nSkipping execution...\n\n\n\n%sqlplot histogram --table short_trips --column trip_distance --bins 10 --with short_trips\n\n\n\n\n\n\n\n\n\n\n\n\n二次使用CC BY-SA 4.0"
+  },
+  {
+    "objectID": "blog/find_missing_dates_with_duckdb/index.html",
+    "href": "blog/find_missing_dates_with_duckdb/index.html",
+    "title": "find missing dates with DuckDB",
+    "section": "",
+    "text": "近期业务反馈存在数据缺失的情况, 需要定位出缺失的日期, 以便补充历史数据.\n经过调研决定使用 Gantt 图展示所有任务的每日执行."
+  },
+  {
+    "objectID": "blog/find_missing_dates_with_duckdb/index.html#获取数据",
+    "href": "blog/find_missing_dates_with_duckdb/index.html#获取数据",
+    "title": "find missing dates with DuckDB",
+    "section": "1. 获取数据",
+    "text": "1. 获取数据\n这里使用 mock 数据\n\n\n代码\nimport duckdb\n\nconn = duckdb.connect()\n\nmock_data_sql = \"\"\"\nSELECT * FROM (\n    VALUES \n      (1, DATE '2024-07-01'),\n      (1, DATE '2024-07-02'),\n      (1, DATE '2024-07-03'),\n      (1, DATE '2024-07-05'),\n      (1, DATE '2024-07-06'),\n      (2, DATE '2024-07-01'),\n      (2, DATE '2024-07-02'),\n      (2, DATE '2024-07-03'),\n      (3, DATE '2024-07-01'),\n      (3, DATE '2024-07-02'),\n      (3, DATE '2024-07-03'),\n      (3, DATE '2024-07-04'),\n      (3, DATE '2024-07-05'),\n      (3, DATE '2024-07-06'),\n      (3, DATE '2024-07-07'),\n      (3, DATE '2024-07-08'),\n      (3, DATE '2024-07-09'),\n      (4, DATE '2024-07-05'),\n      (4, DATE '2024-07-06'),\n      (4, DATE '2024-07-07'),\n      (4, DATE '2024-07-08'),\n      (4, DATE '2024-07-09'),\n  ) AS t(source_id, end_date)\n\"\"\"\ndf = conn.execute(mock_data_sql).df()\ndf\n\n\n\n\n\n\n\n\n\nsource_id\nend_date\n\n\n\n\n0\n1\n2024-07-01\n\n\n1\n1\n2024-07-02\n\n\n2\n1\n2024-07-03\n\n\n3\n1\n2024-07-05\n\n\n4\n1\n2024-07-06\n\n\n5\n2\n2024-07-01\n\n\n6\n2\n2024-07-02\n\n\n7\n2\n2024-07-03\n\n\n8\n3\n2024-07-01\n\n\n9\n3\n2024-07-02\n\n\n10\n3\n2024-07-03\n\n\n11\n3\n2024-07-04\n\n\n12\n3\n2024-07-05\n\n\n13\n3\n2024-07-06\n\n\n14\n3\n2024-07-07\n\n\n15\n3\n2024-07-08\n\n\n16\n3\n2024-07-09\n\n\n17\n4\n2024-07-05\n\n\n18\n4\n2024-07-06\n\n\n19\n4\n2024-07-07\n\n\n20\n4\n2024-07-08\n\n\n21\n4\n2024-07-09"
+  },
+  {
+    "objectID": "blog/find_missing_dates_with_duckdb/index.html#对时间进行分组",
+    "href": "blog/find_missing_dates_with_duckdb/index.html#对时间进行分组",
+    "title": "find missing dates with DuckDB",
+    "section": "2. 对时间进行分组",
+    "text": "2. 对时间进行分组\n寻找缺失的日期, 主要难点在于按照时间连续性进行分组, 连续的时间放在同一个分组中, 这样如果一个 source_id 有多个时间段, 那么表示存在时间空缺.\n使用窗口函数, 对当前行的时间进行处理, 根据时间差, 获得当前行的分组时间. 代码如下:\n\ngroup_date_sql = \"\"\"\n SELECT \n    source_id,\n    end_date,\n    end_date - INTERVAL (ROW_NUMBER() OVER (PARTITION BY source_id ORDER BY end_date) - 1) DAY AS group_date\n  FROM df\n  order by source_id, end_date\n\"\"\"\ngrouped_date_df = conn.execute(group_date_sql).df()\ngrouped_date_df\n\n\n\n\n\n\n\n\nsource_id\nend_date\ngroup_date\n\n\n\n\n0\n1\n2024-07-01\n2024-07-01\n\n\n1\n1\n2024-07-02\n2024-07-01\n\n\n2\n1\n2024-07-03\n2024-07-01\n\n\n3\n1\n2024-07-05\n2024-07-02\n\n\n4\n1\n2024-07-06\n2024-07-02\n\n\n5\n2\n2024-07-01\n2024-07-01\n\n\n6\n2\n2024-07-02\n2024-07-01\n\n\n7\n2\n2024-07-03\n2024-07-01\n\n\n8\n3\n2024-07-01\n2024-07-01\n\n\n9\n3\n2024-07-02\n2024-07-01\n\n\n10\n3\n2024-07-03\n2024-07-01\n\n\n11\n3\n2024-07-04\n2024-07-01\n\n\n12\n3\n2024-07-05\n2024-07-01\n\n\n13\n3\n2024-07-06\n2024-07-01\n\n\n14\n3\n2024-07-07\n2024-07-01\n\n\n15\n3\n2024-07-08\n2024-07-01\n\n\n16\n3\n2024-07-09\n2024-07-01\n\n\n17\n4\n2024-07-05\n2024-07-05\n\n\n18\n4\n2024-07-06\n2024-07-05\n\n\n19\n4\n2024-07-07\n2024-07-05\n\n\n20\n4\n2024-07-08\n2024-07-05\n\n\n21\n4\n2024-07-09\n2024-07-05"
+  },
+  {
+    "objectID": "blog/find_missing_dates_with_duckdb/index.html#根据-source_id-和分组时间分组",
+    "href": "blog/find_missing_dates_with_duckdb/index.html#根据-source_id-和分组时间分组",
+    "title": "find missing dates with DuckDB",
+    "section": "3. 根据 source_id 和分组时间分组",
+    "text": "3. 根据 source_id 和分组时间分组\n\ngroup_sql = \"\"\"\nSELECT \n    source_id,\n    MIN(end_date) AS start_date,\n    MAX(end_date) AS end_date,\n  FROM grouped_date_df\n  GROUP BY source_id, group_date\n  ORDER BY source_id, group_date\n\"\"\"\ngrouped_df = conn.execute(group_sql).df()\ngrouped_df\n\n\n\n\n\n\n\n\nsource_id\nstart_date\nend_date\n\n\n\n\n0\n1\n2024-07-01\n2024-07-03\n\n\n1\n1\n2024-07-05\n2024-07-06\n\n\n2\n2\n2024-07-01\n2024-07-03\n\n\n3\n3\n2024-07-01\n2024-07-09\n\n\n4\n4\n2024-07-05\n2024-07-09"
+  },
+  {
+    "objectID": "blog/find_missing_dates_with_duckdb/index.html#可视化",
+    "href": "blog/find_missing_dates_with_duckdb/index.html#可视化",
+    "title": "find missing dates with DuckDB",
+    "section": "4. 可视化",
+    "text": "4. 可视化\n\n\n代码\nimport plotly.express as px\nfig = px.timeline(grouped_df, x_start='start_date', x_end='end_date', y='source_id')\nfig.update_yaxes(autorange=\"reversed\")\nfig.show()"
+  },
+  {
+    "objectID": "blog/find_missing_dates_with_duckdb/index.html#完整代码",
+    "href": "blog/find_missing_dates_with_duckdb/index.html#完整代码",
+    "title": "find missing dates with DuckDB",
+    "section": "5. 完整代码",
+    "text": "5. 完整代码\n\nsql = \"\"\"\nwith raw_data as (\n  SELECT * FROM (\n    VALUES \n      (1, DATE '2024-07-01'),\n      (1, DATE '2024-07-02'),\n      (1, DATE '2024-07-03'),\n      (1, DATE '2024-07-05'),\n      (1, DATE '2024-07-06'),\n      (2, DATE '2024-07-01'),\n      (2, DATE '2024-07-02'),\n      (2, DATE '2024-07-03'),\n      (3, DATE '2024-07-01'),\n      (3, DATE '2024-07-02'),\n      (3, DATE '2024-07-03'),\n      (3, DATE '2024-07-04'),\n      (3, DATE '2024-07-05'),\n      (3, DATE '2024-07-06'),\n      (3, DATE '2024-07-07'),\n      (3, DATE '2024-07-08'),\n      (3, DATE '2024-07-09'),\n      (4, DATE '2024-07-05'),\n      (4, DATE '2024-07-06'),\n      (4, DATE '2024-07-07'),\n      (4, DATE '2024-07-08'),\n      (4, DATE '2024-07-09'),\n  ) AS t(source_id, end_date)\n), group_date as (\n  SELECT \n    source_id,\n    end_date,\n    end_date - INTERVAL (ROW_NUMBER() OVER (PARTITION BY source_id ORDER BY end_date) - 1) DAY AS group_date\n  FROM raw_data\n  order by source_id, end_date\n), final as (\n  SELECT \n    source_id,\n    MIN(end_date) AS start_date,\n    MAX(end_date) AS end_date,\n  FROM grouped_date_df\n  GROUP BY source_id, group_date\n  ORDER BY source_id, group_date\n)\nfrom final\n\"\"\"\ndate_df = conn.execute(sql).df()\ngap_fig = px.timeline(date_df, x_start='start_date', x_end='end_date', y='source_id')\ngap_fig.update_yaxes(autorange=\"reversed\")\ngap_fig.show()"
+  }
+]

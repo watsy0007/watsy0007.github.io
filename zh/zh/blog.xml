@@ -6,9 +6,9 @@
       version="2.0">
 <channel>
 <title>watsy0007</title>
-<link>https://watsy0007.com/</link>
-<atom:link href="https://watsy0007.com/index.xml" rel="self" type="application/rss+xml"/>
-<description>data, statistics, and programming</description>
+<link>https://watsy0007.com/blog.html</link>
+<atom:link href="https://watsy0007.com/blog.xml" rel="self" type="application/rss+xml"/>
+<description></description>
 <generator>quarto-1.5.56</generator>
 <lastBuildDate>Sat, 10 Aug 2024 00:00:00 GMT</lastBuildDate>
 <item>
@@ -20,34 +20,26 @@
 
 
 
-<p>I’ve been using <code>DuckDB</code> as a replacement for <code>pandas</code> and <code>Python</code> for data processing tasks. It’s proven to be incredibly convenient.</p>
-<p>A friend recently asked about my use of <code>DuckDB</code> in daily work, which inspired me to write a series of articles. This is the first in that series, focusing on how to use <code>DuckDB</code> for intial data processing.</p>
-<section id="use-case-analyzing-eth-address-transactions" class="level1">
-<h1>Use Case: Analyzing ETH Address Transactions</h1>
-<p>Let’s consider a common scenario: analyzing the transaction information of a specific Ethereum (<code>ETH</code>) address.</p>
+<p>最近使用 <code>DuckDB</code> 替换 <code>pandas</code> + <code>python</code> 做数据处理的部分越来越多, 用起来非常顺手.</p>
+<p>有朋友想了解下我日常是如何使用 DuckDB 的, 考虑写成系列文章, 本篇是第一篇, 主要分享如何使用 <code>DuckDB</code> 做前期数据处理.</p>
+<section id="案例" class="level1">
+<h1>案例</h1>
+<p>用日常案例举例, 希望分析 <code>ETH</code> 某个地址交易信息.</p>
 </section>
-<section id="the-traditional-process-vs-duckdb" class="level1">
-<h1>The Traditional Process vs DuckDB</h1>
-<p>Previously, this process involved several steps:</p>
+<section id="演示" class="level1">
+<h1>演示</h1>
+<p>这个过程在以往, 首先通过 <code>requests</code> 获取数据, 接着用 <code>pandas</code> 预览数据和清洗数据, 最后才会使用 <code>DuckDB</code> 进行分析.</p>
+<p>在准备数据阶段有 3 个必要步骤</p>
 <ol type="1">
-<li>Fetching data using <code>requests</code></li>
-<li>Using <code>pandas</code> to preview and clean the data</li>
-<li>Finally, analyzing the data using <code>DuckDB</code></li>
+<li>三方接口的翻页处理</li>
+<li>提取接口返回数据中的有效字段</li>
+<li>清洗数据,空值和类型等处理</li>
 </ol>
-<p>The data preparation stage typically involves three essential steps:</p>
-<ol type="1">
-<li>Handing pagination for third-party APIs</li>
-<li>Extracting valid fields from the returned data</li>
-<li>Cleaning the data, including null values and ata types</li>
-</ol>
-<p>In this article, we’ll demonstrate how to streamline this process using the <code>blockscout</code> API<sup>1</sup>, <code>DuckDB UDF</code><sup>2</sup>, and <code>DuckDB Macro</code><sup>3</sup>.</p>
-</section>
-<section id="demonstration" class="level1">
-<h1>Demonstration</h1>
-<p>We’ll explore two solutions for processing data using <code>DuckDB</code>, First let’s import related dependencies</p>
+<p>下面展示使用 <code>blockscout</code> API<sup>1</sup>, 通过 <code>DuckDB UDF</code><sup>2</sup> 和 <code>DuckDB Macro</code><sup>3</sup> 简化这个过程.</p>
+<p>导入相关依赖</p>
 <div id="7e7c0d74" class="cell" data-execution_count="1">
 <details class="code-fold">
-<summary>Code</summary>
+<summary>代码</summary>
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> duckdb</span>
@@ -64,13 +56,12 @@ background-color: null;
 font-style: inherit;">import</span> json</span></code></pre></div>
 </details>
 </div>
-<section id="solution-1-explorer-implementation" class="level2">
-<h2 class="anchored" data-anchor-id="solution-1-explorer-implementation">Solution 1: Explorer Implementation</h2>
-<p>This approach focuses on quickly retrieving and processing transaction data. It’s ideal for rapid analysis and verification during the development stage.</p>
-<p>Get the transaction information of the <code>ETH</code> address through the <code>blockscout</code> API<sup>4</sup>, the code is as follows:</p>
+<section id="方案1" class="level2">
+<h2 class="anchored" data-anchor-id="方案1">方案1</h2>
+<p>通过 <code>blockscout</code> API<sup>4</sup> 获取 <code>ETH</code> 地址的交易信息, 代码如下:</p>
 <div id="39314b4f" class="cell" data-execution_count="2">
 <details class="code-fold">
-<summary>Code</summary>
+<summary>代码</summary>
 <div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
@@ -226,7 +217,7 @@ font-weight: bold;
 font-style: inherit;">return</span> result</span></code></pre></div>
 </details>
 </div>
-<p>Register the custom function of <code>DuckDB</code></p>
+<p>注册 <code>DuckDB</code> 的自定义函数</p>
 <div id="ce916ba0" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">conn <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -239,7 +230,7 @@ font-style: inherit;">=</span> conn.create_function(<span class="st" style="colo
 background-color: null;
 font-style: inherit;">'blockscout_api'</span>, blockscout_api)</span></code></pre></div>
 </div>
-<p>Define the macro of <code>DuckDB</code>, here for demonstration, limit the page and offset, and adjust according to the actual situation when actually using. Note the output <code>query page 1</code> and <code>query page 2</code> below</p>
+<p>定义 <code>DuckDB</code> 的宏, 这里为了演示, 限制 page 和 offset, 实际使用时会根据实际情况调整. 注意下面的输出 <code>query page 1</code> 和 <code>query page 2</code></p>
 <div id="91743eac" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1">conn.execute(<span class="st" style="color: #20794D;
 background-color: null;
@@ -254,7 +245,7 @@ font-style: inherit;">    select blockscout_api('account', 'txlist', address, st
 background-color: null;
 font-style: inherit;">"""</span>)</span></code></pre></div>
 </div>
-<p>Query the transaction information of the <code>ETH</code> address</p>
+<p>查询 <code>ETH</code> 地址的交易信息</p>
 <div id="09554385" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1">conn.execute(<span class="st" style="color: #20794D;
 background-color: null;
@@ -407,10 +398,10 @@ query page 2</code></pre>
 </div>
 </div>
 </section>
-<section id="solution-2-advanced-implementation-with-field-constraints" class="level2">
-<h2 class="anchored" data-anchor-id="solution-2-advanced-implementation-with-field-constraints">Solution 2: Advanced Implementation with Field constraints</h2>
-<p>This solution is more robust, suitable for production environments. It addresses potential issues like API field changes and null values in the returned data.</p>
-<p>Declare the required fields and types</p>
+<section id="方案2" class="level2">
+<h2 class="anchored" data-anchor-id="方案2">方案2</h2>
+<p>实际使用时候, 三方 API 字段可能会调整, 返回的数据会存在空值情况, 因此必须要<strong>严格字段约束</strong>, 这里也演示下.</p>
+<p>申明需要的字段与类型</p>
 <div id="f7ee9a3a" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1">fields <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -492,10 +483,10 @@ background-color: null;
 font-style: inherit;">str</span>,</span>
 <span id="cb7-17">}</span></code></pre></div>
 </div>
-<p>Request the <code>blockscout</code> API<sup>5</sup> and extract valid fields</p>
+<p>请求 <code>blockscout</code> API<sup>5</sup> 并提取有效字段</p>
 <div id="a7961e31" class="cell" data-execution_count="7">
 <details class="code-fold">
-<summary>Code</summary>
+<summary>代码</summary>
 <div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1">field_keys <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> fields.keys()</span>
@@ -664,10 +655,10 @@ font-weight: bold;
 font-style: inherit;">return</span> result</span></code></pre></div>
 </details>
 </div>
-<p>Register the custom function of <code>DuckDB</code>, note the adjustment of <code>page</code> and <code>offset</code>, only get 1 page of data, no pagination demonstration.</p>
+<p>注册 <code>DuckDB</code> 的自定义函数, 注意 <code>page</code> 和 <code>offset</code> 调整, 只获取 1 页面数据, 不做翻页演示.</p>
 <div id="55669c6e" class="cell" data-execution_count="8">
 <details class="code-fold">
-<summary>Code</summary>
+<summary>代码</summary>
 <div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1">conn <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> duckdb.<span class="ex" style="color: null;
@@ -694,7 +685,7 @@ background-color: null;
 font-style: inherit;">"""</span>)</span></code></pre></div>
 </details>
 </div>
-<p>Query the transaction information of the <code>ETH</code> address</p>
+<p>查询 <code>ETH</code> 地址的交易信息</p>
 <div id="e86ab09f" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1">conn.execute(<span class="st" style="color: #20794D;
 background-color: null;
@@ -796,11 +787,10 @@ font-style: inherit;">"""</span>).df()</span></code></pre></div>
 </div>
 </section>
 </section>
-<section id="summary" class="level1">
-<h1>Summary</h1>
-<p>By leveraging <code>UDF</code><sup>6</sup> and <code>Macro</code><sup>7</sup> of <code>DuckDB</code>, we can significantly simplify the data processing workflow. This approach makes data analysis more efficient and results in cleaner, more maintainable code.</p>
-<p>For day-to-day use, Solution 1 is recommended for quick analysis and verification. However, for production environments, Solution 2 is preferred due to its stricter field constraints, which help prevent issues during data processing.</p>
-<p>In addition, you can also use <code>with recursive</code><sup>8</sup> to achieve pagination query, but this process is more complicated, more <code>SQL</code> writing, not recommended for use. If you are interested, I will write an article to share it later.</p>
+<section id="总结" class="level1">
+<h1>总结</h1>
+<p>通过 <code>DuckDB</code> 的 <code>UDF</code><sup>6</sup> 和 <code>Macro</code><sup>7</sup> 可以简化数据处理的过程, 使得数据处理更加高效, 代码更加简洁. 日常使用, 分析阶段推荐大家使用方案 1 快速验证, 发布生产环境推荐大家使用方案2, 严格字段约束, 避免数据处理过程中出现问题.</p>
+<p>另外, 也可以通过 <code>with recursive</code><sup>8</sup> 实现翻页查询, 但是这个过程比较复杂, <code>SQL</code> 写的更多, 不推荐使用, 如果大家感兴趣后续有时间会写篇文章分享.</p>
 </section>
 <section id="references" class="level1">
 <h1>references</h1>
@@ -809,7 +799,7 @@ font-style: inherit;">"""</span>).df()</span></code></pre></div>
 </section>
 
 
-<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">脚注</h2>
 
 <ol>
 <li id="fn1"><p><a href="https://docs.blockscout.com/for-users/api/rpc-endpoints/account#get-transactions-by-address">Get Transactions By Address - Blockscout</a>↩︎</p></li>
@@ -821,7 +811,7 @@ font-style: inherit;">"""</span>).df()</span></code></pre></div>
 <li id="fn7"><p><a href="https://duckdb.org/docs/sql/statements/create_macro">CREATE MACRO Statement - DuckDB</a>↩︎</p></li>
 <li id="fn8"><p><a href="https://duckdb.org/docs/sql/query_syntax/with#recursive-ctes">With Clause - DuckDB</a>↩︎</p></li>
 </ol>
-</section><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></div></div></section></div> ]]></description>
+</section><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">二次使用</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh">CC BY-SA 4.0</a></div></div></section></div> ]]></description>
   <category>duckdb</category>
   <category>blockchain</category>
   <category>analysis</category>
@@ -838,25 +828,25 @@ font-style: inherit;">"""</span>).df()</span></code></pre></div>
 
 
 
-<section id="background" class="level1">
-<h1>Background</h1>
-<p>Recently, the business feedback that there is data missing, and it is necessary to locate the missing dates in order to supplement historical data.</p>
-<p>After research, it was decided to use the Gantt chart to display the daily execution of all tasks.</p>
+<section id="需求背景" class="level1">
+<h1>需求背景</h1>
+<p>近期业务反馈存在数据缺失的情况, 需要定位出缺失的日期, 以便补充历史数据.</p>
+<p>经过调研决定使用 Gantt 图展示所有任务的每日执行.</p>
 </section>
-<section id="duckdb" class="level1">
-<h1>DuckDB</h1>
-<p>Considering that the task data already exists in <code>Postgres</code>, and visualization is needed, <code>DuckDB</code> has a <code>Postgres</code> plugin that can directly obtain data Therefore, choose to use <code>DuckDB</code> with <code>Jupyter Notebook</code> to quickly verify the logic.</p>
+<section id="duckdb-登场" class="level1">
+<h1>DuckDB 登场</h1>
+<p>考虑到任务数据已经存在 <code>Postgres</code> 中, 而且需要可视化, <code>DuckDB</code> 有 <code>Postgres</code> 的插件可以直接获取数据 因此选择使用 <code>DuckDB</code> 配合 <code>Jupyter Notebook</code> 可以快速验证逻辑.</p>
 </section>
-<section id="actual-operation" class="level1">
-<h1>Actual operation</h1>
-<p>The part of <code>DuckDB</code> operating <code>Postgres</code> can refer to <a href="https://duckdb.org/docs/extensions/postgres">PostgreSQL Extension</a></p>
-<p>Omit the irrelevant code, the code logic is divided into several steps</p>
-<section id="get-data" class="level2">
-<h2 class="anchored" data-anchor-id="get-data">1. Get data</h2>
-<p>Here use mock data</p>
+<section id="实际操作" class="level1">
+<h1>实际操作</h1>
+<p><code>DuckDB</code> 操作 <code>Postgres</code> 的部分可以参考 <a href="https://duckdb.org/docs/extensions/postgres">PostgreSQL Extension</a></p>
+<p>省去掉不想关的代码, 代码逻辑分成几个步骤</p>
+<section id="获取数据" class="level2">
+<h2 class="anchored" data-anchor-id="获取数据">1. 获取数据</h2>
+<p>这里使用 mock 数据</p>
 <div id="e397e1fd" class="cell" data-execution_count="2">
 <details class="code-fold">
-<summary>Code</summary>
+<summary>代码</summary>
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> duckdb</span>
@@ -1085,10 +1075,10 @@ font-style: inherit;">=</span> conn.execute(mock_data_sql).df()</span>
 </div>
 </div>
 </section>
-<section id="group-by-date" class="level2">
-<h2 class="anchored" data-anchor-id="group-by-date">2. Group by date</h2>
-<p>The main difficulty in finding missing dates is to group by time continuity, continuous time is placed in the same group, so if a <code>source_id</code> has multiple time periods, it means that there is a time gap.</p>
-<p>Use window functions to process the time of the current row, and get the grouping time of the current row based on the time difference. The code is as follows:</p>
+<section id="对时间进行分组" class="level2">
+<h2 class="anchored" data-anchor-id="对时间进行分组">2. 对时间进行分组</h2>
+<p>寻找缺失的日期, 主要难点在于按照时间连续性进行分组, 连续的时间放在同一个分组中, 这样如果一个 <code>source_id</code> 有多个时间段, 那么表示存在时间空缺.</p>
+<p>使用窗口函数, 对当前行的时间进行处理, 根据时间差, 获得当前行的分组时间. 代码如下:</p>
 <div id="39a22afc" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1">group_date_sql <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1273,8 +1263,8 @@ font-style: inherit;">=</span> conn.execute(group_date_sql).df()</span>
 </div>
 </div>
 </section>
-<section id="group-by-source_id-and-group-date" class="level2">
-<h2 class="anchored" data-anchor-id="group-by-source_id-and-group-date">3. Group by source_id and group date</h2>
+<section id="根据-source_id-和分组时间分组" class="level2">
+<h2 class="anchored" data-anchor-id="根据-source_id-和分组时间分组">3. 根据 source_id 和分组时间分组</h2>
 <div id="d56d81f3" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">group_sql <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1360,11 +1350,11 @@ font-style: inherit;">=</span> conn.execute(group_sql).df()</span>
 </div>
 </div>
 </section>
-<section id="visualization" class="level2">
-<h2 class="anchored" data-anchor-id="visualization">4. Visualization</h2>
+<section id="可视化" class="level2">
+<h2 class="anchored" data-anchor-id="可视化">4. 可视化</h2>
 <div id="f4577dfb" class="cell" data-execution_count="5">
 <details class="code-fold">
-<summary>Code</summary>
+<summary>代码</summary>
 <div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> plotly.express <span class="im" style="color: #00769E;
@@ -1421,8 +1411,8 @@ if (outputEl) {{
 </div>
 </div>
 </section>
-<section id="full-code" class="level2">
-<h2 class="anchored" data-anchor-id="full-code">5. Full code</h2>
+<section id="完整代码" class="level2">
+<h2 class="anchored" data-anchor-id="完整代码">5. 完整代码</h2>
 <div id="7ca88169" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1">sql <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1588,15 +1578,15 @@ font-style: inherit;">"reversed"</span>)</span>
 </div>
 </section>
 </section>
-<section id="summary" class="level1">
-<h1>Summary</h1>
-<p>This article mainly introduces how to use DuckDB to find missing dates. Through window functions and grouping functions, missing dates can be quickly located.</p>
-<p>PS: Recently, the frequency of using DuckDB in work is getting higher and higher. The reason is that DuckDB is lightweight, fast, and the efficiency is surprisingly high when combined with Jupyter Notebook.</p>
+<section id="总结" class="level1">
+<h1>总结</h1>
+<p>本文主要介绍如何使用 DuckDB 查找缺失的日期, 通过窗口函数和分组函数, 可以快速定位出缺失的日期.</p>
+<p>PS: 最近工作中使用 DuckDB 的频率越来越高, 究其原因是 DuckDB 轻量, 速度快, 配合 Jupyter Notebook 效率出奇的高.</p>
 
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></div></div></section></div> ]]></description>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">二次使用</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh">CC BY-SA 4.0</a></div></div></section></div> ]]></description>
   <category>code</category>
   <category>duckdb</category>
   <guid>https://watsy0007.com/blog/find_missing_dates_with_duckdb/</guid>
@@ -1612,10 +1602,10 @@ font-style: inherit;">"reversed"</span>)</span>
 
 
 
-<p>Test <code>DuckDB</code> features based on <code>quarto</code>.</p>
-<p>All the code below can be copied and executed in a jupyter notebook.</p>
-<section id="install-dependencies" class="level1">
-<h1>Install dependencies</h1>
+<p>基于 <code>quarto</code> 测试 <code>DuckDB</code> 功能。</p>
+<p>以下所有代码可以复制到 jupyter notebook 中执行。</p>
+<section id="安装依赖" class="level1">
+<h1>安装依赖</h1>
 <div id="116a452f" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1624,8 +1614,8 @@ background-color: null;
 font-style: inherit;">--</span>quiet</span></code></pre></div>
 </div>
 </section>
-<section id="basic-configuration" class="level1">
-<h1>Basic configuration</h1>
+<section id="基础配置" class="level1">
+<h1>基础配置</h1>
 <div id="0ea29837" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
 background-color: null;
@@ -1637,7 +1627,7 @@ font-style: inherit;">=</span> duckdb.<span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">connect</span>()</span></code></pre></div>
 </div>
-<p>jupysql configuration</p>
+<p>jupysql 配置</p>
 <div id="f4639371" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1681,9 +1671,9 @@ background-color: null;
 font-style: inherit;">-</span>native</span></code></pre></div>
 </div>
 </section>
-<section id="demo-data" class="level1">
-<h1>Demo data</h1>
-<p>Refer to <a href="https://duckdb.org/docs/guides/python/jupyter">Jupyter Notebooks</a></p>
+<section id="演示数据" class="level1">
+<h1>演示数据</h1>
+<p>参考 <a href="https://duckdb.org/docs/guides/python/jupyter">Jupyter Notebooks</a></p>
 <div id="760f4b78" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1738,7 +1728,7 @@ font-style: inherit;">with</span> short_trips</span></code></pre></div>
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></div></div></section></div> ]]></description>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">二次使用</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh">CC BY-SA 4.0</a></div></div></section></div> ]]></description>
   <category>code</category>
   <category>duckdb</category>
   <guid>https://watsy0007.com/blog/duckdb-example/</guid>
