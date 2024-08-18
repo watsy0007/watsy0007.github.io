@@ -61,6 +61,8 @@ jobs:
           path: _site
       - name: deploy gh-pages
         run: |
+          git config --global user.email "gh-pages-action@github.com"
+          git config --global user.name "gh-pages-action"
           cp -r _site/en/* .
           cp -r _site/zh .
           rm -rf _site
