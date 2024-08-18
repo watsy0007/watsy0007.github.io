@@ -10,7 +10,7 @@
 <atom:link href="https://watsy0007.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description></description>
 <generator>quarto-1.5.56</generator>
-<lastBuildDate>Fri, 09 Aug 2024 16:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 10 Aug 2024 00:00:00 GMT</lastBuildDate>
 <item>
   <title>Analyzing Blockchain Data with DuckDB: Data Preparation</title>
   <link>https://watsy0007.com/blog/analyzing_blockchain_data_with_duckdb_1/</link>
@@ -37,7 +37,7 @@
 </ol>
 <p>下面展示使用 <code>blockscout</code> API<sup>1</sup>, 通过 <code>DuckDB UDF</code><sup>2</sup> 和 <code>DuckDB Macro</code><sup>3</sup> 简化这个过程.</p>
 <p>导入相关依赖</p>
-<div id="0abd55c5" class="cell" data-execution_count="1">
+<div id="79259279" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>代码</summary>
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
@@ -59,7 +59,7 @@ font-style: inherit;">import</span> json</span></code></pre></div>
 <section id="方案1" class="level2">
 <h2 class="anchored" data-anchor-id="方案1">方案1</h2>
 <p>通过 <code>blockscout</code> API<sup>4</sup> 获取 <code>ETH</code> 地址的交易信息, 代码如下:</p>
-<div id="fbc28a0b" class="cell" data-execution_count="2">
+<div id="ba79fc24" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>代码</summary>
 <div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="kw" style="color: #003B4F;
@@ -218,7 +218,7 @@ font-style: inherit;">return</span> result</span></code></pre></div>
 </details>
 </div>
 <p>注册 <code>DuckDB</code> 的自定义函数</p>
-<div id="7d338afc" class="cell" data-execution_count="3">
+<div id="b71f417e" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">conn <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> duckdb.<span class="ex" style="color: null;
@@ -231,7 +231,7 @@ background-color: null;
 font-style: inherit;">'blockscout_api'</span>, blockscout_api)</span></code></pre></div>
 </div>
 <p>定义 <code>DuckDB</code> 的宏, 这里为了演示, 限制 page 和 offset, 实际使用时会根据实际情况调整. 注意下面的输出 <code>query page 1</code> 和 <code>query page 2</code></p>
-<div id="06484232" class="cell" data-execution_count="4">
+<div id="a7fde860" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1">conn.execute(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"""</span></span>
@@ -246,7 +246,7 @@ background-color: null;
 font-style: inherit;">"""</span>)</span></code></pre></div>
 </div>
 <p>查询 <code>ETH</code> 地址的交易信息</p>
-<div id="34e739d1" class="cell" data-execution_count="5">
+<div id="dd5e5f8a" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1">conn.execute(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"""</span></span>
@@ -367,7 +367,7 @@ query page 2</code></pre>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">0</td>
 <td>20485198</td>
-<td>2024-08-09 00:55:23+08:00</td>
+<td>2024-08-08 16:55:23+00:00</td>
 <td>"0x16e9d0643ce6bf9bc59d5e6c756a196af2941cefc46...</td>
 <td>from</td>
 <td>to</td>
@@ -376,7 +376,7 @@ query page 2</code></pre>
 <tr class="even">
 <td data-quarto-table-cell-role="th">1</td>
 <td>20488106</td>
-<td>2024-08-09 10:38:47+08:00</td>
+<td>2024-08-09 02:38:47+00:00</td>
 <td>"0x3f29ab5ba5779df75aee038cb9d529ab7d7e94ff727...</td>
 <td>from</td>
 <td>to</td>
@@ -385,7 +385,7 @@ query page 2</code></pre>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2</td>
 <td>20490674</td>
-<td>2024-08-09 19:14:23+08:00</td>
+<td>2024-08-09 11:14:23+00:00</td>
 <td>"0xcba85af304112c712c978968ff19fb150cdfd18e1f4...</td>
 <td>from</td>
 <td>to</td>
@@ -402,7 +402,7 @@ query page 2</code></pre>
 <h2 class="anchored" data-anchor-id="方案2">方案2</h2>
 <p>实际使用时候, 三方 API 字段可能会调整, 返回的数据会存在空值情况, 因此必须要<strong>严格字段约束</strong>, 这里也演示下.</p>
 <p>申明需要的字段与类型</p>
-<div id="a0cf2648" class="cell" data-execution_count="6">
+<div id="3825a7b9" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1">fields <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> {</span>
@@ -484,7 +484,7 @@ font-style: inherit;">str</span>,</span>
 <span id="cb7-17">}</span></code></pre></div>
 </div>
 <p>请求 <code>blockscout</code> API<sup>5</sup> 并提取有效字段</p>
-<div id="fdd8baaa" class="cell" data-execution_count="7">
+<div id="a6fa837c" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>代码</summary>
 <div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1">field_keys <span class="op" style="color: #5E5E5E;
@@ -656,7 +656,7 @@ font-style: inherit;">return</span> result</span></code></pre></div>
 </details>
 </div>
 <p>注册 <code>DuckDB</code> 的自定义函数, 注意 <code>page</code> 和 <code>offset</code> 调整, 只获取 1 页面数据, 不做翻页演示.</p>
-<div id="57d2fe80" class="cell" data-execution_count="8">
+<div id="a7229ae8" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>代码</summary>
 <div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1">conn <span class="op" style="color: #5E5E5E;
@@ -686,7 +686,7 @@ font-style: inherit;">"""</span>)</span></code></pre></div>
 </details>
 </div>
 <p>查询 <code>ETH</code> 地址的交易信息</p>
-<div id="457d9d66" class="cell" data-execution_count="9">
+<div id="d60438b8" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1">conn.execute(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"""</span></span>
@@ -755,7 +755,7 @@ font-style: inherit;">"""</span>).df()</span></code></pre></div>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">0</td>
 <td>20485198</td>
-<td>2024-08-09 00:55:23+08:00</td>
+<td>2024-08-08 16:55:23+00:00</td>
 <td>0x16e9d0643ce6bf9bc59d5e6c756a196af2941cefc467...</td>
 <td>from</td>
 <td>to</td>
@@ -764,7 +764,7 @@ font-style: inherit;">"""</span>).df()</span></code></pre></div>
 <tr class="even">
 <td data-quarto-table-cell-role="th">1</td>
 <td>20488106</td>
-<td>2024-08-09 10:38:47+08:00</td>
+<td>2024-08-09 02:38:47+00:00</td>
 <td>0x3f29ab5ba5779df75aee038cb9d529ab7d7e94ff7277...</td>
 <td>from</td>
 <td>to</td>
@@ -773,7 +773,7 @@ font-style: inherit;">"""</span>).df()</span></code></pre></div>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2</td>
 <td>20490674</td>
-<td>2024-08-09 19:14:23+08:00</td>
+<td>2024-08-09 11:14:23+00:00</td>
 <td>0xcba85af304112c712c978968ff19fb150cdfd18e1f48...</td>
 <td>from</td>
 <td>to</td>
@@ -816,7 +816,7 @@ font-style: inherit;">"""</span>).df()</span></code></pre></div>
   <category>blockchain</category>
   <category>analysis</category>
   <guid>https://watsy0007.com/blog/analyzing_blockchain_data_with_duckdb_1/</guid>
-  <pubDate>Fri, 09 Aug 2024 16:00:00 GMT</pubDate>
+  <pubDate>Sat, 10 Aug 2024 00:00:00 GMT</pubDate>
   <media:content url="https://watsy0007.com/blog/analyzing_blockchain_data_with_duckdb_1/analyse-blockchain-data-thumbnail.webp" medium="image" type="image/webp"/>
 </item>
 <item>
@@ -844,7 +844,7 @@ font-style: inherit;">"""</span>).df()</span></code></pre></div>
 <section id="获取数据" class="level2">
 <h2 class="anchored" data-anchor-id="获取数据">1. 获取数据</h2>
 <p>这里使用 mock 数据</p>
-<div id="715893a5" class="cell" data-execution_count="2">
+<div id="79394fd0" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>代码</summary>
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
@@ -1079,7 +1079,7 @@ font-style: inherit;">=</span> conn.execute(mock_data_sql).df()</span>
 <h2 class="anchored" data-anchor-id="对时间进行分组">2. 对时间进行分组</h2>
 <p>寻找缺失的日期, 主要难点在于按照时间连续性进行分组, 连续的时间放在同一个分组中, 这样如果一个 <code>source_id</code> 有多个时间段, 那么表示存在时间空缺.</p>
 <p>使用窗口函数, 对当前行的时间进行处理, 根据时间差, 获得当前行的分组时间. 代码如下:</p>
-<div id="de4e7442" class="cell" data-execution_count="3">
+<div id="c87a7ac5" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1">group_date_sql <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
@@ -1265,7 +1265,7 @@ font-style: inherit;">=</span> conn.execute(group_date_sql).df()</span>
 </section>
 <section id="根据-source_id-和分组时间分组" class="level2">
 <h2 class="anchored" data-anchor-id="根据-source_id-和分组时间分组">3. 根据 source_id 和分组时间分组</h2>
-<div id="35ea2cbf" class="cell" data-execution_count="4">
+<div id="fb25f0a1" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">group_sql <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
@@ -1352,7 +1352,7 @@ font-style: inherit;">=</span> conn.execute(group_sql).df()</span>
 </section>
 <section id="可视化" class="level2">
 <h2 class="anchored" data-anchor-id="可视化">4. 可视化</h2>
-<div id="005ba48c" class="cell" data-execution_count="5">
+<div id="48a190b2" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>代码</summary>
 <div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="im" style="color: #00769E;
@@ -1383,9 +1383,9 @@ font-style: inherit;">"reversed"</span>)</span>
 <span id="cb4-4">fig.show()</span></code></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div>                            <div id="f2e7a8b6-22a5-47ef-92b0-aca914dad072" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("f2e7a8b6-22a5-47ef-92b0-aca914dad072")) {                    Plotly.newPlot(                        "f2e7a8b6-22a5-47ef-92b0-aca914dad072",                        [{"alignmentgroup":"True","base":["2024-07-01T00:00:00","2024-07-05T00:00:00","2024-07-01T00:00:00","2024-07-01T00:00:00","2024-07-05T00:00:00"],"hovertemplate":"start_date=%{base}\u003cbr\u003eend_date=%{x}\u003cbr\u003esource_id=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":"#636efa","pattern":{"shape":""}},"name":"","offsetgroup":"","orientation":"h","showlegend":false,"textposition":"auto","x":[172800000.0,86400000.0,172800000.0,691200000.0,345600000.0],"xaxis":"x","y":[1,1,2,3,4],"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"type":"date"},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"source_id"},"autorange":"reversed"},"legend":{"tracegroupgap":0},"barmode":"overlay"},                        {"responsive": true}                    ).then(function(){
+<div>                            <div id="14a1327e-8b74-4234-904c-72d765cc055a" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("14a1327e-8b74-4234-904c-72d765cc055a")) {                    Plotly.newPlot(                        "14a1327e-8b74-4234-904c-72d765cc055a",                        [{"alignmentgroup":"True","base":["2024-07-01T00:00:00","2024-07-05T00:00:00","2024-07-01T00:00:00","2024-07-01T00:00:00","2024-07-05T00:00:00"],"hovertemplate":"start_date=%{base}\u003cbr\u003eend_date=%{x}\u003cbr\u003esource_id=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":"#636efa","pattern":{"shape":""}},"name":"","offsetgroup":"","orientation":"h","showlegend":false,"textposition":"auto","x":[172800000.0,86400000.0,172800000.0,691200000.0,345600000.0],"xaxis":"x","y":[1,1,2,3,4],"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"type":"date"},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"source_id"},"autorange":"reversed"},"legend":{"tracegroupgap":0},"barmode":"overlay"},                        {"responsive": true}                    ).then(function(){
                             
-var gd = document.getElementById('f2e7a8b6-22a5-47ef-92b0-aca914dad072');
+var gd = document.getElementById('14a1327e-8b74-4234-904c-72d765cc055a');
 var x = new MutationObserver(function (mutations, observer) {{
         var display = window.getComputedStyle(gd).display;
         if (!display || display === 'none') {{
@@ -1413,7 +1413,7 @@ if (outputEl) {{
 </section>
 <section id="完整代码" class="level2">
 <h2 class="anchored" data-anchor-id="完整代码">5. 完整代码</h2>
-<div id="628cc3cb" class="cell" data-execution_count="6">
+<div id="1b897b9d" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1">sql <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
@@ -1590,7 +1590,7 @@ font-style: inherit;">"reversed"</span>)</span>
   <category>code</category>
   <category>duckdb</category>
   <guid>https://watsy0007.com/blog/find_missing_dates_with_duckdb/</guid>
-  <pubDate>Thu, 25 Jul 2024 16:00:00 GMT</pubDate>
+  <pubDate>Fri, 26 Jul 2024 00:00:00 GMT</pubDate>
   <media:content url="https://watsy0007.com/blog/find_missing_dates_with_duckdb/missing-dates-thumbnail.webp" medium="image" type="image/webp"/>
 </item>
 <item>
@@ -1606,7 +1606,7 @@ font-style: inherit;">"reversed"</span>)</span>
 <p>以下所有代码可以复制到 jupyter notebook 中执行。</p>
 <section id="安装依赖" class="level1">
 <h1>安装依赖</h1>
-<div id="6d2ef62a" class="cell" data-execution_count="1">
+<div id="2649eb25" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">!</span>pip install duckdb jupysql <span class="op" style="color: #5E5E5E;
@@ -1616,7 +1616,7 @@ font-style: inherit;">--</span>quiet</span></code></pre></div>
 </section>
 <section id="基础配置" class="level1">
 <h1>基础配置</h1>
-<div id="0dfcfc8e" class="cell" data-execution_count="2">
+<div id="e07ed38b" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> duckdb</span>
@@ -1628,7 +1628,7 @@ background-color: null;
 font-style: inherit;">connect</span>()</span></code></pre></div>
 </div>
 <p>jupysql 配置</p>
-<div id="334bac3e" class="cell" data-execution_count="3">
+<div id="ba380349" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">%</span>load_ext sql</span>
@@ -1674,7 +1674,7 @@ font-style: inherit;">-</span>native</span></code></pre></div>
 <section id="演示数据" class="level1">
 <h1>演示数据</h1>
 <p>参考 <a href="https://duckdb.org/docs/guides/python/jupyter">Jupyter Notebooks</a></p>
-<div id="096d3865" class="cell" data-execution_count="4">
+<div id="d43e1e6e" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">%%</span>sql <span class="op" style="color: #5E5E5E;
@@ -1699,7 +1699,7 @@ font-style: inherit;">6.3</span></span></code></pre></div>
 <span style="None">Skipping execution...</span>
 </div>
 </div>
-<div id="c3395ac4" class="cell" data-execution_count="5">
+<div id="aee8860a" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">%</span>sqlplot histogram <span class="op" style="color: #5E5E5E;
@@ -1732,7 +1732,7 @@ font-style: inherit;">with</span> short_trips</span></code></pre></div>
   <category>code</category>
   <category>duckdb</category>
   <guid>https://watsy0007.com/blog/duckdb-example/</guid>
-  <pubDate>Fri, 16 Feb 2024 16:00:00 GMT</pubDate>
+  <pubDate>Sat, 17 Feb 2024 00:00:00 GMT</pubDate>
   <media:content url="https://watsy0007.com/blog/duckdb-example/duckdb-sql-analysis-thumbnail.webp" medium="image" type="image/webp"/>
 </item>
 </channel>

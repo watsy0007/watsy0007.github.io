@@ -1,6 +1,6 @@
 [
   {
-    "listing": "/blog.html",
+    "listing": "/index.html",
     "items": [
       "/blog/analyzing_blockchain_data_with_duckdb_1/index.html",
       "/blog/find_missing_dates_with_duckdb/index.html",
@@ -8,7 +8,7 @@
     ]
   },
   {
-    "listing": "/index.html",
+    "listing": "/blog.html",
     "items": [
       "/blog/analyzing_blockchain_data_with_duckdb_1/index.html",
       "/blog/find_missing_dates_with_duckdb/index.html",
