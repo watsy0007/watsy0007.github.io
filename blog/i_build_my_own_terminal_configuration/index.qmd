@@ -1,0 +1,128 @@
+---
+title: "I Build My Own Terminal Configuration"
+date: "2024-08-26"
+categories: [productivity]
+image: "i-build-my-own-terminal-configuration-thumpnail.webp"
+format:
+  html:
+    code-fold: true
+---
+
+::: {.content-visible when-profile="zh"}
+最近回忆起自己作为开发人员的职业生涯，我使用过无数工具，包括各种集成开发环境（IDE）、数据库管理软件和各种系统工具。尝试过 10 多把键盘。随着年龄的增长，逐渐意识到时间越来越重要，以前的我在这些琐碎事情上浪费太多时间。
+
+我想是时候专注于长期目标, 尽可能的做得更少, 更多思考。这个想法促使我创建自己的终端配置。考虑到我已经使用了 10 年的 MacOS，作为后端工程师也有 8 年，而且日常我经常使用终端。我知道终端可以有效的提高我的生产力.
+
+最后，我想减少对付费工具的依赖。付费软件会经常更改其用户界面，引入新功能，废弃一些功能。我理解公司需要“创新”和赚钱，但这是以用户体验为代价,当我依赖的工具发生重大变化或被停用，我的一切基于工具建立的知识都作废了, 这个过程我经历了好几次!!! 以后要避免这种风险。
+
+我的目标是使用**简单**、**有效的工具**， **帮助我完成工作** ，而不会增加不必要的复杂性。
+:::
+
+::: {.content-visible when-profile="en"}
+# Why
+
+Throughout my career as a developer, I've used numerous tools, including various IDEs, database management software, and a wide range of system utilities. I've even experimented with more than 20 keyboards. 
+However, as I've grown older, I've come to realized that time is a precious, and I've been wasting too much of it on these trivial distractions. I found myself lost in the constant juggling of new tools and gadgets.
+
+Now, it's time to take responsibility for my life and focus on long-term goals. I'm striving to do less but think more deeply about how to improve my quality of life.
+
+This realization led me to create my own terminal configuration. Having used MacOS for nearly as decade and worked as a backend engineer for eight years. I can use terminal to do most of my work.
+
+Another catalyst for this change was reading about DHH's decision to leave Apple and switch to Linux, It inspired me and made me feel it was time for a change in my own workflow.
+
+Lastly, I want to reduce my dependence on constantly evolving enterprise tools. These applications frequently change their UI, introduce flashy new features, and deprecate others. While I understand the need for companies to innovate and make money, it often comes at the cost of user experience and knowledge. I've had my expertise rendered obsolete server times when tools I relied on changed dramatically or were discontinued. I'm tired of this cycle and want to minimize the risk. My goal is to use **simple**, **effective tools** that **help me do my work** without unnecessary complexity.
+:::
+
+::: {.content-visible when-profile="zh"}
+基于以上考虑，我的目标很明确：使用可以提高我的编码效率的工具。
+
+以下是我的标准：
+
+1. 开源：假设创建者放弃了项目，我还可以使用甚至可能维护自己的版本。
+2. 可定制：可以能够禁用我不需要的功能。
+3. 熟悉：我熟悉喜欢的工具应该继续使用，减少迁移的压力。
+4. 键盘为中心：尽可能多地使用键盘以提高效率。
+
+按照这些标准，我选择了 NeoVim 替换其他 IDE，当在 Kitty、WezTerm、iTerm2 和系统默认终端之间选择终端时，我选择了 WezTerm。因为可以使用 Lua 同时配置 NeoVim 和 WezTerm。
+:::
+
+::: {.content-visible when-profile="en"}
+# Goal
+
+Give these concerns, my objectives are clear: I want to use tools that can genuinely improve my coding productivity. Here are my criteria:
+
+1. **Open Source**: If the creator abandons the project, I can still use and potentially maintain  my own version.
+2. **Customizable**: I should be able to disable features I don't need.
+3. **Familiar**: I should still be able to use my preferred tools to reduce the stress of migration.
+4. **Keyboard-centric**: I want to use the keyboard as much as possible for efficiency.
+
+Following these criteria, I chose NeoVim to replace other IDEs, When selecting a terminal emulator among options like Kitty, WezTerm, iTerm2, and the system default terminal. I opted for WezTerm. This choice was influenced by the fact that I can use Lua to configure both NeoVim and WezTerm.
+:::
+
+::: {.content-visible when-profile="zh"}
+下面，让我介绍一下我的终端配置步骤。我的工具包括 WezTerm、NeoVim、Sketchybar、yabai 和 skhd。
+
+## WezTerm
+
+我的 WezTerm 配置主要是从这篇优秀的文章 [Okay, I really like WezTerm](https://alexplescan.com/posts/2024/08/10/wezterm/) 中获取灵感。通过这篇文章我了解了 WezTerm 的基本功能，如何使用 Lua 配置这些功能。因此我的大部分 WezTerm 配置都是参考这篇文章配置的。
+
+## NeoVim
+
+当我开始配置 NeoVim 时，我最初考虑了几种开箱即用的解决方案，如 DoomVim、LunarVim、AstroVim 等。之后觉得这些都太复杂了, 因此打算从头开始构建自己的配置，我花了一下午阅读官方 [NeoVim 文档](https://neovim.io/doc/user/index.html) 后, 意识到 NeoVim 的复杂性使得从零开始在这个阶段变得不切实际。
+
+于是改变下策略，使用第三方包来实现我的目标，尽可能保持尽可能简洁。在这个过程中非常好奇 DHH 是如何快速实现切换到 NeoVim 并且配置了一套 IDE 的，通过分析 [omakub](https://github.com/basecamp/omakub) 代码，觉得 DHH 简直太聪明了, 他直接使用 LayVim 提供的 [starter](https://github.com/LazyVim/starter) 模板，LazyVim 我已经非常熟悉了。 因此，我的 NeoVim 配置几乎完全参考 omakub 的设置。直接使用 starter.
+
+## Sketchybar
+
+sketchybar 是 MacOS 菜单栏的高度可定制替代品。在用 Sketchybar 之前，我使用 [bartender](https://www.macbartender.com/) 和 [iStat Menus](https://bjango.com/mac/istatmenus/) 来管理和简化我的状态栏。Sketchybar 提供了一个受欢迎的开源替代方案，与我的目标一致。这是我的 [sketchybar 配置链接](https://github.com/watsy0007/sketchybar)。
+
+## Yabai + skhd
+
+最后一块拼图是我最初认为最不重要但现在经常使用的工具组合。遵循 MacOS 功能用户社区的常见做法，我选择了 yabai 用于窗口管理，skhd 用于自定义键盘快捷键。
+
+Yabai 允许高级窗口平铺和管理，而 skhd 让我可以为各种应用程序控件创建自定义键盘快捷键。这是我的 [yabai 配置链接](https://gist.github.com/watsy0007/b6cb19b2fdd38655c2545d3a4a36957b)，这是我的 [skhd 配置链接](https://gist.github.com/watsy0007/e08bfebc74acefe518fc2af504edef07)。
+即使我已经习惯于触控板手势，还是能感觉到 yabai 和 skhd 的组合显著提高了我的工作效率。
+:::
+
+::: {.content-visible when-profile="en"}
+# How
+
+Now, let me introduce you to my terminal configuration step. My toolkit consists of WezTerm, NeoVim, Sketchybar, yabai and skhd. Let's explore each of these components in detail.
+
+## WezTerm
+
+For my WezTerm configuration, I drew inspiration from the article [Okay, I really like WezTerm](https://alexplescan.com/posts/2024/08/10/wezterm/) This comprehensive guide introduced me to WezTerm's basic features and taught  me how to configure them using Lua. Most of my WezTerm configuration is adapted from this excellent article.
+
+## NeoVim
+
+When it came to configuring NeoVim, I initially considered several out-of-the-box solutions like DoomVim, LunarVim, AstroVim, etc. My first instinct was to build my configuration from scratch, so I began by reading the official [NeoVim documentation](https://neovim.io/doc/user/index.html). However, after spending an entire afternoon poring over the docs. I realized that NeoVim's complexity made it impractical for me to start from zero at this stage.
+
+I changed my approach, deciding to use third-party packages to achieve my goals while keeping things as minimal as necessary. Curious about DHH's NeoVim setup, I investigated the [omakub](https://github.com/basecamp/omakub) repository and was impressed by his ingenious solution. DHH use the [starter](https://github.com/LazyVim/starter) template for LazyVim, a configuration framework I was already familiar with. This discovery made it convenient for me to begin with the starter template. As a result, my NeoVim configuration is almost fully based on omakub's setup.
+
+## Sketchybar
+
+Sketchybar is is a highly customizable replacement for the MacOS menu bar. Before discovering Sketchybar, I used  [bartender](https://www.macbartender.com/)  and [iStat Menus](https://bjango.com/mac/istatmenus/) to manage and simplify my status bar. Sketchybar offerd a popular, open-source alternative that aligned with my goals. Here is my [sketchybar configuration link](https://github.com/watsy0007/sketchybar)
+
+## Yabai + skhd
+
+The final piece of my setup, which I initially considered least important but now use frequently, is a solution for controlling windows with the keyboard. Following common practice in the MacOS power-user community, I chose yabai for window management and skhd for custom keyboard shortcuts.
+
+Yabai allows for advanced window tiling and management, while skhd enables me to create custom keyboard shortcuts for various and application controls.  here is my [yabai configuration link](https://gist.github.com/watsy0007/b6cb19b2fdd38655c2545d3a4a36957b), and here is my [skhd configuration link](https://gist.github.com/watsy0007/e08bfebc74acefe518fc2af504edef07)
+
+This combination has significantly improved my workflow, making window management effortless even though I was already comfortable with trackpad gestures.
+:::
+
+::: {.content-visible when-profile="zh"}
+# 结论
+
+在这篇文章中，我解释了构建自定义终端配置的动机，并概述了我选择的工具。虽然我没有深入探讨每个配置的细节，但我分享了我的设置文件链接，以供大家参考。
+
+现在这个配置我相当满意，我认为达到了我的预定目标。随着我继续使用和完善，我对后续进一步的优化相当期待。如果大家对我的配置有任何问题或建议，请告诉我。
+:::
+
+::: {.content-visible when-profile="en"}
+# Conclusion
+In this post, I've explained my motivations for building a custom terminal configuration and provided an overview of the tools I've chosen. While I haven't delved into the specifics of each configuration. I've shared links to my setup files for those interested in replicating or adapting my approach.
+
+This journey has not only improve my productivity but also deepened my understand of the tools I use daily. As I continue to use and refine this setup, I look forward to further optimizations and discoveries. If you have any questions or suggestions about my configuration, please let me know.
+:::
