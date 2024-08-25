@@ -223,7 +223,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 <p>下面展示使用 <code>blockscout</code> API<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, 通过 <code>DuckDB UDF</code><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> 和 <code>DuckDB Macro</code><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> 简化这个过程.</p>
 <p>导入相关依赖</p>
-<div id="60f611f0" class="cell" data-execution_count="1">
+<div id="7ef32ee6" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>代码</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> duckdb</span>
@@ -235,7 +235,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="方案1" class="level2">
 <h2 class="anchored" data-anchor-id="方案1">方案1</h2>
 <p>通过 <code>blockscout</code> API<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> 获取 <code>ETH</code> 地址的交易信息, 代码如下:</p>
-<div id="48475b49" class="cell" data-execution_count="2">
+<div id="d55a89e8" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>代码</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> blockscout_api(module: <span class="bu">str</span>, action: <span class="bu">str</span>, address: <span class="bu">str</span>, start_block: <span class="bu">int</span>, end_block: <span class="bu">int</span>, page: <span class="bu">int</span>, offset: <span class="bu">int</span>) <span class="op">-&gt;</span> <span class="bu">list</span>[<span class="bu">str</span>]:</span>
@@ -258,19 +258,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </details>
 </div>
 <p>注册 <code>DuckDB</code> 的自定义函数</p>
-<div id="206086ec" class="cell" data-execution_count="3">
+<div id="928250b7" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>conn <span class="op">=</span> duckdb.<span class="ex">connect</span>()</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>conn <span class="op">=</span> conn.create_function(<span class="st">'blockscout_api'</span>, blockscout_api)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>定义 <code>DuckDB</code> 的宏, 这里为了演示, 限制 page 和 offset, 实际使用时会根据实际情况调整. 注意下面的输出 <code>query page 1</code> 和 <code>query page 2</code></p>
-<div id="42766772" class="cell" data-execution_count="4">
+<div id="1c1cce87" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>conn.execute(<span class="st">"""</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="st">CREATE OR REPLACE MACRO blockscout_trxs(address, start_block, end_block) as table </span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="st">    select blockscout_api('account', 'txlist', address, start_block, end_block, 1, 2) as data</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>查询 <code>ETH</code> 地址的交易信息</p>
-<div id="56e90e27" class="cell" data-execution_count="5">
+<div id="63a3ff16" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>conn.execute(<span class="st">"""</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="st">with raw_transactions as (</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="st">    select unnest(data) as trx from blockscout_trxs('0x603602E9A2ac7f1E26717C2b2193Fd68f5fafFf6', 20485198, 20490674)</span></span>
@@ -362,7 +362,7 @@ query page 2</code></pre>
 <h2 class="anchored" data-anchor-id="方案2">方案2</h2>
 <p>实际使用时候, 三方 API 字段可能会调整, 返回的数据会存在空值情况, 因此必须要<strong>严格字段约束</strong>, 这里也演示下.</p>
 <p>申明需要的字段与类型</p>
-<div id="07d7f908" class="cell" data-execution_count="6">
+<div id="92ab5aa7" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fields <span class="op">=</span> {</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">'blockHash'</span>: <span class="bu">str</span>,</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">'blockNumber'</span>: <span class="bu">int</span>,</span>
@@ -382,7 +382,7 @@ query page 2</code></pre>
 <span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>请求 <code>blockscout</code> API<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> 并提取有效字段</p>
-<div id="92c443fa" class="cell" data-execution_count="7">
+<div id="34a4c931" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>代码</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>field_keys <span class="op">=</span> fields.keys()</span>
@@ -406,7 +406,7 @@ query page 2</code></pre>
 </details>
 </div>
 <p>注册 <code>DuckDB</code> 的自定义函数, 注意 <code>page</code> 和 <code>offset</code> 调整, 只获取 1 页面数据, 不做翻页演示.</p>
-<div id="f877d061" class="cell" data-execution_count="8">
+<div id="57aa9690" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>代码</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>conn <span class="op">=</span> duckdb.<span class="ex">connect</span>()</span>
@@ -418,7 +418,7 @@ query page 2</code></pre>
 </details>
 </div>
 <p>查询 <code>ETH</code> 地址的交易信息</p>
-<div id="b902b534" class="cell" data-execution_count="9">
+<div id="8b90d921" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>conn.execute(<span class="st">"""</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="st">with raw_transactions as (</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="st">    select unnest(data) as trx from blockscout_trxs_with_fields('0x603602E9A2ac7f1E26717C2b2193Fd68f5fafFf6', 20485198, 20490674)</span></span>

@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/blog/i_build_my_own_terminal_configuration/index.html",
       "/blog/analyzing_blockchain_data_with_duckdb_1/index.html",
       "/blog/find_missing_dates_with_duckdb/index.html",
       "/blog/duckdb-example/index.html"
@@ -10,6 +11,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/blog/i_build_my_own_terminal_configuration/index.html",
       "/blog/analyzing_blockchain_data_with_duckdb_1/index.html",
       "/blog/find_missing_dates_with_duckdb/index.html",
       "/blog/duckdb-example/index.html"

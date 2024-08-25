@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "watsy0007",
     "section": "",
-    "text": "Analyzing Blockchain Data with DuckDB: Data Preparation\n\n\n7 分钟\n\n\n\n\n\n\n2024年8月10日\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nfind missing dates with DuckDB\n\n\n5 分钟\n\n\n\n\n\n\n2024年7月26日\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDuckDB Example\n\n\n1 分钟\n\n\n\n\n\n\n2024年2月17日\n\n\n\n\n\n\n\n\n无匹配项"
+    "text": "I Build My Own Terminal Configuration\n\n\n5 分钟\n\n\n\n\n\n\n2024年8月26日\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAnalyzing Blockchain Data with DuckDB: Data Preparation\n\n\n7 分钟\n\n\n\n\n\n\n2024年8月10日\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nfind missing dates with DuckDB\n\n\n5 分钟\n\n\n\n\n\n\n2024年7月26日\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDuckDB Example\n\n\n1 分钟\n\n\n\n\n\n\n2024年2月17日\n\n\n\n\n\n\n\n\n无匹配项"
   },
   {
     "objectID": "blog/analyzing_blockchain_data_with_duckdb_1/index.html",
@@ -35,11 +35,11 @@
     "text": "脚注\n\n\nGet Transactions By Address - Blockscout↩︎\nPython Runction API - DuckDB↩︎\nCREATE MACRO Statement - DuckDB↩︎\nGet Transactions By Address - Blockscout↩︎\nGet Transactions By Address - Blockscout↩︎\nPython Runction API - DuckDB↩︎\nCREATE MACRO Statement - DuckDB↩︎\nWith Clause - DuckDB↩︎"
   },
   {
-    "objectID": "blog.html",
-    "href": "blog.html",
-    "title": "watsy0007",
+    "objectID": "blog/duckdb-example/index.html",
+    "href": "blog/duckdb-example/index.html",
+    "title": "DuckDB Example",
     "section": "",
-    "text": "Analyzing Blockchain Data with DuckDB: Data Preparation\n\n\n7 分钟\n\n\n\n\n\n\n2024年8月10日\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nfind missing dates with DuckDB\n\n\n5 分钟\n\n\n\n\n\n\n2024年7月26日\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDuckDB Example\n\n\n1 分钟\n\n\n\n\n\n\n2024年2月17日\n\n\n\n\n\n\n\n\n无匹配项"
+    "text": "基于 quarto 测试 DuckDB 功能。\n以下所有代码可以复制到 jupyter notebook 中执行。\n\n安装依赖\n\n!pip install duckdb jupysql --quiet\n\n\n\n基础配置\n\nimport duckdb\n\nconn = duckdb.connect()\n\njupysql 配置\n\n%load_ext sql\n\n%config SqlMagic.autopandas = True\n%config SqlMagic.feedback = 0\n%config SqlMagic.displaycon = True\n%config SqlMagic.displaylimit = 10\n\n%sql conn --alias duckdb-native\n\n\n\n演示数据\n参考 Jupyter Notebooks\n\n%%sql --save short_trips --no-execute\nSELECT *\nFROM 'https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2021-01.parquet'\nWHERE trip_distance &lt; 6.3\n\nSkipping execution...\n\n\n\n%sqlplot histogram --table short_trips --column trip_distance --bins 10 --with short_trips\n\n\n\n\n\n\n\n\n\n\n\n\n二次使用CC BY-SA 4.0"
   },
   {
     "objectID": "about.html",
@@ -56,11 +56,46 @@
     "text": "Elven | Head Data Scientist | June 2018 - present"
   },
   {
-    "objectID": "blog/duckdb-example/index.html",
-    "href": "blog/duckdb-example/index.html",
-    "title": "DuckDB Example",
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "watsy0007",
     "section": "",
-    "text": "基于 quarto 测试 DuckDB 功能。\n以下所有代码可以复制到 jupyter notebook 中执行。\n\n安装依赖\n\n!pip install duckdb jupysql --quiet\n\n\n\n基础配置\n\nimport duckdb\n\nconn = duckdb.connect()\n\njupysql 配置\n\n%load_ext sql\n\n%config SqlMagic.autopandas = True\n%config SqlMagic.feedback = 0\n%config SqlMagic.displaycon = True\n%config SqlMagic.displaylimit = 10\n\n%sql conn --alias duckdb-native\n\n\n\n演示数据\n参考 Jupyter Notebooks\n\n%%sql --save short_trips --no-execute\nSELECT *\nFROM 'https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2021-01.parquet'\nWHERE trip_distance &lt; 6.3\n\nSkipping execution...\n\n\n\n%sqlplot histogram --table short_trips --column trip_distance --bins 10 --with short_trips\n\n\n\n\n\n\n\n\n\n\n\n\n二次使用CC BY-SA 4.0"
+    "text": "I Build My Own Terminal Configuration\n\n\n5 分钟\n\n\n\n\n\n\n2024年8月26日\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAnalyzing Blockchain Data with DuckDB: Data Preparation\n\n\n7 分钟\n\n\n\n\n\n\n2024年8月10日\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nfind missing dates with DuckDB\n\n\n5 分钟\n\n\n\n\n\n\n2024年7月26日\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDuckDB Example\n\n\n1 分钟\n\n\n\n\n\n\n2024年2月17日\n\n\n\n\n\n\n\n\n无匹配项"
+  },
+  {
+    "objectID": "blog/i_build_my_own_terminal_configuration/index.html",
+    "href": "blog/i_build_my_own_terminal_configuration/index.html",
+    "title": "I Build My Own Terminal Configuration",
+    "section": "",
+    "text": "最近回忆起自己作为开发人员的职业生涯，我使用过无数工具，包括各种集成开发环境（IDE）、数据库管理软件和各种系统工具。尝试过 10 多把键盘。随着年龄的增长，逐渐意识到时间越来越重要，以前的我在这些琐碎事情上浪费太多时间。\n我想是时候专注于长期目标, 尽可能的做得更少, 更多思考。这个想法促使我创建自己的终端配置。考虑到我已经使用了 10 年的 MacOS，作为后端工程师也有 8 年，而且日常我经常使用终端。我知道终端可以有效的提高我的生产力.\n最后，我想减少对付费工具的依赖。付费软件会经常更改其用户界面，引入新功能，废弃一些功能。我理解公司需要“创新”和赚钱，但这是以用户体验为代价,当我依赖的工具发生重大变化或被停用，我的一切基于工具建立的知识都作废了, 这个过程我经历了好几次!!! 以后要避免这种风险。\n我的目标是使用简单、有效的工具， 帮助我完成工作 ，而不会增加不必要的复杂性。\n基于以上考虑，我的目标很明确：使用可以提高我的编码效率的工具。\n以下是我的标准：\n按照这些标准，我选择了 NeoVim 替换其他 IDE，当在 Kitty、WezTerm、iTerm2 和系统默认终端之间选择终端时，我选择了 WezTerm。因为可以使用 Lua 同时配置 NeoVim 和 WezTerm。\n下面，让我介绍一下我的终端配置步骤。我的工具包括 WezTerm、NeoVim、Sketchybar、yabai 和 skhd。"
+  },
+  {
+    "objectID": "blog/i_build_my_own_terminal_configuration/index.html#wezterm",
+    "href": "blog/i_build_my_own_terminal_configuration/index.html#wezterm",
+    "title": "I Build My Own Terminal Configuration",
+    "section": "WezTerm",
+    "text": "WezTerm\n我的 WezTerm 配置主要是从这篇优秀的文章 Okay, I really like WezTerm 中获取灵感。通过这篇文章我了解了 WezTerm 的基本功能，如何使用 Lua 配置这些功能。因此我的大部分 WezTerm 配置都是参考这篇文章配置的。"
+  },
+  {
+    "objectID": "blog/i_build_my_own_terminal_configuration/index.html#neovim",
+    "href": "blog/i_build_my_own_terminal_configuration/index.html#neovim",
+    "title": "I Build My Own Terminal Configuration",
+    "section": "NeoVim",
+    "text": "NeoVim\n当我开始配置 NeoVim 时，我最初考虑了几种开箱即用的解决方案，如 DoomVim、LunarVim、AstroVim 等。之后觉得这些都太复杂了, 因此打算从头开始构建自己的配置，我花了一下午阅读官方 NeoVim 文档 后, 意识到 NeoVim 的复杂性使得从零开始在这个阶段变得不切实际。\n于是改变下策略，使用第三方包来实现我的目标，尽可能保持尽可能简洁。在这个过程中非常好奇 DHH 是如何快速实现切换到 NeoVim 并且配置了一套 IDE 的，通过分析 omakub 代码，觉得 DHH 简直太聪明了, 他直接使用 LayVim 提供的 starter 模板，LazyVim 我已经非常熟悉了。 因此，我的 NeoVim 配置几乎完全参考 omakub 的设置。直接使用 starter."
+  },
+  {
+    "objectID": "blog/i_build_my_own_terminal_configuration/index.html#sketchybar",
+    "href": "blog/i_build_my_own_terminal_configuration/index.html#sketchybar",
+    "title": "I Build My Own Terminal Configuration",
+    "section": "Sketchybar",
+    "text": "Sketchybar\nsketchybar 是 MacOS 菜单栏的高度可定制替代品。在用 Sketchybar 之前，我使用 bartender 和 iStat Menus 来管理和简化我的状态栏。Sketchybar 提供了一个受欢迎的开源替代方案，与我的目标一致。这是我的 sketchybar 配置链接。"
+  },
+  {
+    "objectID": "blog/i_build_my_own_terminal_configuration/index.html#yabai-skhd",
+    "href": "blog/i_build_my_own_terminal_configuration/index.html#yabai-skhd",
+    "title": "I Build My Own Terminal Configuration",
+    "section": "Yabai + skhd",
+    "text": "Yabai + skhd\n最后一块拼图是我最初认为最不重要但现在经常使用的工具组合。遵循 MacOS 功能用户社区的常见做法，我选择了 yabai 用于窗口管理，skhd 用于自定义键盘快捷键。\nYabai 允许高级窗口平铺和管理，而 skhd 让我可以为各种应用程序控件创建自定义键盘快捷键。这是我的 yabai 配置链接，这是我的 skhd 配置链接。 即使我已经习惯于触控板手势，还是能感觉到 yabai 和 skhd 的组合显著提高了我的工作效率。"
   },
   {
     "objectID": "blog/find_missing_dates_with_duckdb/index.html",

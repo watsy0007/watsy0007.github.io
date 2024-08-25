@@ -10,7 +10,62 @@
 <atom:link href="https://watsy0007.com/index.xml" rel="self" type="application/rss+xml"/>
 <description></description>
 <generator>quarto-1.5.56</generator>
-<lastBuildDate>Sat, 10 Aug 2024 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 26 Aug 2024 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>I Build My Own Terminal Configuration</title>
+  <link>https://watsy0007.com/blog/i_build_my_own_terminal_configuration/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>最近回忆起自己作为开发人员的职业生涯，我使用过无数工具，包括各种集成开发环境（IDE）、数据库管理软件和各种系统工具。尝试过 10 多把键盘。随着年龄的增长，逐渐意识到时间越来越重要，以前的我在这些琐碎事情上浪费太多时间。</p>
+<p>我想是时候专注于长期目标, 尽可能的做得更少, 更多思考。这个想法促使我创建自己的终端配置。考虑到我已经使用了 10 年的 MacOS，作为后端工程师也有 8 年，而且日常我经常使用终端。我知道终端可以有效的提高我的生产力.</p>
+<p>最后，我想减少对付费工具的依赖。付费软件会经常更改其用户界面，引入新功能，废弃一些功能。我理解公司需要“创新”和赚钱，但这是以用户体验为代价,当我依赖的工具发生重大变化或被停用，我的一切基于工具建立的知识都作废了, 这个过程我经历了好几次!!! 以后要避免这种风险。</p>
+<p>我的目标是使用<strong>简单</strong>、<strong>有效的工具</strong>， <strong>帮助我完成工作</strong> ，而不会增加不必要的复杂性。</p>
+<p>基于以上考虑，我的目标很明确：使用可以提高我的编码效率的工具。</p>
+<p>以下是我的标准：</p>
+<ol type="1">
+<li>开源：假设创建者放弃了项目，我还可以使用甚至可能维护自己的版本。</li>
+<li>可定制：可以能够禁用我不需要的功能。</li>
+<li>熟悉：我熟悉喜欢的工具应该继续使用，减少迁移的压力。</li>
+<li>键盘为中心：尽可能多地使用键盘以提高效率。</li>
+</ol>
+<p>按照这些标准，我选择了 NeoVim 替换其他 IDE，当在 Kitty、WezTerm、iTerm2 和系统默认终端之间选择终端时，我选择了 WezTerm。因为可以使用 Lua 同时配置 NeoVim 和 WezTerm。</p>
+<p>下面，让我介绍一下我的终端配置步骤。我的工具包括 WezTerm、NeoVim、Sketchybar、yabai 和 skhd。</p>
+<section id="wezterm" class="level2">
+<h2 class="anchored" data-anchor-id="wezterm">WezTerm</h2>
+<p>我的 WezTerm 配置主要是从这篇优秀的文章 <a href="https://alexplescan.com/posts/2024/08/10/wezterm/">Okay, I really like WezTerm</a> 中获取灵感。通过这篇文章我了解了 WezTerm 的基本功能，如何使用 Lua 配置这些功能。因此我的大部分 WezTerm 配置都是参考这篇文章配置的。</p>
+</section>
+<section id="neovim" class="level2">
+<h2 class="anchored" data-anchor-id="neovim">NeoVim</h2>
+<p>当我开始配置 NeoVim 时，我最初考虑了几种开箱即用的解决方案，如 DoomVim、LunarVim、AstroVim 等。之后觉得这些都太复杂了, 因此打算从头开始构建自己的配置，我花了一下午阅读官方 <a href="https://neovim.io/doc/user/index.html">NeoVim 文档</a> 后, 意识到 NeoVim 的复杂性使得从零开始在这个阶段变得不切实际。</p>
+<p>于是改变下策略，使用第三方包来实现我的目标，尽可能保持尽可能简洁。在这个过程中非常好奇 DHH 是如何快速实现切换到 NeoVim 并且配置了一套 IDE 的，通过分析 <a href="https://github.com/basecamp/omakub">omakub</a> 代码，觉得 DHH 简直太聪明了, 他直接使用 LayVim 提供的 <a href="https://github.com/LazyVim/starter">starter</a> 模板，LazyVim 我已经非常熟悉了。 因此，我的 NeoVim 配置几乎完全参考 omakub 的设置。直接使用 starter.</p>
+</section>
+<section id="sketchybar" class="level2">
+<h2 class="anchored" data-anchor-id="sketchybar">Sketchybar</h2>
+<p>sketchybar 是 MacOS 菜单栏的高度可定制替代品。在用 Sketchybar 之前，我使用 <a href="https://www.macbartender.com/">bartender</a> 和 <a href="https://bjango.com/mac/istatmenus/">iStat Menus</a> 来管理和简化我的状态栏。Sketchybar 提供了一个受欢迎的开源替代方案，与我的目标一致。这是我的 <a href="https://github.com/watsy0007/sketchybar">sketchybar 配置链接</a>。</p>
+</section>
+<section id="yabai-skhd" class="level2">
+<h2 class="anchored" data-anchor-id="yabai-skhd">Yabai + skhd</h2>
+<p>最后一块拼图是我最初认为最不重要但现在经常使用的工具组合。遵循 MacOS 功能用户社区的常见做法，我选择了 yabai 用于窗口管理，skhd 用于自定义键盘快捷键。</p>
+<p>Yabai 允许高级窗口平铺和管理，而 skhd 让我可以为各种应用程序控件创建自定义键盘快捷键。这是我的 <a href="https://gist.github.com/watsy0007/b6cb19b2fdd38655c2545d3a4a36957b">yabai 配置链接</a>，这是我的 <a href="https://gist.github.com/watsy0007/e08bfebc74acefe518fc2af504edef07">skhd 配置链接</a>。 即使我已经习惯于触控板手势，还是能感觉到 yabai 和 skhd 的组合显著提高了我的工作效率。</p>
+</section>
+<section id="结论" class="level1">
+<h1>结论</h1>
+<p>在这篇文章中，我解释了构建自定义终端配置的动机，并概述了我选择的工具。虽然我没有深入探讨每个配置的细节，但我分享了我的设置文件链接，以供大家参考。</p>
+<p>现在这个配置我相当满意，我认为达到了我的预定目标。随着我继续使用和完善，我对后续进一步的优化相当期待。如果大家对我的配置有任何问题或建议，请告诉我。</p>
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">二次使用</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh">CC BY-SA 4.0</a></div></div></section></div> ]]></description>
+  <category>productivity</category>
+  <guid>https://watsy0007.com/blog/i_build_my_own_terminal_configuration/</guid>
+  <pubDate>Mon, 26 Aug 2024 00:00:00 GMT</pubDate>
+  <media:content url="https://watsy0007.com/blog/i_build_my_own_terminal_configuration/i-build-my-own-terminal-configuration-thumpnail.webp" medium="image" type="image/webp"/>
+</item>
 <item>
   <title>Analyzing Blockchain Data with DuckDB: Data Preparation</title>
   <link>https://watsy0007.com/blog/analyzing_blockchain_data_with_duckdb_1/</link>
@@ -37,7 +92,7 @@
 </ol>
 <p>下面展示使用 <code>blockscout</code> API<sup>1</sup>, 通过 <code>DuckDB UDF</code><sup>2</sup> 和 <code>DuckDB Macro</code><sup>3</sup> 简化这个过程.</p>
 <p>导入相关依赖</p>
-<div id="60f611f0" class="cell" data-execution_count="1">
+<div id="7ef32ee6" class="cell" data-execution_count="1">
 <details class="code-fold">
 <summary>代码</summary>
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
@@ -59,7 +114,7 @@ font-style: inherit;">import</span> json</span></code></pre></div>
 <section id="方案1" class="level2">
 <h2 class="anchored" data-anchor-id="方案1">方案1</h2>
 <p>通过 <code>blockscout</code> API<sup>4</sup> 获取 <code>ETH</code> 地址的交易信息, 代码如下:</p>
-<div id="48475b49" class="cell" data-execution_count="2">
+<div id="d55a89e8" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>代码</summary>
 <div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="kw" style="color: #003B4F;
@@ -218,7 +273,7 @@ font-style: inherit;">return</span> result</span></code></pre></div>
 </details>
 </div>
 <p>注册 <code>DuckDB</code> 的自定义函数</p>
-<div id="206086ec" class="cell" data-execution_count="3">
+<div id="928250b7" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">conn <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> duckdb.<span class="ex" style="color: null;
@@ -231,7 +286,7 @@ background-color: null;
 font-style: inherit;">'blockscout_api'</span>, blockscout_api)</span></code></pre></div>
 </div>
 <p>定义 <code>DuckDB</code> 的宏, 这里为了演示, 限制 page 和 offset, 实际使用时会根据实际情况调整. 注意下面的输出 <code>query page 1</code> 和 <code>query page 2</code></p>
-<div id="42766772" class="cell" data-execution_count="4">
+<div id="1c1cce87" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1">conn.execute(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"""</span></span>
@@ -246,7 +301,7 @@ background-color: null;
 font-style: inherit;">"""</span>)</span></code></pre></div>
 </div>
 <p>查询 <code>ETH</code> 地址的交易信息</p>
-<div id="56e90e27" class="cell" data-execution_count="5">
+<div id="63a3ff16" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1">conn.execute(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"""</span></span>
@@ -402,7 +457,7 @@ query page 2</code></pre>
 <h2 class="anchored" data-anchor-id="方案2">方案2</h2>
 <p>实际使用时候, 三方 API 字段可能会调整, 返回的数据会存在空值情况, 因此必须要<strong>严格字段约束</strong>, 这里也演示下.</p>
 <p>申明需要的字段与类型</p>
-<div id="07d7f908" class="cell" data-execution_count="6">
+<div id="92ab5aa7" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1">fields <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> {</span>
@@ -484,7 +539,7 @@ font-style: inherit;">str</span>,</span>
 <span id="cb7-17">}</span></code></pre></div>
 </div>
 <p>请求 <code>blockscout</code> API<sup>5</sup> 并提取有效字段</p>
-<div id="92c443fa" class="cell" data-execution_count="7">
+<div id="34a4c931" class="cell" data-execution_count="7">
 <details class="code-fold">
 <summary>代码</summary>
 <div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1">field_keys <span class="op" style="color: #5E5E5E;
@@ -656,7 +711,7 @@ font-style: inherit;">return</span> result</span></code></pre></div>
 </details>
 </div>
 <p>注册 <code>DuckDB</code> 的自定义函数, 注意 <code>page</code> 和 <code>offset</code> 调整, 只获取 1 页面数据, 不做翻页演示.</p>
-<div id="f877d061" class="cell" data-execution_count="8">
+<div id="57aa9690" class="cell" data-execution_count="8">
 <details class="code-fold">
 <summary>代码</summary>
 <div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1">conn <span class="op" style="color: #5E5E5E;
@@ -686,7 +741,7 @@ font-style: inherit;">"""</span>)</span></code></pre></div>
 </details>
 </div>
 <p>查询 <code>ETH</code> 地址的交易信息</p>
-<div id="b902b534" class="cell" data-execution_count="9">
+<div id="8b90d921" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1">conn.execute(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"""</span></span>
@@ -844,7 +899,7 @@ font-style: inherit;">"""</span>).df()</span></code></pre></div>
 <section id="获取数据" class="level2">
 <h2 class="anchored" data-anchor-id="获取数据">1. 获取数据</h2>
 <p>这里使用 mock 数据</p>
-<div id="315c62ab" class="cell" data-execution_count="2">
+<div id="83bb9932" class="cell" data-execution_count="2">
 <details class="code-fold">
 <summary>代码</summary>
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
@@ -1079,7 +1134,7 @@ font-style: inherit;">=</span> conn.execute(mock_data_sql).df()</span>
 <h2 class="anchored" data-anchor-id="对时间进行分组">2. 对时间进行分组</h2>
 <p>寻找缺失的日期, 主要难点在于按照时间连续性进行分组, 连续的时间放在同一个分组中, 这样如果一个 <code>source_id</code> 有多个时间段, 那么表示存在时间空缺.</p>
 <p>使用窗口函数, 对当前行的时间进行处理, 根据时间差, 获得当前行的分组时间. 代码如下:</p>
-<div id="c9ebe72e" class="cell" data-execution_count="3">
+<div id="7b5a461b" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1">group_date_sql <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
@@ -1265,7 +1320,7 @@ font-style: inherit;">=</span> conn.execute(group_date_sql).df()</span>
 </section>
 <section id="根据-source_id-和分组时间分组" class="level2">
 <h2 class="anchored" data-anchor-id="根据-source_id-和分组时间分组">3. 根据 source_id 和分组时间分组</h2>
-<div id="331d4503" class="cell" data-execution_count="4">
+<div id="34c4632d" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1">group_sql <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
@@ -1352,7 +1407,7 @@ font-style: inherit;">=</span> conn.execute(group_sql).df()</span>
 </section>
 <section id="可视化" class="level2">
 <h2 class="anchored" data-anchor-id="可视化">4. 可视化</h2>
-<div id="b8b65bc8" class="cell" data-execution_count="5">
+<div id="884715b7" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>代码</summary>
 <div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="im" style="color: #00769E;
@@ -1383,9 +1438,9 @@ font-style: inherit;">"reversed"</span>)</span>
 <span id="cb4-4">fig.show()</span></code></pre></div>
 </details>
 <div class="cell-output cell-output-display">
-<div>                            <div id="072bee43-0522-4ff6-b84f-78fd6778ee4a" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("072bee43-0522-4ff6-b84f-78fd6778ee4a")) {                    Plotly.newPlot(                        "072bee43-0522-4ff6-b84f-78fd6778ee4a",                        [{"alignmentgroup":"True","base":["2024-07-01T00:00:00","2024-07-05T00:00:00","2024-07-01T00:00:00","2024-07-01T00:00:00","2024-07-05T00:00:00"],"hovertemplate":"start_date=%{base}\u003cbr\u003eend_date=%{x}\u003cbr\u003esource_id=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":"#636efa","pattern":{"shape":""}},"name":"","offsetgroup":"","orientation":"h","showlegend":false,"textposition":"auto","x":[172800000.0,86400000.0,172800000.0,691200000.0,345600000.0],"xaxis":"x","y":[1,1,2,3,4],"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"type":"date"},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"source_id"},"autorange":"reversed"},"legend":{"tracegroupgap":0},"barmode":"overlay"},                        {"responsive": true}                    ).then(function(){
+<div>                            <div id="c63ae8c4-f88d-4844-86d2-1c3250cf558d" class="plotly-graph-div" style="height:525px; width:100%;"></div>            <script type="text/javascript">                require(["plotly"], function(Plotly) {                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("c63ae8c4-f88d-4844-86d2-1c3250cf558d")) {                    Plotly.newPlot(                        "c63ae8c4-f88d-4844-86d2-1c3250cf558d",                        [{"alignmentgroup":"True","base":["2024-07-01T00:00:00","2024-07-05T00:00:00","2024-07-01T00:00:00","2024-07-01T00:00:00","2024-07-05T00:00:00"],"hovertemplate":"start_date=%{base}\u003cbr\u003eend_date=%{x}\u003cbr\u003esource_id=%{y}\u003cextra\u003e\u003c\u002fextra\u003e","legendgroup":"","marker":{"color":"#636efa","pattern":{"shape":""}},"name":"","offsetgroup":"","orientation":"h","showlegend":false,"textposition":"auto","x":[172800000.0,86400000.0,172800000.0,691200000.0,345600000.0],"xaxis":"x","y":[1,1,2,3,4],"yaxis":"y","type":"bar"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"},"margin":{"b":0,"l":0,"r":0,"t":30}}},"xaxis":{"anchor":"y","domain":[0.0,1.0],"type":"date"},"yaxis":{"anchor":"x","domain":[0.0,1.0],"title":{"text":"source_id"},"autorange":"reversed"},"legend":{"tracegroupgap":0},"barmode":"overlay"},                        {"responsive": true}                    ).then(function(){
                             
-var gd = document.getElementById('072bee43-0522-4ff6-b84f-78fd6778ee4a');
+var gd = document.getElementById('c63ae8c4-f88d-4844-86d2-1c3250cf558d');
 var x = new MutationObserver(function (mutations, observer) {{
         var display = window.getComputedStyle(gd).display;
         if (!display || display === 'none') {{
@@ -1413,7 +1468,7 @@ if (outputEl) {{
 </section>
 <section id="完整代码" class="level2">
 <h2 class="anchored" data-anchor-id="完整代码">5. 完整代码</h2>
-<div id="a45cca43" class="cell" data-execution_count="6">
+<div id="1b9c8ca4" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1">sql <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
@@ -1606,7 +1661,7 @@ font-style: inherit;">"reversed"</span>)</span>
 <p>以下所有代码可以复制到 jupyter notebook 中执行。</p>
 <section id="安装依赖" class="level1">
 <h1>安装依赖</h1>
-<div id="ec27294b" class="cell" data-execution_count="1">
+<div id="3417ebb3" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">!</span>pip install duckdb jupysql <span class="op" style="color: #5E5E5E;
@@ -1616,7 +1671,7 @@ font-style: inherit;">--</span>quiet</span></code></pre></div>
 </section>
 <section id="基础配置" class="level1">
 <h1>基础配置</h1>
-<div id="42b5ac84" class="cell" data-execution_count="2">
+<div id="1101b857" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> duckdb</span>
@@ -1628,7 +1683,7 @@ background-color: null;
 font-style: inherit;">connect</span>()</span></code></pre></div>
 </div>
 <p>jupysql 配置</p>
-<div id="1be95809" class="cell" data-execution_count="3">
+<div id="82d0b1a7" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">%</span>load_ext sql</span>
@@ -1674,7 +1729,7 @@ font-style: inherit;">-</span>native</span></code></pre></div>
 <section id="演示数据" class="level1">
 <h1>演示数据</h1>
 <p>参考 <a href="https://duckdb.org/docs/guides/python/jupyter">Jupyter Notebooks</a></p>
-<div id="9e6f6afa" class="cell" data-execution_count="4">
+<div id="4837fcbd" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">%%</span>sql <span class="op" style="color: #5E5E5E;
@@ -1699,7 +1754,7 @@ font-style: inherit;">6.3</span></span></code></pre></div>
 <span style="None">Skipping execution...</span>
 </div>
 </div>
-<div id="6bdefa70" class="cell" data-execution_count="5">
+<div id="a7960c12" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">%</span>sqlplot histogram <span class="op" style="color: #5E5E5E;

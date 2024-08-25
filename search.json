@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "watsy0007",
     "section": "",
-    "text": "Analyzing Blockchain Data with DuckDB: Data Preparation\n\n\n7 min\n\n\n\n\n\n\nAug 10, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nfind missing dates with DuckDB\n\n\n5 min\n\n\n\n\n\n\nJul 26, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDuckDB Example\n\n\n1 min\n\n\n\n\n\n\nFeb 17, 2024\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "I Build My Own Terminal Configuration\n\n\n5 min\n\n\n\n\n\n\nAug 26, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAnalyzing Blockchain Data with DuckDB: Data Preparation\n\n\n7 min\n\n\n\n\n\n\nAug 10, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nfind missing dates with DuckDB\n\n\n5 min\n\n\n\n\n\n\nJul 26, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDuckDB Example\n\n\n1 min\n\n\n\n\n\n\nFeb 17, 2024\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "blog/analyzing_blockchain_data_with_duckdb_1/index.html",
@@ -35,11 +35,11 @@
     "text": "Footnotes\n\n\nGet Transactions By Address - Blockscout↩︎\nPython Runction API - DuckDB↩︎\nCREATE MACRO Statement - DuckDB↩︎\nGet Transactions By Address - Blockscout↩︎\nGet Transactions By Address - Blockscout↩︎\nPython Runction API - DuckDB↩︎\nCREATE MACRO Statement - DuckDB↩︎\nWith Clause - DuckDB↩︎"
   },
   {
-    "objectID": "blog.html",
-    "href": "blog.html",
-    "title": "watsy0007",
+    "objectID": "blog/duckdb-example/index.html",
+    "href": "blog/duckdb-example/index.html",
+    "title": "DuckDB Example",
     "section": "",
-    "text": "Analyzing Blockchain Data with DuckDB: Data Preparation\n\n\n7 min\n\n\n\n\n\n\nAug 10, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nfind missing dates with DuckDB\n\n\n5 min\n\n\n\n\n\n\nJul 26, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDuckDB Example\n\n\n1 min\n\n\n\n\n\n\nFeb 17, 2024\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Test DuckDB features based on quarto.\nAll the code below can be copied and executed in a jupyter notebook.\n\nInstall dependencies\n\n!pip install duckdb jupysql --quiet\n\n\n\nBasic configuration\n\nimport duckdb\n\nconn = duckdb.connect()\n\njupysql configuration\n\n%load_ext sql\n\n%config SqlMagic.autopandas = True\n%config SqlMagic.feedback = 0\n%config SqlMagic.displaycon = True\n%config SqlMagic.displaylimit = 10\n\n%sql conn --alias duckdb-native\n\n\n\nDemo data\nRefer to Jupyter Notebooks\n\n%%sql --save short_trips --no-execute\nSELECT *\nFROM 'https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2021-01.parquet'\nWHERE trip_distance &lt; 6.3\n\nSkipping execution...\n\n\n\n%sqlplot histogram --table short_trips --column trip_distance --bins 10 --with short_trips\n\n\n\n\n\n\n\n\n\n\n\n\nReuseCC BY-SA 4.0"
   },
   {
     "objectID": "about.html",
@@ -56,11 +56,46 @@
     "text": "Elven | Head Data Scientist | June 2018 - present"
   },
   {
-    "objectID": "blog/duckdb-example/index.html",
-    "href": "blog/duckdb-example/index.html",
-    "title": "DuckDB Example",
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "watsy0007",
     "section": "",
-    "text": "Test DuckDB features based on quarto.\nAll the code below can be copied and executed in a jupyter notebook.\n\nInstall dependencies\n\n!pip install duckdb jupysql --quiet\n\n\n\nBasic configuration\n\nimport duckdb\n\nconn = duckdb.connect()\n\njupysql configuration\n\n%load_ext sql\n\n%config SqlMagic.autopandas = True\n%config SqlMagic.feedback = 0\n%config SqlMagic.displaycon = True\n%config SqlMagic.displaylimit = 10\n\n%sql conn --alias duckdb-native\n\n\n\nDemo data\nRefer to Jupyter Notebooks\n\n%%sql --save short_trips --no-execute\nSELECT *\nFROM 'https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2021-01.parquet'\nWHERE trip_distance &lt; 6.3\n\nSkipping execution...\n\n\n\n%sqlplot histogram --table short_trips --column trip_distance --bins 10 --with short_trips\n\n\n\n\n\n\n\n\n\n\n\n\nReuseCC BY-SA 4.0"
+    "text": "I Build My Own Terminal Configuration\n\n\n5 min\n\n\n\n\n\n\nAug 26, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nAnalyzing Blockchain Data with DuckDB: Data Preparation\n\n\n7 min\n\n\n\n\n\n\nAug 10, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nfind missing dates with DuckDB\n\n\n5 min\n\n\n\n\n\n\nJul 26, 2024\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nDuckDB Example\n\n\n1 min\n\n\n\n\n\n\nFeb 17, 2024\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "blog/i_build_my_own_terminal_configuration/index.html",
+    "href": "blog/i_build_my_own_terminal_configuration/index.html",
+    "title": "I Build My Own Terminal Configuration",
+    "section": "",
+    "text": "Throughout my career as a developer, I’ve used numerous tools, including various IDEs, database management software, and a wide range of system utilities. I’ve even experimented with more than 20 keyboards. However, as I’ve grown older, I’ve come to realized that time is a precious, and I’ve been wasting too much of it on these trivial distractions. I found myself lost in the constant juggling of new tools and gadgets.\nNow, it’s time to take responsibility for my life and focus on long-term goals. I’m striving to do less but think more deeply about how to improve my quality of life.\nThis realization led me to create my own terminal configuration. Having used MacOS for nearly as decade and worked as a backend engineer for eight years. I can use terminal to do most of my work.\nAnother catalyst for this change was reading about DHH’s decision to leave Apple and switch to Linux, It inspired me and made me feel it was time for a change in my own workflow.\nLastly, I want to reduce my dependence on constantly evolving enterprise tools. These applications frequently change their UI, introduce flashy new features, and deprecate others. While I understand the need for companies to innovate and make money, it often comes at the cost of user experience and knowledge. I’ve had my expertise rendered obsolete server times when tools I relied on changed dramatically or were discontinued. I’m tired of this cycle and want to minimize the risk. My goal is to use simple, effective tools that help me do my work without unnecessary complexity."
+  },
+  {
+    "objectID": "blog/i_build_my_own_terminal_configuration/index.html#wezterm-1",
+    "href": "blog/i_build_my_own_terminal_configuration/index.html#wezterm-1",
+    "title": "I Build My Own Terminal Configuration",
+    "section": "WezTerm",
+    "text": "WezTerm\nFor my WezTerm configuration, I drew inspiration from the article Okay, I really like WezTerm This comprehensive guide introduced me to WezTerm’s basic features and taught me how to configure them using Lua. Most of my WezTerm configuration is adapted from this excellent article."
+  },
+  {
+    "objectID": "blog/i_build_my_own_terminal_configuration/index.html#neovim-1",
+    "href": "blog/i_build_my_own_terminal_configuration/index.html#neovim-1",
+    "title": "I Build My Own Terminal Configuration",
+    "section": "NeoVim",
+    "text": "NeoVim\nWhen it came to configuring NeoVim, I initially considered several out-of-the-box solutions like DoomVim, LunarVim, AstroVim, etc. My first instinct was to build my configuration from scratch, so I began by reading the official NeoVim documentation. However, after spending an entire afternoon poring over the docs. I realized that NeoVim’s complexity made it impractical for me to start from zero at this stage.\nI changed my approach, deciding to use third-party packages to achieve my goals while keeping things as minimal as necessary. Curious about DHH’s NeoVim setup, I investigated the omakub repository and was impressed by his ingenious solution. DHH use the starter template for LazyVim, a configuration framework I was already familiar with. This discovery made it convenient for me to begin with the starter template. As a result, my NeoVim configuration is almost fully based on omakub’s setup."
+  },
+  {
+    "objectID": "blog/i_build_my_own_terminal_configuration/index.html#sketchybar-1",
+    "href": "blog/i_build_my_own_terminal_configuration/index.html#sketchybar-1",
+    "title": "I Build My Own Terminal Configuration",
+    "section": "Sketchybar",
+    "text": "Sketchybar\nSketchybar is is a highly customizable replacement for the MacOS menu bar. Before discovering Sketchybar, I used bartender and iStat Menus to manage and simplify my status bar. Sketchybar offerd a popular, open-source alternative that aligned with my goals. Here is my sketchybar configuration link"
+  },
+  {
+    "objectID": "blog/i_build_my_own_terminal_configuration/index.html#yabai-skhd-1",
+    "href": "blog/i_build_my_own_terminal_configuration/index.html#yabai-skhd-1",
+    "title": "I Build My Own Terminal Configuration",
+    "section": "Yabai + skhd",
+    "text": "Yabai + skhd\nThe final piece of my setup, which I initially considered least important but now use frequently, is a solution for controlling windows with the keyboard. Following common practice in the MacOS power-user community, I chose yabai for window management and skhd for custom keyboard shortcuts.\nYabai allows for advanced window tiling and management, while skhd enables me to create custom keyboard shortcuts for various and application controls. here is my yabai configuration link, and here is my skhd configuration link\nThis combination has significantly improved my workflow, making window management effortless even though I was already comfortable with trackpad gestures."
   },
   {
     "objectID": "blog/find_missing_dates_with_duckdb/index.html",
